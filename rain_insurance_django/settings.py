@@ -26,7 +26,7 @@ SECRET_KEY = 'fpftp6rqg)la+8nz=5qm0^^*!(q$$#58*@_hm-!e5r6vx)$edj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'rainydayshero.herokuapp.com']
 
 
 # Application definition
