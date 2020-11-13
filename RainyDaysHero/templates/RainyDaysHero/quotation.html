@@ -1,0 +1,54 @@
+{% extends 'RainyDaysHero/base.html' %}
+
+{% block additionnal-head-conf %}
+	{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/styleQuotationForm.css' %}">
+{% endblock %}
+
+{% block content %}
+
+	<div class="container my-2 block-content">
+	  <div class="row">
+	    <div class="col-md-6 mx-auto myform">
+	    <h3 class="formtitle">Please fill the quotation form</h1>
+
+	      <div class="form-group">
+	        <input type="text" id="name" class="form-control" required>
+	        <label class="form-control-placeholder" for="name">Company Name</label>
+	      </div>
+
+	      <div class="form-group">
+	        <input type="text" id="text" class="form-control" required>
+	        <label class="form-control-placeholder" for="text">Daily Max Turnover</label>
+	      </div>
+
+	      <div class="form-group">
+	        <input type="text" id="name" class="form-control" required>
+	        <label class="form-control-placeholder" for="name">Fixed Costs</label>
+	      </div>
+
+	      <div class="form-group">
+	        <input type="text" id="text" class="form-control" required>
+	        <label class="form-control-placeholder" for="text">Critic Rainfall</label>
+	      </div>
+
+	      <div class="form-group">
+	        <input type="date" id="name" class="form-control" value="2020-01-01" required>
+	        <label class="form-control-placeholder" for="name">Subsciption Date</label>
+	      </div>
+
+	      <div class="form-group">
+	        <input type="text" id="text" class="form-control" required>
+	        <label class="form-control-placeholder" for="text">Company Location</label>
+	      </div>
+
+	      <div class="form-group">
+	        <button type="submit" class="btn btn-primary">Pricing</button>
+	      </div>
+
+	    </div>
+	  </div>
+	</div>
+
+    
+{% endblock %}

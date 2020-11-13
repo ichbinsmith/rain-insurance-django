@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href= "{% static 'RainyDaysHero/bootstrap-4.0.0/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/menu.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/style.css' %}">
+    <script src="RainyDaysHero/bootstrap-4.0.0/dist/js/bootstrap.min.js"></script>
+    {% block additionnal-head-conf %}
+    
+    {% endblock %}
+    <!-- Bootstrap CSS -->
+  </head>
+  <body>
+<div class="container text-center block-header">
+  <div class="row">
+    <div class="col align-self-center">
+          <h1 class="bigtitle">WELCOME TO RAINY DAYS HERO</h1>
+    <nav class ="text-center">
+      <ul>
+        <li class="deroulant"><a href="/rdh">Services &ensp;</a>
+          <ul class="sous">
+            <li><a href="/rdh">Home</a></li>
+            <li><a href="/rdh/quotation">Quotation</a></li>
+            <li><a href="/rdh/retrospective">Retrospective</a></li>
+          </ul>
+        </li>
+        <li><a href="/rdh/contact">Contact</a></li>
+        <li><a href="/rdh/about">About</a></li>
+      </ul>
+    </nav>
+    </div>
+  </div>
+</div>
+    {% block content %}
+    
+    {% endblock %}
+  </body>
+</html>
