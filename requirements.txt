@@ -6,3 +6,4 @@ fpdf
 matplotlib
 django-after-response
 pandas
+requests

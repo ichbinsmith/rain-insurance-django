@@ -14,17 +14,48 @@ from string import ascii_uppercase
 import after_response
 from django.templatetags.static import static
 
+import matplotlib
+matplotlib.use('Agg')
+
 import datetime as DtT
 from fpdf import FPDF
 import pandas as pd
 import matplotlib.pyplot as plt
+import requests as REQ
+
 
 interestRate = 0.1
 
+cityId = {'Nice' :'181' , 'Paris':'188' , 'Nantes':'221'}
+baseUrl = 'https://www.historique-meteo.net/site/export.php?ville_id='
+
+'''Download data'''
+
+def dataUpdateCity(city):
+    try:
+        r = REQ.get(baseUrl+cityId[city], allow_redirects=True)
+        if r.status_code == 200:
+            print ('DATA DOWNLOADED!')
+            print( r.headers.get('Content-disposition').split(';')[1].split('=')[1] )
+            dirname = os.path.dirname(__file__)
+            #server-name : r.headers.get('Content-disposition').split(';')[1].split('=')[1]
+            open(os.path.join(dirname, 'static/RainyDaysHero/data/'+'export-'+city), 'wb').write(r.content)
+        else:
+            print ('Error with request.')
+    except Exception as e: #requests.exceptions.ConnectionError
+        print(e)
+
+def dataUpdateAllCity():
+    for city in cityId.keys():
+        dataUpdateCity(city)
+
+'''Remove a temp file after request'''
 @after_response.enable
 def removequotationfile(filename):
     os.remove(filename)
 
+
+'''Views'''
 def index(request):
     template = loader.get_template('RainyDaysHero/index.html')
     context = {}
@@ -207,12 +238,13 @@ def about(request):
     return HttpResponse(template.render(context, request))
 
 
-#premium computing
+'''Premium and retrospective computation'''
 def calculatePrice(location,date,rainfall,turnover,fixedCosts):
     rainfall = float(rainfall)
     turnover = float(turnover)
     fixedCosts = float(fixedCosts)
     #data to use according to city : init dataFrame //TODO : update data before using
+    dataUpdateCity(location)
     location = location.lower()
     dirname = os.path.dirname(__file__)
     df = pd.read_csv(os.path.join(dirname, 'static/RainyDaysHero/data/'+'export-'+location+'.csv'),skiprows=3)
@@ -248,6 +280,7 @@ def computeRetro(location,date,rainfall,turnover,fixedCosts):
     fixedCosts = float(fixedCosts)
     #data to use according to city : init dataFrame //TODO : update data before using
     location = location.lower()
+    dataUpdateCity(location)
     dirname = os.path.dirname(__file__)
     df = pd.read_csv(os.path.join(dirname, 'static/RainyDaysHero/data/'+'export-'+location+'.csv'),skiprows=3)
 
