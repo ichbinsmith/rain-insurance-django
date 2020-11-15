@@ -3,3 +3,4 @@ gunicorn
 django-heroku
 django-bootstrap4
 fpdf
+django-after-response
