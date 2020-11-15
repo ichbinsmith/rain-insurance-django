@@ -1,14 +1,65 @@
 {% extends 'RainyDaysHero/base.html' %}
 
+{% block additionnal-head-conf %}
+	{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/styleQuotationForm.css' %}">
+{% endblock %}
+
+
+
 {% block content %}
 
-<div class="container block-content">
-  <div class="row">
-    <div class="col align-self-center">
-      <p>Retrospective Page Page</p>
-    </div>
-  </div>
-</div>
+	<div class="container my-2 block-content" style={visibility='hidden'}>
+	  <div class="row">
+	    <div class="col-md-6 mx-auto myform">
+	    <h3 class="formtitle">Please fill the quotation form</h1>
+
+		<form action="/rdh/retrospective/" method="post">
+			{% csrf_token %} 
+	      <div class="form-group">
+	        {{ form.clientName }}
+	        <label class="form-control-placeholder" for="{{ form.clientName.id_for_label }}">Company Name</label>
+
+	      </div>
+	      <div class="form-group">
+	        {{ form.dailyMaxTurnover }}
+	        <label class="form-control-placeholder" for="{{ form.dailyMaxTurnover.id_for_label }}">Daily Max Turnover</label>
+	      </div>
+
+	      <div class="form-group">
+	        {{ form.fixedCosts }}
+	        <label class="form-control-placeholder" for="{{ form.fixedCosts.id_for_label }}">Daily Fixed Costs</label>
+	        
+	      </div>
+
+	      <div class="form-group">
+	        {{ form.rainfall }}
+	        <label class="form-control-placeholder" for="{{ form.rainfall.id_for_label }}">{{ form.rainfall.label }}</label>
+	      </div>
+
+	      <div class="form-group">
+	        {{ form.subscriptionDate }}
+	        <label class="form-control-placeholder" for="{{ form.subscriptionDate.id_for_label }}">{{ form.subscriptionDate.label }}</label>
+	        
+	      </div>
+
+	      <div class="form-group">
+	        {{ form.location }}
+	        <label class="form-control-placeholder" for="{{ form.location.id_for_label }}">{{form.location.label}}</label>
+	      </div>
+
+	      <div class="form-group">
+	        {{ form.printPDF }}
+	        <label class="form-control-placeholder" for="{{ form.printPDF.id_for_label }}">{{form.printPDF.label}}</label>
+	      </div>
+	      
+	      <div class="form-group">
+	        <button type="submit" class="btn btn-primary">Retrospective</button>
+	      </div>
+		</form>
+	    </div>
+	  </div>
+	</div>
 
     
 {% endblock %}

@@ -5,13 +5,16 @@
     <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/styleQuotationForm.css' %}">
 {% endblock %}
 
+
+
 {% block content %}
+
 	<div class="container my-2 block-content" style={visibility='hidden'}>
 	  <div class="row">
 	    <div class="col-md-6 mx-auto myform">
 	    <h3 class="formtitle">Please fill the quotation form</h1>
 
-		<form action="/rdh/quotation/" method="post">
+		<form action="/rdh/retrospective/" method="post">
 			{% csrf_token %} 
 	      <div class="form-group">
 	        {{ form.clientName }}
@@ -51,31 +54,17 @@
 	      </div>
 	      
 	      <div class="form-group">
-	        <button type="submit" class="btn btn-primary">Pricing</button>
+	        <button type="submit" class="btn btn-primary">Retrospective</button>
 	      </div>
 		</form>
-	      <div class="form-group">
-	        <label>Premium = {{price}} &euro;</label>
+		<div class="form-group">
+	        <label>Premium = {{price}} &euro;</label> <br>
+	        <label>Covered Turnover = {{c}} &euro;</label> <br>
+	        <label>Not Covered Turnnver = {{nc}} &euro;</label> <br>
 	      </div>
 	    </div>
 	  </div>
 	</div>
 
-    
-
-<!--
-<div class="form-group">
-	        	<button type="button" onclick="myPrint('quotation')" class="btn btn-primary">Print</button>
-</div>
-<script>
-        function myPrint(quotation) {
-            var printdata = document.getElementById(quotation);
-            newwin = window.open("");
-            newwin.document.write(printdata.outerHTML);
-            newwin.print();
-            newwin.close();
-        }
- </script>
--->
     
 {% endblock %}

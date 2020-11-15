@@ -5,7 +5,7 @@ from django.template import loader
 from django.http import HttpResponseRedirect
 from django.http import FileResponse
 from django.shortcuts import render
-from .forms import QuotationForm
+from .forms import QuotationForm, RetroForm
 import io
 import os
 from random import choice
@@ -14,8 +14,13 @@ from string import ascii_uppercase
 import after_response
 from django.templatetags.static import static
 
-
+import datetime as DtT
 from fpdf import FPDF
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+interestRate = 0.1
 
 @after_response.enable
 def removequotationfile(filename):
@@ -33,7 +38,7 @@ def quotation(request):
         form = QuotationForm(request.POST)
         if form.is_valid():
             context['form'] = form
-            context['price'] = form.price
+            context['price'] = 0
             #compute quotation
             ##return HttpResponse(template.render(context, request))
             pdf = FPDF(orientation='P', unit='mm', format='A4')
@@ -49,7 +54,7 @@ def quotation(request):
 
             # Client Name
             pdf.cell(140)
-            pdf.cell(0, 5, "clientName", ln=1)
+            pdf.cell(0, 5, str(form['clientName'].value()), ln=1)
 
             #Company name
             pdf.ln(25)
@@ -72,12 +77,13 @@ def quotation(request):
             pdf.cell(65, 10, "Location: "+form['location'].value(), ln=2)
 
             #premium
-            premium = 0
+            premium = calculatePrice(form['location'].value(),form['subscriptionDate'].value(),form['rainfall'].value(),form['dailyMaxTurnover'].value(),form['fixedCosts'].value())
+            context['price'] = str(premium)
             pdf.set_text_color(39, 174, 96)
             pdf.ln(25)
             pdf.cell(60)
             pdf.set_font('Arial', 'B', 15)
-            pdf.cell(65, 10, "Premium: "+str("%.2f" % premium)+" "+chr(128), ln=2)
+            pdf.cell(65, 10, "Premium: "+premium+" "+chr(128), ln=2)
 
             #save file and del after response
         
@@ -87,12 +93,10 @@ def quotation(request):
             response['Content-Disposition'] = "attachment; filename=quotationPDFFile"
             removequotationfile.after_response(quotationPDFFile)
             #response.write(open("tuto.pdf"))
-            return FileResponse(open(quotationPDFFile, "rb"), as_attachment=True, filename='quotation.pdf')
-
-
-            if os.path.exists(os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')+'\\quotation.pdf'):
-                os.remove(os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')+'\\quotation.pdf')
-            pdf.output(os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')+'\\quotation.pdf','F')
+            if form['printPDF'].value()=='Yes':
+                return FileResponse(open(quotationPDFFile, "rb"), as_attachment=True, filename='quotation.pdf')
+            else:
+                return HttpResponse(template.render(context, request))
     else:
         template = loader.get_template('RainyDaysHero/quotation.html')
         form = QuotationForm(request.POST)
@@ -100,9 +104,98 @@ def quotation(request):
         return HttpResponse(template.render(context, request))
 
 def retrospective(request):
-    template = loader.get_template('RainyDaysHero/retrospective.html')
     context = {}
-    return HttpResponse(template.render(context, request))
+    if request.method == 'POST':
+        template = loader.get_template('RainyDaysHero/retrospectiveAnswer.html')
+        form = RetroForm(request.POST)
+        if form.is_valid():
+            context['form'] = form
+            #compute retrospective
+            premium, covered, notcovered,c,nc = computeRetro(form['location'].value(),form['subscriptionDate'].value(),form['rainfall'].value(),form['dailyMaxTurnover'].value(),form['fixedCosts'].value())
+            context['price'] = str(premium)
+            context['c'] = str(covered)
+            context['nc'] = str(notcovered)
+            pdf = FPDF(orientation='P', unit='mm', format='A4')
+            pdf.add_page()
+            pdf.rect(5.0, 5.0, 200.0,287.0)
+            pdf.rect(8.0, 8.0, 194.0,282.0)
+
+            #App pic
+            #pdf.image(static('RainyDaysHero/images/rdh.png'), 10, 8, 33)
+            dirname = os.path.dirname(__file__)
+            pdf.image( os.path.join(dirname, 'static/RainyDaysHero/images/rdh.png'), 10, 8, 33)
+            pdf.set_font('Arial', 'B', 15)
+
+            # Client Name
+            pdf.cell(140)
+            pdf.cell(0, 5, str(form['clientName'].value()), ln=1)
+
+            #Company name
+            pdf.ln(25)
+            pdf.cell(0, 5, 'Rainy Days Hero', ln=1)
+
+            
+            #Informatios
+            pdf.set_text_color(238, 58, 20)
+            pdf.ln(6)
+            pdf.cell(60)
+            pdf.cell(65, 10, 'Rain Insurance quotation','B', ln=2)
+            pdf.set_text_color(0, 0, 0)
+            pdf.set_font('Arial', 'B', 10)
+            pdf.cell(65, 10, "Max daily turover: "+str(form['dailyMaxTurnover'].value()), ln=2)
+            pdf.cell(65, 10, "Fixed costs: "+str(form['fixedCosts'].value()), ln=2)
+            pdf.cell(65, 10, "Crucial rainfall: "+str(form['rainfall'].value()), ln=2)
+            pdf.cell(65, 10, "Subsciption date: "+form['subscriptionDate'].value(), ln=2)
+            #pdf.cell(65, 10, "Subsciption date: "+form['subscriptionDate'].value().strftime("%Y-%m-%d"), ln=2)
+            pdf.cell(65, 10, "Duration: "+"365 days", ln=2)
+            pdf.cell(65, 10, "Location: "+form['location'].value(), ln=2)
+
+            #premium
+            pdf.set_text_color(39, 174, 96)
+            pdf.ln(10)
+            pdf.cell(60)
+            pdf.set_font('Arial', 'B', 15)
+            pdf.cell(65, 10, "Premium Price: "+premium+" "+chr(128), ln=2)
+            pdf.cell(65, 10, "Covered Result: "+covered+" "+chr(128), ln=2)
+            pdf.cell(65, 10, "Uncovered Result: "+notcovered+" "+chr(128), ln=2)
+
+            #graph
+            days = [i for i in range(365)]
+
+            plt.plot(days,c,label="Covered")
+            plt.plot(days,nc,label="Uncovered")
+
+
+            #plot graph
+            plt.title("Result Evolution Graph", fontweight="bold", fontsize=16, color="blue")
+            plt.tight_layout()
+            #plt.legend(loc='best')
+            lgd = plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),fancybox=True, shadow=True, ncol=5)
+            retroFIG = ''.join(choice(ascii_uppercase) for i in range(100))+'.png'
+
+            plt.savefig(retroFIG, bbox_extra_artists=(lgd,), bbox_inches='tight')
+            pdf.image(retroFIG,45, 170 ,120)
+            #delete the fig
+            os.remove(retroFIG)
+            plt.close()
+
+            #save file and del after response
+            quotationPDFFile = ''.join(choice(ascii_uppercase) for i in range(100))+'.pdf'
+            pdf.output(quotationPDFFile,'F')
+            response = HttpResponse(pdf, content_type='application/pdf')
+            response['Content-Disposition'] = "attachment; filename=quotationPDFFile"
+            removequotationfile.after_response(quotationPDFFile)
+            #response.write(open("tuto.pdf"))
+            if form['printPDF'].value()=='Yes':
+                return FileResponse(open(quotationPDFFile, "rb"), as_attachment=True, filename='retrospective.pdf')
+            else:
+                return HttpResponse(template.render(context, request))
+    else:
+        template = loader.get_template('RainyDaysHero/retrospective.html')
+        form = RetroForm(request.POST)
+        context = dict(form= form)
+        return HttpResponse(template.render(context, request))
+
 
 def contact(request):
     template = loader.get_template('RainyDaysHero/contact.html')
@@ -113,3 +206,85 @@ def about(request):
     template = loader.get_template('RainyDaysHero/about.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+
+#premium computing
+def calculatePrice(location,date,rainfall,turnover,fixedCosts):
+    rainfall = float(rainfall)
+    turnover = float(turnover)
+    fixedCosts = float(fixedCosts)
+    #data to use according to city : init dataFrame //TODO : update data before using
+    location = location.lower()
+    dirname = os.path.dirname(__file__)
+    df = pd.read_csv(os.path.join(dirname, 'static/RainyDaysHero/data/'+'export-'+location+'.csv'),skiprows=3)
+
+    #compute premium
+    tempDate = date
+    subscriptionDateEntry = DtT.datetime.strptime(date, "%Y-%m-%d")
+    tempDate = DtT.datetime.strptime(tempDate, "%Y-%m-%d")
+    plca = (1 - fixedCosts/turnover)*rainfall
+    countSinister = 0
+    premium = 0
+    for i in range(365):
+        tempDate = tempDate + DtT.timedelta(days=1)
+        mm = '%02d' %  tempDate.month
+        dd = '%02d' %  tempDate.day
+        pltDf = df[df['DATE'].str.contains(mm+'-'+dd)]
+        plt = sum((pltDf['PRECIP_TOTAL_DAY_MM'])) / len(pltDf.index)
+
+        sinister = 0
+        if plt > rainfall:
+            sinister = fixedCosts
+        else:
+            sinister = -min(0, turnover*( (rainfall - plt) / rainfall ) - fixedCosts)
+        premium+= sinister / ( 1 + interestRate*i/360 )
+        if sinister > 0 :
+            countSinister+=1
+    return str("%.2f" % premium)
+
+
+def computeRetro(location,date,rainfall,turnover,fixedCosts):
+    rainfall = float(rainfall)
+    turnover = float(turnover)
+    fixedCosts = float(fixedCosts)
+    #data to use according to city : init dataFrame //TODO : update data before using
+    location = location.lower()
+    dirname = os.path.dirname(__file__)
+    df = pd.read_csv(os.path.join(dirname, 'static/RainyDaysHero/data/'+'export-'+location+'.csv'),skiprows=3)
+
+
+    days = [i for i in range(365)]
+    nc = [-fixedCosts for _ in range(365)]
+    c = [0 for _ in range(365)]
+
+    #compute retro
+    tempDate = date+'-01-01'
+    subscriptionDateEntry = DtT.datetime.strptime(tempDate, "%Y-%m-%d")
+    tempDate = DtT.datetime.strptime(tempDate, "%Y-%m-%d")
+    plca = (1 - fixedCosts/turnover)*rainfall
+    countSinister = 0
+    premium = 0
+    for i in range(365):
+        tempDate = tempDate + DtT.timedelta(days=1)
+        mm = '%02d' %  tempDate.month
+        dd = '%02d' %  tempDate.day
+        pltDf = df[df['DATE'].str.contains(mm+'-'+dd)]
+        #pltDf = df[df['DATE'].str.contains(mm+'-'+dd) and df['DATE'] < retroYearEntry ]
+        plt = sum((pltDf['PRECIP_TOTAL_DAY_MM'])) / len(pltDf.index)
+
+        sinister = 0
+        if plt > rainfall:
+            sinister = fixedCosts
+        else:
+            sinister = -min(0, turnover*( (rainfall - plt) / rainfall ) - fixedCosts)
+
+        if sinister > 0 :
+            nc[i] = - sinister
+            c[i] = 0
+            countSinister+=1
+        else:
+            nc[i] = turnover*( (rainfall - plt) / rainfall ) - fixedCosts
+            c[i] = turnover*( (rainfall - plt) / rainfall ) - fixedCosts
+
+        premium+= sinister / ( 1 + interestRate*i/360 )
+    return str("%.2f" % premium),str("%.2f" % (sum(c)-premium) ),str("%.2f" % sum(nc)), c, nc
