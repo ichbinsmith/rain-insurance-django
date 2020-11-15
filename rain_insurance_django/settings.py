@@ -34,7 +34,6 @@ ALLOWED_HOSTS = ['localhost', 'rainydayshero.herokuapp.com']
 
 INSTALLED_APPS = [
     'after_response',
-    'bootstrap_datepicker_plus',
     'bootstrap4',
     'RainyDaysHero.apps.RainydaysheroConfig',
     'django.contrib.admin',
