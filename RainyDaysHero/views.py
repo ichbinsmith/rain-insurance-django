@@ -194,7 +194,9 @@ def retrospective(request):
         template = loader.get_template('RainyDaysHero/retrospective.html')
         form = RetroForm(request.POST)
         context = dict(form= form)
-        return HttpResponse(template.render(context, request))
+        return HttpResponse(template.render(context, request)) 
+
+        
 
 
 def contact(request):
