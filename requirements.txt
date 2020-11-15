@@ -5,3 +5,4 @@ django-bootstrap4
 fpdf
 matplotlib
 django-after-response
+pandas
