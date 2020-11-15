@@ -19,7 +19,6 @@ from fpdf import FPDF
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
 interestRate = 0.1
 
 @after_response.enable
