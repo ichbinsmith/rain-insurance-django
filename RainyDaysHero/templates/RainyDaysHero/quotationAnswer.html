@@ -5,10 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/styleQuotationForm.css' %}">
 {% endblock %}
 
-
-
 {% block content %}
-
 	<div class="container my-2 block-content" style={visibility='hidden'}>
 	  <div class="row">
 	    <div class="col-md-6 mx-auto myform">
@@ -57,9 +54,28 @@
 	        <button type="submit" class="btn btn-primary">Pricing</button>
 	      </div>
 		</form>
+	      <div class="form-group">
+	        <label>{{form.price}}</label>
+	      </div>
 	    </div>
 	  </div>
 	</div>
 
+    
+
+<!--
+<div class="form-group">
+	        	<button type="button" onclick="myPrint('quotation')" class="btn btn-primary">Print</button>
+</div>
+<script>
+        function myPrint(quotation) {
+            var printdata = document.getElementById(quotation);
+            newwin = window.open("");
+            newwin.document.write(printdata.outerHTML);
+            newwin.print();
+            newwin.close();
+        }
+ </script>
+-->
     
 {% endblock %}
