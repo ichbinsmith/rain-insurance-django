@@ -7,3 +7,4 @@ matplotlib
 django-after-response
 pandas
 requests
+chartjs
