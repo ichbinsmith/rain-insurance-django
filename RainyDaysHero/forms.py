@@ -6,7 +6,8 @@ import datetime as DtT
 cities = ( 
     ("paris", "Paris"), 
     ("nantes", "Nantes"), 
-    ("nice", "Nice")
+    ("nice", "Nice"),
+    ("strasbourg", "Strasbourg")
 )
 class QuotationForm(forms.Form):
     clientName = forms.CharField(label='Company Name',max_length=100)
@@ -51,7 +52,7 @@ class RetroForm(forms.Form):
     location = forms.ChoiceField(label = 'Company Location',choices = cities)
     location.widget.attrs.update({'class': 'form-control'})
 
-    printPDF = forms.ChoiceField(label = 'Export As Pdf',choices = ( ("Yes", "Yes"), ("No", "No")))
+    printPDF = forms.ChoiceField(label = 'Export As Pdf',choices = ( ("No", "No"), ("Yes", "Yes") ) )
     printPDF.widget.attrs.update({'class': 'form-control'})
 
 
