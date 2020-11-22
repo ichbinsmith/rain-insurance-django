@@ -26,7 +26,7 @@ import requests as REQ
 
 interestRate = 0.1
 
-cityId = {'Nice' :'181' , 'Paris':'188' , 'Nantes':'221'}
+cityId = {'Nice' :'181' , 'Paris':'188' , 'Nantes':'221', 'Strasbourg':'153'}
 baseUrl = 'https://www.historique-meteo.net/site/export.php?ville_id='
 
 '''Download data'''
@@ -141,10 +141,14 @@ def retrospective(request):
         if form.is_valid():
             context['form'] = form
             #compute retrospective
-            premium, covered, notcovered,c,nc = computeRetro(form['location'].value(),form['subscriptionDate'].value(),form['rainfall'].value(),form['dailyMaxTurnover'].value(),form['fixedCosts'].value())
+            premium, covered, notcovered,c,nc, cm, ncm = computeRetro(form['location'].value(),form['subscriptionDate'].value(),form['rainfall'].value(),form['dailyMaxTurnover'].value(),form['fixedCosts'].value())
             context['price'] = str(premium)
             context['c'] = str(covered)
             context['nc'] = str(notcovered)
+            context['cm'] = str(list(cm.values()))
+            context['ncm'] = str(list(ncm.values()))
+            print(str(list(cm.values())))
+            print(str(list(ncm.values())))
             pdf = FPDF(orientation='P', unit='mm', format='A4')
             pdf.add_page()
             pdf.rect(5.0, 5.0, 200.0,287.0)
@@ -189,18 +193,31 @@ def retrospective(request):
             pdf.cell(65, 10, "Covered Result: "+covered+" "+chr(128), ln=2)
             pdf.cell(65, 10, "Uncovered Result: "+notcovered+" "+chr(128), ln=2)
 
-            #graph
-            days = [i for i in range(365)]
+            #graph days
 
+            '''
+            days = [i for i in range(365)]
             plt.plot(days,c,label="Covered")
             plt.plot(days,nc,label="Uncovered")
+            '''
+
+            #graph months
+            months = [i for i in range(1,13)]
+            months_c = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+            
+            plt.xticks(rotation=45, ha='right')
+            plt.xlabel('Months') 
+            plt.ylabel('Results')
+            plt.plot(months_c,cm.values(),label="Covered")
+            plt.plot(months_c,ncm.values(),label="Uncovered")
 
 
             #plot graph
             plt.title("Result Evolution Graph", fontweight="bold", fontsize=16, color="blue")
             plt.tight_layout()
             #plt.legend(loc='best')
-            lgd = plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),fancybox=True, shadow=True, ncol=5)
+            #lgd = plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),fancybox=True, shadow=True, ncol=5)
+            lgd = plt.legend(title='Caption', bbox_to_anchor=(1.05, 1), loc='upper left')
             retroFIG = ''.join(choice(ascii_uppercase) for i in range(100))+'.png'
 
             plt.savefig(retroFIG, bbox_extra_artists=(lgd,), bbox_inches='tight')
@@ -290,6 +307,8 @@ def computeRetro(location,date,rainfall,turnover,fixedCosts):
     days = [i for i in range(365)]
     nc = [0 for _ in range(365)]
     c = [0 for _ in range(365)]
+    cm = {i:0 for i in range(1,13)}
+    ncm = {i:0 for i in range(1,13)}
 
     #compute retro
     tempDate = date+'-01-01'
@@ -313,13 +332,16 @@ def computeRetro(location,date,rainfall,turnover,fixedCosts):
             else:
                 s = -min(0, turnover*((rainfall - plt) / rainfall) - fixedCosts)
             sinister+=(s/len(pltDf.index))
+        premium+=sinister / ( 1 + interestRate*i/360 )
 
-        if sinister > 0:
-            nc[i] = - sinister
+        if df[df['DATE'].str.contains(date+'-'+mm+'-'+dd)].iloc[0]['PRECIP_TOTAL_DAY_MM'] > rainfall:
+            nc[i] = - fixedCosts
             countSinister+=1
         else:
             nc[i] = turnover*( (rainfall - df[df['DATE'].str.contains(date+'-'+mm+'-'+dd)].iloc[0]['PRECIP_TOTAL_DAY_MM']) / rainfall ) - fixedCosts
-            c[i]  = turnover*( (rainfall - df[df['DATE'].str.contains(date+'-'+mm+'-'+dd)].iloc[0]['PRECIP_TOTAL_DAY_MM']) / rainfall ) - fixedCosts
-        premium+=sinister 
+            c[i]  = max(0,turnover*( (rainfall - df[df['DATE'].str.contains(date+'-'+mm+'-'+dd)].iloc[0]['PRECIP_TOTAL_DAY_MM']) / rainfall ) - fixedCosts)
+
+        ncm[int(m)]+=nc[i]
+        cm[int(m)]+=c[i]
     #return str("%.2f" % premium),str("%.2f" % (sum(c)-premium) ),str("%.2f" % sum(nc)), c, nc
-    return str(premium),str((sum(c)-premium) ),str(sum(nc)), c, nc
+    return str("%.2f" % premium),str("%.2f" % (sum(c)-premium) ),str("%.2f" % sum(nc)), c, nc, cm, ncm
