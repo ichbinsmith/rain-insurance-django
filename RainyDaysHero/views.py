@@ -239,6 +239,7 @@ def about(request):
 
 
 '''Premium and retrospective computation'''
+
 def calculatePrice(location,date,rainfall,turnover,fixedCosts):
     rainfall = float(rainfall)
     turnover = float(turnover)
@@ -253,7 +254,6 @@ def calculatePrice(location,date,rainfall,turnover,fixedCosts):
     tempDate = date
     subscriptionDateEntry = DtT.datetime.strptime(date, "%Y-%m-%d")
     tempDate = DtT.datetime.strptime(tempDate, "%Y-%m-%d")
-    plca = (1 - fixedCosts/turnover)*rainfall
     countSinister = 0
     premium = 0
     for i in range(365):
@@ -261,14 +261,16 @@ def calculatePrice(location,date,rainfall,turnover,fixedCosts):
         mm = '%02d' %  tempDate.month
         dd = '%02d' %  tempDate.day
         pltDf = df[df['DATE'].str.contains(mm+'-'+dd)]
-        plt = sum((pltDf['PRECIP_TOTAL_DAY_MM'])) / len(pltDf.index)
-
         sinister = 0
-        if plt > rainfall:
-            sinister = fixedCosts
-        else:
-            sinister = -min(0, turnover*( (rainfall - plt) / rainfall ) - fixedCosts)
-        premium+= sinister / ( 1 + interestRate*i/360 )
+        for plt in pltDf['PRECIP_TOTAL_DAY_MM']:
+            s = 0
+            if plt > rainfall:
+                s = fixedCosts
+            else:
+                s = -min(0, turnover*( (rainfall - plt) / rainfall ) - fixedCosts)
+            s = s / ( 1 + interestRate*i/360 )
+            sinister+=(s/len(pltDf.index))
+        premium+=sinister
         if sinister > 0 :
             countSinister+=1
     return str("%.2f" % premium)
@@ -286,37 +288,38 @@ def computeRetro(location,date,rainfall,turnover,fixedCosts):
 
 
     days = [i for i in range(365)]
-    nc = [-fixedCosts for _ in range(365)]
+    nc = [0 for _ in range(365)]
     c = [0 for _ in range(365)]
 
     #compute retro
     tempDate = date+'-01-01'
     subscriptionDateEntry = DtT.datetime.strptime(tempDate, "%Y-%m-%d")
     tempDate = DtT.datetime.strptime(tempDate, "%Y-%m-%d")
-    plca = (1 - fixedCosts/turnover)*rainfall
     countSinister = 0
     premium = 0
     for i in range(365):
         tempDate = tempDate + DtT.timedelta(days=1)
         mm = '%02d' %  tempDate.month
         dd = '%02d' %  tempDate.day
+        m,d,y = str(tempDate.month),str(tempDate.day),str(tempDate.year)
         pltDf = df[df['DATE'].str.contains(mm+'-'+dd)]
         #pltDf = df[df['DATE'].str.contains(mm+'-'+dd) and df['DATE'] < retroYearEntry ]
-        plt = sum((pltDf['PRECIP_TOTAL_DAY_MM'])) / len(pltDf.index)
 
-        sinister = 0
-        if plt > rainfall:
-            sinister = fixedCosts
-        else:
-            sinister = -min(0, turnover*( (rainfall - plt) / rainfall ) - fixedCosts)
+        sinister=0
+        for plt in pltDf['PRECIP_TOTAL_DAY_MM']:
+            s=0
+            if plt > rainfall:
+                s = fixedCosts
+            else:
+                s = -min(0, turnover*((rainfall - plt) / rainfall) - fixedCosts)
+            sinister+=(s/len(pltDf.index))
 
-        if sinister > 0 :
+        if sinister > 0:
             nc[i] = - sinister
-            c[i] = 0
             countSinister+=1
         else:
-            nc[i] = turnover*( (rainfall - plt) / rainfall ) - fixedCosts
-            c[i] = turnover*( (rainfall - plt) / rainfall ) - fixedCosts
-
-        premium+= sinister / ( 1 + interestRate*i/360 )
-    return str("%.2f" % premium),str("%.2f" % (sum(c)-premium) ),str("%.2f" % sum(nc)), c, nc
+            nc[i] = turnover*( (rainfall - df[df['DATE'].str.contains(date+'-'+mm+'-'+dd)].iloc[0]['PRECIP_TOTAL_DAY_MM']) / rainfall ) - fixedCosts
+            c[i]  = turnover*( (rainfall - df[df['DATE'].str.contains(date+'-'+mm+'-'+dd)].iloc[0]['PRECIP_TOTAL_DAY_MM']) / rainfall ) - fixedCosts
+        premium+=sinister 
+    #return str("%.2f" % premium),str("%.2f" % (sum(c)-premium) ),str("%.2f" % sum(nc)), c, nc
+    return str(premium),str((sum(c)-premium) ),str(sum(nc)), c, nc
