@@ -26,7 +26,7 @@ import requests as REQ
 
 interestRate = 0.1
 
-cityId = {'Nice' :'181' , 'Paris':'188' , 'Nantes':'221', 'Strasbourg':'153'}
+cityId = {'Nice' :'181' , 'Paris':'188' , 'Nantes':'221', 'Strasbourg':'153', 'Brest' : '175', 'Ajaccio' : '179', 'Laon' : '1896', 'Calais' : '214', 'Aubusson' : '1788'}
 baseUrl = 'https://www.historique-meteo.net/site/export.php?ville_id='
 
 '''Download data'''
@@ -60,6 +60,15 @@ def index(request):
     template = loader.get_template('RainyDaysHero/index.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def userguide(request):
+    if request.method == 'GET':
+        dirname = os.path.dirname(__file__)
+        return FileResponse(open(os.path.join(dirname, 'static/RainyDaysHero/docs/user-guide.pdf'), "rb"), as_attachment=True, filename='userguide.pdf')
+
+def subject(request):
+    dirname = os.path.dirname(__file__)
+    return FileResponse(open(os.path.join(dirname, 'static/RainyDaysHero/docs/subject.pdf'), "rb"), as_attachment=True, filename='subject.pdf')
 
 def quotation(request):
     context = {}

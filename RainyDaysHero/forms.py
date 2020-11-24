@@ -7,8 +7,14 @@ cities = (
     ("paris", "Paris"), 
     ("nantes", "Nantes"), 
     ("nice", "Nice"),
-    ("strasbourg", "Strasbourg")
+    ("strasbourg", "Strasbourg"),
+    ("brest", "Brest"),
+    ("ajaccio", "Ajaccio"),
+    ("laon", "Laon"),
+    ("calais","Calais"),
+    ("aubusson","Aubusson")
 )
+
 class QuotationForm(forms.Form):
     clientName = forms.CharField(label='Company Name',max_length=100)
     clientName.widget.attrs.update({'class': 'form-control', 'value':'Carrefour Antibes'})
