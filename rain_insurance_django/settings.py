@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['localhost', 'rainydayshero.herokuapp.com']
 
 INSTALLED_APPS = [
     'after_response',
+    'jquery',
     'chartjs',
     'bootstrap4',
     'RainyDaysHero.apps.RainydaysheroConfig',

@@ -8,4 +8,5 @@ django-after-response
 pandas
 requests
 django-chartjs
+django-jquery
 

@@ -11,4 +11,6 @@ urlpatterns = [
     path('retrospective/', views.retrospective, name='retrospective'),
     path('contact/', views.contact, name='contact'),
     path('about/', views.about, name='about'),
+    path('userguide/', views.about, name='userguide'),
+    path('subject/', views.about, name='subject'),
 ]
