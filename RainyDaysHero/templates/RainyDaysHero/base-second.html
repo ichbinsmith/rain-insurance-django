@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <script src="{% static 'RainyDaysHero/js/jquery-3.5.1.min.js' %}"></script>
+    
+    <script src="{% static 'RainyDaysHero/bootstrap-4.2.1/dist/js/bootstrap.min.js' %}"></script>
+
+    <link rel="stylesheet" type="text/css" href= "{% static 'RainyDaysHero/bootstrap-4.2.1/dist/css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/css/style.css' %}">
+
+    
+    {% block additionnal-head-conf %}
+    
+    {% endblock %}
+    <!-- Bootstrap CSS -->
+  </head>
+  <body>
+<!-- navbar -->
+
+  <nav class="navbar navbar-expand-md navbar-light bg-dark fixed-top">
+
+  <a class="navbar-brand"><img src="{% static 'RainyDaysHero/images/rdh.png' %}" width="25" height="30" ></a>
+
+  <button type="button" class="navbar-toggler bg-light" data-toggle="collapse" data-target="#nav">
+
+  <span class="navbar-toggler-icon"></span>
+
+  </button>
+
+    <div class="collapse navbar-collapse justify-content-between" id="nav">
+
+      <ul class="navbar-nav">
+
+        <li class="nav-item" >
+
+        <a class="nav-link text-light font-weight-bold px-3" href="/rdh" onclick="location.replace('/rdh/home'),'_top'">HOME</a>
+
+        </li>
+
+        <div class="nav-item dropdown show" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="rain">
+
+        <a class="nav-link text-light font-weight-bold px-3 dropdown-toggle" href="#">RAIN INSURANCE</a>
+
+          <div class="dropdown-menu" id="raindrop" aria-labelledby="rain">
+
+           <a class="dropdown-item" href="/rdh/quotation" onclick="location.replace('/rdh/quotation'),'_top'">Quotation</a>
+
+          <a class="dropdown-item" href="/rdh/retrospective" onclick="location.replace('/rdh/retrospective'),'_top'">Retrospective</a>
+
+          </div>
+
+        </div>
+
+        <li class="nav-item">
+
+        <div class="nav-item dropdown show" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="life">
+
+        <a class="nav-link text-light font-weight-bold px-3 dropdown-toggle" href="#" >LIFE INSURANCE</a>
+
+          <div class="dropdown-menu" id="lifedrop" aria-labelledby="life">
+
+           <a class="dropdown-item" href="/rdh/terminsurance" onclick="location.replace('/rdh/terminsurance'),'_top'">Term Insurance</a>
+
+          </div>
+
+        </div>
+
+        <li class="nav-item">
+
+        <a class="nav-link text-light font-weight-bold px-3" href="/rdh/about" onclick="location.replace('/rdh/about'),'_top'">ABOUT US</a>
+
+        </li>
+
+        <li class="nav-item">
+
+        <a class="nav-link text-light font-weight-bold px-3" href="/rdh/contact" onclick="location.replace('/rdh/contact'),'_top'">CONTACT</a>
+
+        </li>
+
+      </ul>
+
+    <!-- Search bar
+
+    <form class="form-inline ml-3">
+
+    <div class="input-group">
+
+    <input type="text" class="form-control " placeholder="Search" >
+
+    <button type="submit"><i class="fa fa-search"></i></button>
+
+    </div>
+
+    </form>
+
+    -->
+
+    </div>
+
+  </nav>
+  <br>
+  <br>
+  <br>
+
+    {% block content %}
+    
+    {% endblock %}
+  </body>
+</html>

@@ -15,6 +15,11 @@ cities = (
     ("aubusson","Aubusson")
 )
 
+models = ( 
+    ("lr", "Linear Regression"), 
+    ("plr", "Polynomial Linear Regression")
+)
+
 class QuotationForm(forms.Form):
     clientName = forms.CharField(label='Company Name',max_length=100)
     clientName.widget.attrs.update({'class': 'form-control', 'value':'Carrefour Antibes'})
@@ -60,6 +65,28 @@ class RetroForm(forms.Form):
 
     printPDF = forms.ChoiceField(label = 'Export As Pdf',choices = ( ("No", "No"), ("Yes", "Yes") ) )
     printPDF.widget.attrs.update({'class': 'form-control'})
+
+
+
+class TermInsuranceForm(forms.Form):
+    #clientAge = forms.IntegerField(label='Age',max_length=3) --> No max length
+    clientAge = forms.IntegerField(label='Age')
+    clientAge.widget.attrs.update({'class': 'form-control', 'value':40})
+
+    numberOfPayements = forms.IntegerField(label='Number of annual payements')
+    numberOfPayements.widget.attrs.update({'class': 'form-control', 'value':1})
+
+    maturity = forms.IntegerField(label='Maturity')
+    maturity.widget.attrs.update({'class': 'form-control', 'value':1})
+
+    interestRate = forms.FloatField(label='Interest Rate (%)')
+    interestRate.widget.attrs.update({'class': 'form-control','value':1})
+
+    amount = forms.FloatField(label='Amount')
+    amount.widget.attrs.update({'class': 'form-control','value':1000})
+
+    model = forms.ChoiceField(label = 'Model',choices = models)
+    model.widget.attrs.update({'class': 'form-control'})
 
 
 

@@ -5,7 +5,7 @@ from django.template import loader
 from django.http import HttpResponseRedirect
 from django.http import FileResponse
 from django.shortcuts import render
-from .forms import QuotationForm, RetroForm
+from .forms import QuotationForm, RetroForm, TermInsuranceForm
 import io
 import os
 from random import choice
@@ -60,6 +60,23 @@ def index(request):
     template = loader.get_template('RainyDaysHero/index.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def terminsurance(request):
+    context = {}
+    if request.method == 'GET':
+        template = loader.get_template('RainyDaysHero/terminsurance.html')
+        form = TermInsuranceForm(request.POST)
+        context = dict(form= form)
+        return HttpResponse(template.render(context, request))
+    else:
+        template = loader.get_template('RainyDaysHero/terminsuranceAnswer.html')
+        form = TermInsuranceForm(request.POST)
+        if form.is_valid():
+            context['form'] = form
+            #compute price
+            context['price'] = 1000
+            return HttpResponse(template.render(context, request))
+
 
 def userguide(request):
     if request.method == 'GET':
@@ -264,14 +281,14 @@ def about(request):
     return HttpResponse(template.render(context, request))
 
 
-'''Premium and retrospective computation'''
+'''Premium and retrospective computation for Rain Insurrance: Without IA'''
 
 def calculatePrice(location,date,rainfall,turnover,fixedCosts):
     rainfall = float(rainfall)
     turnover = float(turnover)
     fixedCosts = float(fixedCosts)
     #data to use according to city : init dataFrame //TODO : update data before using
-    dataUpdateCity(location)
+    #dataUpdateCity(location)
     location = location.lower()
     dirname = os.path.dirname(__file__)
     df = pd.read_csv(os.path.join(dirname, 'static/RainyDaysHero/data/'+'export-'+location+'.csv'),skiprows=3)
@@ -308,7 +325,7 @@ def computeRetro(location,date,rainfall,turnover,fixedCosts):
     fixedCosts = float(fixedCosts)
     #data to use according to city : init dataFrame //TODO : update data before using
     location = location.lower()
-    dataUpdateCity(location)
+    #dataUpdateCity(location)
     dirname = os.path.dirname(__file__)
     df = pd.read_csv(os.path.join(dirname, 'static/RainyDaysHero/data/'+'export-'+location+'.csv'),skiprows=3)
 
