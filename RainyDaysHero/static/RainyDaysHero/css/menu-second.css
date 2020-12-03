@@ -1,0 +1,4 @@
+.navmenu{
+	/*bg won't apply cause it has been block on a specific color using bootstrap*/
+	background-color: #e3f2fd;
+}

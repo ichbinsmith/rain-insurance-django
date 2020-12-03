@@ -2,11 +2,12 @@ body{
     max-width: 100%;
     margin: 0 auto;
     text-align: center;
-    background: linear-gradient(90deg, #1B4F72 0%, #2E86C1 35%, #AED6F1 100%);
+    /*background: linear-gradient(90deg, #1B4F72 0%, #2E86C1 35%, #AED6F1 100%);*/ /*blue gradient*/
 }
 
 .myform{
-	background: #3498DB;
+	/*background: #3498DB;*/  /*blue*/
+	background: #E5E7E9;  /*gray*/
 }
 
 .bigtitle{

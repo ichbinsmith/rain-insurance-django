@@ -1,15 +1,45 @@
 {% extends 'RainyDaysHero/base-second.html' %}
+{% load static %}
 
 {% block content %}
 
 <div class="container block-content">
   <div class="row">
-    <div class="col-md-3 mx-auto">
-      <ul class="list-group">
-  		<li class="list-group-item list-group-item-info  list-group-item-action list-group-item-dark"><a href="https://github.com/ichbinsmith/rain-insurance-django/blob/main/subject.pdf" target="_blank">Project Specification</a></li>
-  		<li class="list-group-item list-group-item-info  list-group-item-action list-group-item-dark"><a href="https://github.com/ichbinsmith/rain-insurance-django"  target="_blank">Project Sources</a></li>
-  		<li class="list-group-item list-group-item-info  list-group-item-action list-group-item-dark"><a href="https://github.com/ichbinsmith/rain-insurance-django/blob/main/user-guide.pdf" target="_blank">App User Guide</a></li>
-	  </ul>
+    <div class="col-md-12 mx-auto">
+
+		<nav>
+		  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+		    <a class="nav-item nav-link text-dark active" id="nav-product-tab" data-toggle="tab" href="#nav-product" role="tab" aria-controls="nav-product" aria-selected="true">Services</a>
+		    <a class="nav-item nav-link text-dark " id="nav-userguide-tab" data-toggle="tab" href="#nav-userguide" role="tab" aria-controls="nav-userguide" aria-selected="false">User Guide</a>
+		    <a class="nav-item nav-link text-dark " id="nav-sources-tab" data-toggle="tab" href="#nav-sources" role="tab" aria-controls="nav-sources" aria-selected="false">Sources</a>
+		  </div>
+		</nav>
+
+		<div class="tab-content" id="nav-tabContent">
+
+		  <div class="tab-pane fade show active" id="nav-product" role="tabpanel" aria-labelledby="nav-product-tab">
+		  	We offer two types of products : Rain and Life Insurance products. <br>
+		  	<a href="{% static 'RainyDaysHero/docs/PG_subject.pdf' %}" download>Project Graduation Project</a>
+		  	<br>
+
+		  	<a href="{% static 'RainyDaysHero/docs/RI_subject.pdf' %}" download>Rain Insurance Specs - Without IA </a>
+		  	<br>
+
+		  	<a href="{% static 'RainyDaysHero/docs/TI_IA_subject.pdf' %}" download>Term Insurance Specs - IA </a>
+		  </div>
+
+		  <div class="tab-pane fade" id="nav-userguide" role="tabpanel" aria-labelledby="nav-userguide-tab">
+		  	You can download our complete User Guide <a href="{% static 'RainyDaysHero/docs/user-guide.pdf' %}" download>here</a>.
+		  </div>
+
+
+		  <div class="tab-pane fade" id="nav-sources" role="tabpanel" aria-labelledby="nav-sources-tab">
+		  	All the source code for the project can be found on <a href="https://github.com/ichbinsmith/rain-insurance-django"  target="_blank">github</a>.
+		  </div>
+
+		</div>
+
+
     </div>
   </div>
 </div>
