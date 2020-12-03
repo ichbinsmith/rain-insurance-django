@@ -162,7 +162,7 @@ def quotation(request):
 def retrospective(request):
     context = {}
     if request.method == 'POST':
-        template = loader.get_template('RainyDaysHero/retrospectiveAnswer.html')
+        template = loader.get_template('RainyDaysHero/retrospectiveAnswer-onSide.html')
         form = RetroForm(request.POST)
         if form.is_valid():
             context['form'] = form

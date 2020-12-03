@@ -2,12 +2,18 @@
 
 {% block additionnal-head-conf %}
 	{% load static %}
+	<!--[if lte IE 8]>
+            <script src="{% static 'js/excanvas.js' %}"></script>
+    <![endif]-->
     <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/css/styleQuotationForm.css' %}">
+    <script type="text/javascript" src="{% static 'RainyDaysHero/js/chart-min.js' %}"></script>
+
 {% endblock %}
 
 
 
 {% block content %}
+
 
 	<div class="container my-2 block-content" style={visibility='hidden'}>
 	  <div class="row">
@@ -57,9 +63,64 @@
 	        <button type="submit" class="btn btn-dark">Retrospective</button>
 	      </div>
 		</form>
-	    </div>
-	  </div>
-	</div>
 
-    
+	    </div> <!--My form-->
+
+	    <div class="col-md-6 mx-auto myform"> <!--Retrospective result-->
+	    	 <h3 class="formtitle">Retrospective result</h1>
+		     <div class="form-group">
+		        <label>Premium = {{price}} &euro;</label> <br>
+		        <label>Covered Turnover = {{c}} &euro;</label> <br>
+		        <label>Not Covered Turnnver = {{nc}} &euro;</label> <br>
+		     </div>
+		     <div class="form-group">
+		            <div class="card">
+		                <div class="card-body">
+		                    <canvas id="retrospectiveChart"></canvas>
+		                </div>
+		            </div>
+	         </div>
+
+	    </div> <!--Retrospective result-->
+
+	  </div> <!--Row-->
+
+	</div> <!--Container-->
+<script type="text/javascript">
+//line
+var ctxL = document.getElementById("retrospectiveChart").getContext('2d');
+var myLineChart = new Chart(ctxL, {
+type: 'line',
+data: {
+labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+datasets: [{
+label: "Covered",
+data:  {{cm}},
+backgroundColor: [
+'rgba(105, 0, 132, .2)',
+],
+borderColor: [
+'rgba(200, 99, 132, .7)',
+],
+borderWidth: 2
+},
+{
+label: "Not Covered",
+data:  {{ncm}},
+backgroundColor: [
+'rgba(0, 137, 132, .2)',
+],
+borderColor: [
+'rgba(0, 10, 130, .7)',
+],
+borderWidth: 2
+}
+]
+},
+options: {
+responsive: true
+}
+});
+</script>
+  
 {% endblock %}
