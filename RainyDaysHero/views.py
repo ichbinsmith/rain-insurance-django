@@ -23,6 +23,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import requests as REQ
 
+## libs for IA - load trained models
+from joblib import dump, load #load - save models
+
+from sklearn.preprocessing import PolynomialFeatures
+
 
 interestRate = 0.1
 
@@ -74,7 +79,9 @@ def terminsurance(request):
         if form.is_valid():
             context['form'] = form
             #compute price
-            context['price'] = 1000
+            x,m,n,i,a,mdl = form['clientAge'].value(),form['numberOfPayements'].value(),form['maturity'].value(),form['interestRate'].value(),form['amount'].value(),form['model'].value()
+            premium = predictTIPremium(x,n,m,i,a,mdl)
+            context['price'] = premium
             return HttpResponse(template.render(context, request))
 
 
@@ -371,3 +378,19 @@ def computeRetro(location,date,rainfall,turnover,fixedCosts):
         cm[int(m)]+=c[i]
     #return str("%.2f" % premium),str("%.2f" % (sum(c)-premium) ),str("%.2f" % sum(nc)), c, nc
     return str("%.2f" % premium),str("%.2f" % (sum(c)-premium) ),str("%.2f" % sum(nc)), c, nc, cm, ncm
+
+
+def predictTIPremium(x,n,m,i,a,mdl):
+    x,n,m,i,a,mdl = int(x),int(n),int(m),float(i)/100,float(a),mdl
+    if mdl=='lr':
+        polynomial_features = PolynomialFeatures(degree=1)
+        var = polynomial_features.fit_transform([(x,m,n,i,a)])
+        model = load(os.path.join(os.path.dirname(__file__), 'static/RainyDaysHero/data/LI/TI/models/'+mdl+'.joblib'))
+        return model.predict(var)[0]
+    elif mdl=='plr':
+        polynomial_features = PolynomialFeatures(degree=6)
+        var = polynomial_features.fit_transform([(x,m,n,i,a)])
+        model = load(os.path.join(os.path.dirname(__file__), 'static/RainyDaysHero/data/LI/TI/models/'+mdl+'.joblib'))
+        return model.predict(var)[0]
+
+
