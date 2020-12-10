@@ -6,6 +6,7 @@ fpdf
 matplotlib
 django-after-response
 pandas
+joblib
 requests
 django-chartjs
 django-jquery
