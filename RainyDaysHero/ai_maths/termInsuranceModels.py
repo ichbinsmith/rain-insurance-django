@@ -192,7 +192,7 @@ def Polynomiale_lasso(degree,alpha):
     X_test_poly=polynomial_features.fit_transform(X_test)
 
     # Evaluation du training set
-    model = Lasso(alpha=alpha, max_iter=1000,positive=True).fit(X_train_poly, y_train)
+    model = Lasso(alpha=alpha, max_iter=1000).fit(X_train_poly, y_train)
 
     y_train_predict = model.predict(X_train_poly)
     rmse = (np.sqrt(mean_squared_error(y_train, y_train_predict)))
@@ -344,10 +344,6 @@ def affichage_polyfinal(degremax):
     plt . legend ( handles =[p1 , p2, p3],fontsize =16)
     plt.show()
 
-
-    
-    
-
 def model_small_premium_learning(degree,X_train,y_train):
     smallX_train=X_train.copy()
     smally_train=y_train.copy()
@@ -396,9 +392,6 @@ def model_Polynomiale(degree):
     model = LinearRegression()
     model.fit(X_train_poly, y_train)
     return model
-
-   
-    
 
 
 def polyfinal_learning_under0(degree=6,X_train=X_train,y_train=y_train):
@@ -566,7 +559,7 @@ def term_insurance_predicted(x,m,n,i,a,degree):
     small= model_small_premium_learning(degree,X_train,y_train)
     big=model_Polynomiale_learning(degree,X_train,y_train)
     under0=model_under0_premium_learning(degree,X_train,y_train)
-    if (m>=n):
+    if (m>n):
         return('error')
     data=[[x,m,n,i,a]] 
     premium_to_predict=pd.DataFrame(data=data,columns=['age','nb_payements','maturity','interest_rate','amount'])
@@ -584,13 +577,13 @@ def term_insurance_predicted(x,m,n,i,a,degree):
         final_premium=under0.predict(premium_to_predict) 
     ##On ramène finalement les valeurs à 0 à 10
     if (premium_predicted_vanilla<0):    
-        final_premium=10    
+        final_premium=[10]    
     return f'{final_premium[0]:.2f}'
 
 
 def term_insurance_predicted_polynomiale_no_constraint(x,m,n,i,a,degree):
     big=model_Polynomiale_learning(degree,X_train,y_train)
-    if (m>=n):
+    if (m>n):
         return('error')
     data=[[x,m,n,i,a]] 
     premium_to_predict=pd.DataFrame(data=data,columns=['age','nb_payements','maturity','interest_rate','amount'])
@@ -601,8 +594,8 @@ def term_insurance_predicted_polynomiale_no_constraint(x,m,n,i,a,degree):
 
 
 
-def term_insurance_predicted_polynomiale_lasso(x,m,n,i,a,degree,alpha):
-    if (m>=n):
+def term_insurance_predicted_polynomiale_lasso(x,m,n,i,a,degree,alpha=0.1):
+    if (m>n):
         return('error')
     model=Polynomiale_lasso(degree,alpha)[0]    
     data=[[x,m,n,i,a]] 

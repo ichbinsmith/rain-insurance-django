@@ -10,6 +10,7 @@ urlpatterns = [
     path('quotation/', views.quotation, name='quotation'),
     path('retrospective/', views.retrospective, name='retrospective'),
     path('terminsurance/', views.terminsurance, name='terminsurance'),
+    path('terminsurance-analysis/', views.terminsuranceAnalysis, name='terminsuranceAnalysis'),
     path('contact/', views.contact, name='contact'),
     path('about/', views.about, name='about'),
     path('userguide/', views.about, name='userguide'),

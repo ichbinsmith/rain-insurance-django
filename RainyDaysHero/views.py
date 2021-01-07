@@ -28,8 +28,9 @@ from joblib import dump, load #load - save models
 from sklearn.preprocessing import PolynomialFeatures
 
 
-## Our IA module
+## Our IA module & actuarial formules
 from .ai_maths import termInsuranceModels
+from .ai_maths import premiumComputation
 
 ## Global vars
 interestRate = 0.1
@@ -84,7 +85,20 @@ def terminsurance(request):
             x,m,n,i,a,mdl = form['clientAge'].value(),form['numberOfPayements'].value(),form['maturity'].value(),form['interestRate'].value(),form['amount'].value(),form['model'].value()
             premium = predictTIPremiumLive(x,n,m,i,a,mdl)
             context['price'] = premium
+            context['actuarial_price'] = premiumComputation.TermInsuranceAnnual(int(x),int(m),int(n),float(i),float(a))
             return HttpResponse(template.render(context, request))
+
+
+def terminsuranceAnalysis(request):
+    context = {}
+    if request.method == 'GET':
+        template = loader.get_template('RainyDaysHero/terminsuranceAnalysis.html')
+        form = TermInsuranceForm(request.POST)
+        context = dict(form= form)
+        return HttpResponse(template.render(context, request))
+    else:
+        pass
+
 
 
 def userguide(request):
@@ -408,5 +422,7 @@ def predictTIPremiumLive(x,n,m,i,a,mdl):
         return termInsuranceModels.term_insurance_predicted_polynomiale_no_constraint(x,m,n,i,a,1)
     elif mdl=='plr':
         return termInsuranceModels.term_insurance_predicted(x,m,n,i,a,6)
+    elif mdl=='lasso':
+        return termInsuranceModels.term_insurance_predicted_polynomiale_lasso(x,m,n,i,a,6)
 
 

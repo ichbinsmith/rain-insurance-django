@@ -15,9 +15,10 @@ cities = (
     ("aubusson","Aubusson")
 )
 
-models = ( 
-    ("lr", "Linear Regression"), 
-    ("plr", "Polynomial Linear Regression")
+models = (
+    ("lr", "Linear Regression"),
+    ("plr", "Polynomial Regression"),
+    ("lasso", "Lasso")
 )
 
 class QuotationForm(forms.Form):
