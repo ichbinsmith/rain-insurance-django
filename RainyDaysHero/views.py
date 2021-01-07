@@ -23,9 +23,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import requests as REQ
 
+## libs for IA - load trained models
+from joblib import dump, load #load - save models
+from sklearn.preprocessing import PolynomialFeatures
 
+
+## Our IA module
+from .ai_maths import termInsuranceModels
+
+## Global vars
 interestRate = 0.1
-
 cityId = {'Nice' :'181' , 'Paris':'188' , 'Nantes':'221', 'Strasbourg':'153', 'Brest' : '175', 'Ajaccio' : '179', 'Laon' : '1896', 'Calais' : '214', 'Aubusson' : '1788'}
 baseUrl = 'https://www.historique-meteo.net/site/export.php?ville_id='
 
@@ -74,7 +81,9 @@ def terminsurance(request):
         if form.is_valid():
             context['form'] = form
             #compute price
-            context['price'] = 1000
+            x,m,n,i,a,mdl = form['clientAge'].value(),form['numberOfPayements'].value(),form['maturity'].value(),form['interestRate'].value(),form['amount'].value(),form['model'].value()
+            premium = predictTIPremiumLive(x,n,m,i,a,mdl)
+            context['price'] = premium
             return HttpResponse(template.render(context, request))
 
 
@@ -371,3 +380,33 @@ def computeRetro(location,date,rainfall,turnover,fixedCosts):
         cm[int(m)]+=c[i]
     #return str("%.2f" % premium),str("%.2f" % (sum(c)-premium) ),str("%.2f" % sum(nc)), c, nc
     return str("%.2f" % premium),str("%.2f" % (sum(c)-premium) ),str("%.2f" % sum(nc)), c, nc, cm, ncm
+
+
+'''
+Prediction using saved models
+'''
+def predictTIPremium(x,n,m,i,a,mdl):
+    x,n,m,i,a,mdl = int(x),int(n),int(m),float(i)/100,float(a),mdl
+    if mdl=='lr':
+        polynomial_features = PolynomialFeatures(degree=1)
+        var = polynomial_features.fit_transform([(x,m,n,i,a)])
+        model = load(os.path.join(os.path.dirname(__file__), 'static/RainyDaysHero/data/LI/TI/models/'+mdl+'.joblib'))
+        return model.predict(var)[0]
+    elif mdl=='plr':
+        polynomial_features = PolynomialFeatures(degree=6)
+        var = polynomial_features.fit_transform([(x,m,n,i,a)])
+        model = load(os.path.join(os.path.dirname(__file__), 'static/RainyDaysHero/data/LI/TI/models/'+mdl+'.joblib'))
+        return model.predict(var)[0]
+
+'''
+'Live' Prediction
+'''
+
+def predictTIPremiumLive(x,n,m,i,a,mdl):
+    x,n,m,i,a,mdl = int(x),int(n),int(m),float(i)/100,float(a),mdl
+    if mdl=='lr':
+        return termInsuranceModels.term_insurance_predicted_polynomiale_no_constraint(x,m,n,i,a,1)
+    elif mdl=='plr':
+        return termInsuranceModels.term_insurance_predicted(x,m,n,i,a,6)
+
+

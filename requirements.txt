@@ -9,4 +9,7 @@ pandas
 requests
 django-chartjs
 django-jquery
-
+sklearn
+mglearn
+joblib
+statsmodels
