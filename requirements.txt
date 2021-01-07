@@ -11,3 +11,4 @@ django-chartjs
 django-jquery
 sklearn
 joblib
+statsmodels
