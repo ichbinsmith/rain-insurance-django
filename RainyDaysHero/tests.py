@@ -10,4 +10,4 @@ from .ai_maths.premiumComputation import TermInsuranceAnnual
 class TIPremiumTestCase(TestCase):
     def test_premium_values(self):
         """Premium values checked bellow"""
-        self.assertEqual(TermInsuranceAnnual(50,5,5,1,100), '0.31') #0.66
+        self.assertEqual(TermInsuranceAnnual(50,5,5,0.01,100), '0.66')
