@@ -21,7 +21,7 @@ import os
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
-df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))+"/static/RainyDaysHero/data/LI/TI/dataset.csv")
+df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))+"/static/RainyDaysHero/data/LI/TI/dataset.csv")
 
 X =df[['age','nb_payements','maturity','interest_rate','amount']]
 

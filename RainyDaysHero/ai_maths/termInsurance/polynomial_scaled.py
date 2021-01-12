@@ -21,7 +21,7 @@ import os
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
-df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))+"/static/RainyDaysHero/data/LI/TI/dataset.csv")
+df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))+"/static/RainyDaysHero/data/LI/TI/dataset.csv")
 
 X =df[['age','nb_payements','maturity','interest_rate','amount']]
 
@@ -128,7 +128,7 @@ def term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,degree=4):
     model= LinearRegression().fit(X_poly_train_scaled, y_train)
     y_test_predict = model.predict(X_poly_test_scaled)
 
-    return  f'{np.abs(y_test_predict[0]) .2f}'     
+    return  f'{np.abs(y_test_predict[0]):.2f}'     
 
 
 def learning_curve_poly_scaled_3d(N):

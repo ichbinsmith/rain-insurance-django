@@ -5,7 +5,6 @@ from django.test import TestCase
 from .ai_maths.premiumComputation import TermInsuranceAnnual
 
 
-
 #Term insurance premium
 class TIPremiumTestCase(TestCase):
     def test_premium_values(self):

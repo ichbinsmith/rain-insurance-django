@@ -1,5 +1,4 @@
-
-from RainyDaysHero.ai_maths.terminsurance import lr,pr,lasso,polynomial_scaled
+from .terminsurance import lr,pr,lasso,polynomial_scaled
 
 
 def term_insurance_predicted(x,m,n,i,a,degree):
