@@ -82,7 +82,7 @@ def learning_curve_lasso(degree=6,alpha=1):
 def term_insurance_predicted_polynomiale_lasso(x,m,n,i,a,degree,alpha=0.1):
     if (m>n):
         return('error')
-    model=Polynomiale_lasso(degree,alpha)[0]    
+    model=Polynomiale_lasso(degree,alpha)    
     data=[[x,m,n,i,a]] 
     premium_to_predict=pd.DataFrame(data=data,columns=['age','nb_payements','maturity','interest_rate','amount'])
     polynomial_features=PolynomialFeatures(degree=degree)
