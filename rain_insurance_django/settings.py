@@ -14,6 +14,10 @@ from pathlib import Path
 import os
 import django_heroku #help with staticfiles... [bottom last line helps with importing static files]
 
+
+#disable geroku test runner which does some actions which don't work with sqlite
+django_heroku.settings(locals(), test_runner=False)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
