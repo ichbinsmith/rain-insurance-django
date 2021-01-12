@@ -15,9 +15,6 @@ import os
 import django_heroku #help with staticfiles... [bottom last line helps with importing static files]
 
 
-#disable geroku test runner which does some actions which don't work with sqlite
-django_heroku.settings(locals(), test_runner=False)
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -131,4 +128,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-django_heroku.settings(locals())
+
+#disable geroku test runner which does some actions which don't work with sqlite (test_runner=False)
+django_heroku.settings(locals(),test_runner=False)
