@@ -12,13 +12,13 @@ models = (
 class TermInsuranceForm(forms.Form):
     #clientAge = forms.IntegerField(label='Age',max_length=3) --> No max length
     clientAge = forms.IntegerField(label='Age')
-    clientAge.widget.attrs.update({'class': 'form-control', 'value':40})
+    clientAge.widget.attrs.update({'class': 'form-control', 'value':50})
 
     numberOfPayements = forms.IntegerField(label='Number of annual payements')
-    numberOfPayements.widget.attrs.update({'class': 'form-control', 'value':1})
+    numberOfPayements.widget.attrs.update({'class': 'form-control', 'value':5})
 
     maturity = forms.IntegerField(label='Maturity')
-    maturity.widget.attrs.update({'class': 'form-control', 'value':1})
+    maturity.widget.attrs.update({'class': 'form-control', 'value':5})
 
     interestRate = forms.FloatField(label='Interest Rate (%)')
     interestRate.widget.attrs.update({'class': 'form-control','value':1})

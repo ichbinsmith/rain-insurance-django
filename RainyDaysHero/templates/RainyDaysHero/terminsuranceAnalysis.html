@@ -9,16 +9,32 @@
 
 	<div class="container my-2 block-content" style={visibility='hidden'}>
 	  <div class="row">
-	    <div class="col-md-6 mx-auto myform">
+	    <div class="col-md-12 mx-auto myform">
 	    <h3 class="formtitle">Term Insurance models analysis</h1>
 
-	    		    	It is possible to predict the price from three models: Lasso, Linear Regression, Polynomial Regression and Polynomial Scaled which have respectively 0.2276, 0.2825, 0.9876 and 0.897 precision.
+	    It is possible to predict the price from four models: Lasso, Linear Regression, Polynomial Regression and Polynomial Scaled which have respectively 0.9052, 0.2825, 0.9876 and 0.8974 precision.
 	    <br> <br>
 
-		<div class="form-group">
-	        <label>...</label> <br>
-	   
-	    </div>
+	    <ul>
+	    	<li>
+	    		Lasso
+	    	</li>
+	    	<div class="form-group"> <img src="{% static 'RainyDaysHero/images/TI/lc/lc-lasso.png' %}" width="500" height="300" > </div>
+	    	<li>
+	    		Linear regression
+	    	</li>
+	    	<div class="form-group"> <img src="{% static 'RainyDaysHero/images/TI/lc/lc-lr.png' %}" width="500" height="300" ></div>
+	    	<li>
+	    		Polynomial regression
+	    	</li>
+	    	<div class="form-group"> <img src="{% static 'RainyDaysHero/images/TI/lc/lc-plr.png' %}" width="500" height="300" ></div>
+	    	<li>
+	    		Polynomial scaled
+	    	</li>
+	    	<div class="form-group"> <img src="{% static 'RainyDaysHero/images/TI/lc/lc-ps.png' %}" width="500" height="300" > </div>
+	    </ul>
+
+
 	    </div>
 	  </div>
 	</div>

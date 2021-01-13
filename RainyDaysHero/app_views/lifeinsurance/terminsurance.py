@@ -14,15 +14,6 @@ from string import ascii_uppercase
 import after_response
 from django.templatetags.static import static
 
-import matplotlib
-matplotlib.use('Agg')
-
-import datetime as DtT
-from fpdf import FPDF
-import pandas as pd
-import matplotlib.pyplot as plt
-import requests as REQ
-
 ## forms
 from RainyDaysHero.app_forms.termInsuranceForm import TermInsuranceForm
 
