@@ -1,6 +1,10 @@
 import pandas as pd
 import numpy as np
 import mglearn as mg
+
+import matplotlib
+matplotlib.use('Agg')
+
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import Ridge
