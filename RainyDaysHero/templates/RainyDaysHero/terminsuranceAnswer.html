@@ -7,11 +7,12 @@
 
 {% block content %}
 
-
 	<div class="container my-2 block-content" style={visibility='hidden'}>
 	  <div class="row">
 	    <div class="col-md-6 mx-auto myform">
 	    <h3 class="formtitle">Please fill the pricing form</h1>
+	    		    	It is possible to predict the price from three models: Lasso, Linear Regression, Polynomial Regression and Polynomial Scaled which have respectively 0.2276, 0.2825, 0.9876 and 0.897 precision.
+	    <br> <br>
 
 		<form action="/rdh/terminsurance/" method="post">
 			{% csrf_token %} 
@@ -50,7 +51,8 @@
 	      </div>
 		</form>
 		<div class="form-group">
-	        <label>Premium = {{price}} &euro;</label>
+	        <label>Predicted Premium (IA based) = {{price}} &euro;</label> <br>
+	        <label>Real Premium (Actuarial Formulae) = {{actuarial_price}} &euro;</label>
 	      </div>
 	    </div>
 	  </div>

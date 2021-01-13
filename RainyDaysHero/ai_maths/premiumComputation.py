@@ -33,7 +33,7 @@ def AnnuityFromZeroToM(x,i,m):
 def TermInsuranceAnnual(x,m,n,i,a):
     NA = 0
     for j in range(1,n+1): NA+=MNQX(x,1,j-1) * TechDF(j,i)
-    return (NA / AnnuityFromZeroToM(x,i,m) )* a
+    return  f'{((NA / AnnuityFromZeroToM(x,i,m) )* a):.2f}' 
 
 
 
