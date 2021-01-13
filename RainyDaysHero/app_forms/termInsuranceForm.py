@@ -5,6 +5,7 @@ import datetime as DtT
 models = (
     ("lr", "Linear Regression"),
     ("plr", "Polynomial Regression"),
+    ("ps", "Polynomial Scaled"),
     ("lasso", "Lasso")
 )
 

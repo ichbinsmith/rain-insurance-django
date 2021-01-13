@@ -95,4 +95,6 @@ def predictTIPremiumLive(x,n,m,i,a,mdl):
         return termInsuranceModels.term_insurance_predicted(x,m,n,i,a,6)
     elif mdl=='lasso':
         return termInsuranceModels.term_insurance_predicted_polynomiale_lasso(x,m,n,i,a,6)
+    elif mdl=='ps':
+        return termInsuranceModels.term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,4)
 
