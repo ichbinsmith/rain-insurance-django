@@ -14,7 +14,7 @@
 	    		    	It is possible to predict the price from three models: Lasso, Linear Regression, Polynomial Regression and Polynomial Scaled which have respectively 0.2276, 0.2825, 0.9876 and 0.897 precision.
 	    <br> <br>
 
-		<form action="/rdh/terminsurance/" method="post">
+		<form action="/rdh/terminsurance/" method="post" onsubmit="return checkForm(this);">
 			{% csrf_token %} 
 	      <div class="form-group">
 	        {{ form.clientAge}}
@@ -57,5 +57,28 @@
 	    </div>
 	  </div>
 	</div>
-    
+ 
+<script>
+
+  function checkForm(form)
+  {
+    // client age 
+    if(form.clientAge.value > 100) {
+      alert("The client age must be less than 100 !");
+      form.clientAge.focus();
+      return false;
+    }
+
+    // n >=m
+    if(form.maturity.value < form.numberOfPayements.value) {
+      alert("The number of payement (m) must be less or equal to the maturity (n) !");
+      form.numberOfPayements.focus();
+      return false;
+    }
+
+    // validation was successful
+    return true;
+  }
+</script>
+
 {% endblock %}
