@@ -53,7 +53,7 @@ def terminsurance(request):
             x,m,n,i,a,mdl = form['clientAge'].value(),form['numberOfPayements'].value(),form['maturity'].value(),form['interestRate'].value(),form['amount'].value(),form['model'].value()
             premium = predictTIPremiumLive(x,n,m,i,a,mdl)
             context['price'] = premium
-            context['actuarial_price'] = premiumComputation.TermInsuranceAnnual(int(x),int(m),int(n),float(i),float(a))
+            context['actuarial_price'] = premiumComputation.TermInsuranceAnnual(int(x),int(m),int(n),float(i)/100,float(a))
             return HttpResponse(template.render(context, request))
 
 
