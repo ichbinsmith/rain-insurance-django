@@ -147,6 +147,7 @@ def lx_evolution(stress):
     plt . legend ( handles =[p1 , p2],fontsize =16)
     plt . title ('Evolution of the lx curve with a stress={}'.format(stress),fontsize =16)
     plt.show()
+    return(np.arange(0,len(StressTest_table(TH,stress)[0]),1),StressTest_table(TH,stress)[0],TH_bis)
 
 def qx_evolution(stress):
 
@@ -157,42 +158,12 @@ def qx_evolution(stress):
     plt . legend ( handles =[p1 , p2],fontsize =16)
     plt . title ('Evolution of the qx curve with a stress={}'.format(stress),fontsize =16)
     plt.show()
-
+    return np.arange(0,len(StressTest_table(TH,stress)[1]),1),StressTest_table(TH,stress)[1],StressTest_table(TH,0)[1]
 ## Actuarial method
 
 
 
-def plot_stress_test(stress):
-    TI=list()
-    TI_stressed=list()
-    TH_stressed=StressTest_table(TH,stress)[0]
-    for contract in range(0,len(X)):
-        TI.append(TermInsuranceAnnual(int(X.iloc[contract].age),int(X.iloc[contract].maturity),X.iloc[contract].interest_rate,X.iloc[contract].amount,int(X.iloc[contract].nb_payements),TH))
-        TI_stressed.append(TermInsuranceAnnual(int(X.iloc[contract].age),int(X.iloc[contract].maturity),X.iloc[contract].interest_rate,X.iloc[contract].amount,int(X.iloc[contract].nb_payements),TH_stressed))
-    
-    plt . ylabel ('Premiums', fontsize =20)
-    plt . title ('Evolution of the premiums with a mortality stress of : {}'.format(stress*100)+'%',fontsize =16)
-    p1,=plt.plot(TI,'ro',label='Premiums',color='red')
-    p2,=plt.plot(TI_stressed,'ro',label='Stressed Premiums',color='blue')
-    plt . legend ( handles =[p1 , p2],fontsize =16)
 
-    plt.plot()
-    
-def plot_stress_test_interest(stress):
-    TI=list()
-    TI_stressed=list()
-    for contract in range(0,len(X)):
-        TI.append(TermInsuranceAnnual(int(X.iloc[contract].age),int(X.iloc[contract].maturity),X.iloc[contract].interest_rate,X.iloc[contract].amount,int(X.iloc[contract].nb_payements),TH))
-        TI_stressed.append(TermInsuranceAnnual(int(X.iloc[contract].age),int(X.iloc[contract].maturity),X.iloc[contract].interest_rate+stress,X.iloc[contract].amount,int(X.iloc[contract].nb_payements),TH))
-    
-    plt . ylabel ('Premiums', fontsize =20)
-    plt . title ('Evolution of the premiums with an interest rate increase of : {}'.format(stress*100)+'%',fontsize =16)
-    p1,=plt.plot(TI,'ro',label='Premiums',color='red')
-    p2,=plt.plot(TI_stressed,'ro',label='Stressed Premiums',color='blue')
-    plt . legend ( handles =[p1 , p2],fontsize =16)
-
-    plt.plot()
-    
 
 
 def plot_p_and_l_sum():
@@ -216,6 +187,7 @@ def plot_p_and_l_sum():
     plt . legend ( handles =[p1],fontsize =16)
 
     plt.plot()
+    return stresslist, p_and_l
 
 def plot_p_and_l_sum_interest():
     p_and_l=list()
@@ -237,7 +209,8 @@ def plot_p_and_l_sum_interest():
     plt . legend ( handles =[p1],fontsize =16)
 
     plt.plot() 
-    
+    return stresslist, p_and_l
+
 def plot_p_and_l_point(TH,x,i,n,m,a):
     P_and_L=list()
     TI=TermInsuranceAnnual(x,n,i,a,m,TH) 
@@ -254,7 +227,8 @@ def plot_p_and_l_point(TH,x,i,n,m,a):
     plt . legend ( handles =[p1],fontsize =16)
 
     plt.plot()     
-    
+    return stresslist P_and_L
+
 def plot_p_and_l_point_interest(TH,x,i,n,m,a):
     P_and_L=list()
     TI=TermInsuranceAnnual(x,n,i,a,m,TH) 
@@ -270,7 +244,7 @@ def plot_p_and_l_point_interest(TH,x,i,n,m,a):
     plt . legend ( handles =[p1],fontsize =16)
 
     plt.plot()         
-    
+    return stresslist, P_and_L
     
     
     
@@ -290,7 +264,7 @@ def profit_and_loss_knn():
     p1,=plt.plot(listnn,P_and_L,label='Profit_and_loss',color='red')
     plt . legend ( handles =[p1],fontsize =16)
     plt.plot()      
-
+    return listnn, P_and_L
    
 def plot_p_and_l_point_knn(TH,x,i,n,m,a,nn=10):
     P_and_L=list()
@@ -308,6 +282,7 @@ def plot_p_and_l_point_knn(TH,x,i,n,m,a,nn=10):
     plt . legend ( handles =[p1],fontsize =16)
 
     plt.plot()        
+    return stesslist, P_and_L
 
 def plot_p_and_l_point_interest_knn(TH,x,i,n,m,a,nn=10):
     P_and_L=list()
@@ -323,6 +298,7 @@ def plot_p_and_l_point_interest_knn(TH,x,i,n,m,a,nn=10):
     p1,=plt.plot(stresslist,P_and_L,label='Profit_and_loss',color='red')
     plt . legend ( handles =[p1],fontsize =16)
     plt.plot() 
+    return stresslist, P_and_L
     
 def plot_p_and_l_knn_sum_stress(nn):
     p_and_l=list()
@@ -344,6 +320,7 @@ def plot_p_and_l_knn_sum_stress(nn):
     plt . legend ( handles =[p1],fontsize =16)
 
     plt.plot()
+    return stresslist, p_and_l
 
 def plot_p_and_l_sum_interest_knn(nn):
     p_and_l=list()
@@ -364,7 +341,7 @@ def plot_p_and_l_sum_interest_knn(nn):
     plt . legend ( handles =[p1],fontsize =16)
 
     plt.plot() 
-
+    return stresslist, p_and_l
          
     
 
@@ -442,7 +419,8 @@ def plot_p_and_l_knn_sum_stress_new():
     plt . legend ( handles =[p1],fontsize =16)
 
     plt.plot()        
-        
+    return stresslist, p_and_l
+
 def plot_p_and_l_knn_sum_stress_interest_new():
     p_and_l=list()
     stresslist=list()
@@ -457,3 +435,4 @@ def plot_p_and_l_knn_sum_stress_interest_new():
     plt . legend ( handles =[p1],fontsize =16)
 
     plt.plot()         
+    return stresslist, p_and_l
