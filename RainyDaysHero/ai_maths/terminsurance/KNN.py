@@ -28,6 +28,10 @@ X =df[['age','nb_payements','maturity','interest_rate','amount']]
 
 y = df['target']
 
+X_trainval, X_test, y_trainval, y_test = train_test_split(X, y, random_state=5)
+
+X_train, X_valid, y_train, y_valid = train_test_split(X_trainval, y_trainval, random_state=1)
+
 def best_knn():
     listnn=list()
     listR_train=list()
@@ -47,7 +51,7 @@ def best_knn():
     plt . ylabel ('R²', fontsize =20)
     plt . title ('R² as a function of the number of neighbors',fontsize =16)
     plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-    plt.show()
+    #plt.show()
         
 
 def learning_curve_knn(nn):
@@ -74,7 +78,7 @@ def learning_curve_knn(nn):
      plt . ylabel ('R²', fontsize =20)
      plt . title ('learning curve',fontsize =16)
      plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-     plt.show()    
+     #plt.show()    
      return r2train,r2test, r2valid
 
      

@@ -66,7 +66,7 @@ def removequotationfile(filename):
 def retrospective(request):
     context = {}
     if request.method == 'POST':
-        template = loader.get_template('RainyDaysHero/retrospectiveAnswer-onSide.html')
+        template = loader.get_template('RainyDaysHero/rain-insurance/retrospectiveAnswer-onSide.html')
         form = RetroForm(request.POST)
         if form.is_valid():
             context['form'] = form
@@ -136,7 +136,7 @@ def retrospective(request):
             months_c = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
             
             plt.xticks(rotation=45, ha='right')
-            plt.xlabel('Months') 
+            plt.xlabel('Months')
             plt.ylabel('Results')
             plt.plot(months_c,cm.values(),label="Covered")
             plt.plot(months_c,ncm.values(),label="Uncovered")
@@ -168,7 +168,7 @@ def retrospective(request):
             else:
                 return HttpResponse(template.render(context, request))
     else:
-        template = loader.get_template('RainyDaysHero/retrospective.html')
+        template = loader.get_template('RainyDaysHero/rain-insurance/retrospective.html')
         form = RetroForm(request.POST)
         context = dict(form= form)
         return HttpResponse(template.render(context, request)) 

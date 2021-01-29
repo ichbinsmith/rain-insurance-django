@@ -67,7 +67,7 @@ def removequotationfile(filename):
 def quotation(request):
     context = {}
     if request.method == 'POST':
-        template = loader.get_template('RainyDaysHero/quotationAnswer.html')
+        template = loader.get_template('RainyDaysHero/rain-insurance/quotationAnswer.html')
         form = QuotationForm(request.POST)
         if form.is_valid():
             context['form'] = form
@@ -131,7 +131,7 @@ def quotation(request):
             else:
                 return HttpResponse(template.render(context, request))
     else:
-        template = loader.get_template('RainyDaysHero/quotation.html')
+        template = loader.get_template('RainyDaysHero/rain-insurance/quotation.html')
         form = QuotationForm(request.POST)
         context = dict(form= form)
         return HttpResponse(template.render(context, request))

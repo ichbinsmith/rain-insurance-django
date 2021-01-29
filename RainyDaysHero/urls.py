@@ -14,6 +14,8 @@ from .app_views.raininsurance.retrospective import retrospective
 #lifeinsurance views
 from .app_views.lifeinsurance.terminsurance import terminsurance
 from .app_views.lifeinsurance.terminsurance import terminsuranceAnalysis
+from .app_views.lifeinsurance.terminsurance import terminsuranceReserve
+from .app_views.lifeinsurance.terminsurance import terminsuranceAccounting
 
 
 
@@ -25,6 +27,8 @@ urlpatterns = [
     path('retrospective/', retrospective, name='retrospective'),
     path('terminsurance/', terminsurance, name='terminsurance'),
     path('terminsurance-analysis/', terminsuranceAnalysis, name='terminsuranceAnalysis'),
+    path('terminsurance-reserve/', terminsuranceReserve, name='terminsuranceReserve'),
+    path('terminsurance-accounting/', terminsuranceAccounting, name='terminsuranceAccounting'),
     path('contact/', contact, name='contact'),
     path('about/', about, name='about'),
     path('userguide/', userguide, name='userguide'),

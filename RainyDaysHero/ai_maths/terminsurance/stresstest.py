@@ -146,7 +146,7 @@ def lx_evolution(stress):
     plt . ylabel ('lx', fontsize =20)
     plt . legend ( handles =[p1 , p2],fontsize =16)
     plt . title ('Evolution of the lx curve with a stress={}'.format(stress),fontsize =16)
-    plt.show()
+    #plt.show()
     return(np.arange(0,len(StressTest_table(TH,stress)[0]),1),StressTest_table(TH,stress)[0],TH_bis)
 
 def qx_evolution(stress):
@@ -157,7 +157,7 @@ def qx_evolution(stress):
     plt . ylabel ('qx', fontsize =20)
     plt . legend ( handles =[p1 , p2],fontsize =16)
     plt . title ('Evolution of the qx curve with a stress={}'.format(stress),fontsize =16)
-    plt.show()
+    #plt.show()
     return np.arange(0,len(StressTest_table(TH,stress)[1]),1),StressTest_table(TH,stress)[1],StressTest_table(TH,0)[1]
 ## Actuarial method
 
@@ -227,7 +227,7 @@ def plot_p_and_l_point(TH,x,i,n,m,a):
     plt . legend ( handles =[p1],fontsize =16)
 
     plt.plot()     
-    return stresslist P_and_L
+    return stresslist, P_and_L
 
 def plot_p_and_l_point_interest(TH,x,i,n,m,a):
     P_and_L=list()
@@ -389,7 +389,7 @@ def plot_stress_model(stress=0,stress_interest=0):
     plt . ylabel ('R²', fontsize =20)
     plt . title ('R² as a function of the number of neighbors with a stress on mortality table= {}'.format(stress)+'%'+" and on interest rate = {}".format(stress_interest)+ "%",fontsize =16)
     plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-    plt.show()
+    #plt.show()
     
 def new_p_and_l_sum(stress=0,stress_interest=0):
     rec= best_model_stress(stress,stress_interest)
