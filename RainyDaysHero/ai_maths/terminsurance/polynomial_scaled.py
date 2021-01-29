@@ -82,7 +82,7 @@ def plot_polynomiale_scaled(degremax):
     plt . ylabel ('R²', fontsize =20)
     plt . title ('R² as a function of the degree',fontsize =16)
     plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-    plt.show()
+    #plt.show()
 
 def learning_curve_poly_scaled(degree=4):
      X_train_new=np.zeros(len(X_train)-50)
@@ -107,7 +107,7 @@ def learning_curve_poly_scaled(degree=4):
      plt . ylabel ('R²', fontsize =20)
      plt . title ('learning curve',fontsize =16)
      plt . legend ( handles =[p1 , p2,p3],fontsize =16)
-     plt.show()    
+     #plt.show()    
      return r2train,r2test, r2valid,listei     
 
 def term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,degree=4):
@@ -185,7 +185,7 @@ def profit_and_loss_age_scaled(x,m,n,i,a,degree):
     plt . xlabel ('age', fontsize =20)
     plt . ylabel ('profit_and_loss', fontsize =20)
     plt . title ('profit and loss as a function of the age',fontsize =16)
-    plt.show()    
+    #plt.show()    
     
 def profit_and_loss_interest_rate_scaled(x,m,n,i,a,degree):
     interest=list()

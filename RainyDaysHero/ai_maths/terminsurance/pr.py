@@ -168,7 +168,7 @@ def learning_curve_polyfinal_under0(degree=6):
      plt . ylabel ('R²', fontsize =20)
      plt . title ('learning curve',fontsize =16)
      plt . legend ( handles =[p1 , p2,p3],fontsize =16)
-     plt.show()    
+     #plt.show()    
      return r2train,r2test, r2valid,listei  
 
 
@@ -187,7 +187,7 @@ def plot_polyfinal_under0(degremax):
     plt . ylabel ('R²', fontsize =20)
     plt . title ('R² as a function of the degree',fontsize =16)
     plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-    plt.show()
+    #plt.show()
 
 
 
@@ -243,7 +243,7 @@ def profit_and_loss_age(x,m,n,i,a,degree):
     plt . xlabel ('age', fontsize =20)
     plt . ylabel ('profit_and_loss', fontsize =20)
     plt . title ('profit and loss as a function of the age',fontsize =16)
-    plt.show()    
+    #plt.show()    
     
 def profit_and_loss_interest_rate(x,m,n,i,a,degree):
     interest=list()

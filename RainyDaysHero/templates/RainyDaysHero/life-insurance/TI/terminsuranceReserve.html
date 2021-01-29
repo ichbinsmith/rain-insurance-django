@@ -1,0 +1,157 @@
+{% extends 'RainyDaysHero/base-second.html' %}
+
+{% block additionnal-head-conf %}
+	{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/css/styleQuotationForm.css' %}">
+    <script type="text/javascript" src="{% static 'RainyDaysHero/js/chart-min.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+
+
+	<div class="container my-2 block-content" style={visibility='hidden'}>
+	  <div class="row">
+	    <div class="col-md-6 mx-auto myform">
+	    <h3 class="formtitle">Term Insurance Reserve</h1>
+
+		<form action="/rdh/terminsurance-reserve/" method="post" >
+			{% csrf_token %}
+
+		<div class="form-group">
+	        {{ form.contractOrTotal }}
+	        <label class="form-control-placeholder" for="{{ form.contractOrTotal.id_for_label }}">{{form.contractOrTotal.label}}</label>
+	     </div>
+
+	    <!-- required for contract & total -->
+		<div class="form-group">
+	        {{ form.mortalityStress }}
+	        <label class="form-control-placeholder" for="{{ form.mortalityStress.id_for_label }}">{{form.mortalityStress.label}}</label>
+	     </div>
+		<div class="form-group">
+	        {{ form.interestRateStress }}
+	        <label class="form-control-placeholder" for="{{ form.interestRateStress.id_for_label }}">{{form.interestRateStress.label}}</label>
+	     </div>
+		<div class="form-group">
+	        {{ form.adaptedModel }}
+	        <label class="form-control-placeholder" for="{{ form.adaptedModel.id_for_label }}">{{form.adaptedModel.label}}</label>
+	     </div>
+
+		<div id="contract" style="display: none;">
+		  <div class="form-group">
+	        {{ form.clientAge}}
+	        <label class="form-control-placeholder" for="{{ form.clientAge.id_for_label }}">Age</label>
+	      </div>
+
+	      <div class="form-group">
+	        {{ form.numberOfPayements}}
+	        <label class="form-control-placeholder" for="{{ form.numberOfPayements.id_for_label }}">Number of payements</label>
+	      </div>
+
+	      <div class="form-group">
+	        {{ form.maturity }}
+	        <label class="form-control-placeholder" for="{{ form.maturity.id_for_label }}">Maturity</label>
+	      </div>
+
+	      <div class="form-group">
+	        {{ form.interestRate }}
+	        <label class="form-control-placeholder" for="{{ form.interestRate.id_for_label }}">{{ form.interestRate.label }}</label>
+	      </div>
+
+	      <div class="form-group">
+	        {{ form.amount }}
+	        <label class="form-control-placeholder" for="{{ form.amount.id_for_label }}">{{ form.amount.label }}</label>
+	      </div>
+			
+		</div>
+
+	      
+	      <div class="form-group">
+	        <button type="submit" class="btn btn-dark">Compute</button>
+	      </div>
+		</form>
+
+	    </div> <!--My form-->
+
+	    <div id="reserveResult" class="col-md-6 mx-auto myform"> <!--Reserve result-->
+	    	 <h3 class="formtitle">Reserve result</h1>
+		     <div class="form-group">
+		            <div class="card">
+		                <div class="card-body">
+		                    <canvas id="reserveChart"></canvas>
+		                </div>
+		            </div>
+	         </div>
+
+	    </div> <!--Retrospective result-->
+
+	  </div> <!--Row-->
+
+	</div> <!--Container-->
+<script type="text/javascript">
+//Result div
+function checkRequestType(){
+if('{{requestType}}'=='GET'){
+	document.getElementById("reserveResult").style.display="none";
+}else{
+document.getElementById("reserveResult").style.display="block";
+//chart begin
+var ctxL = document.getElementById("reserveChart").getContext('2d');
+var aLocal = {{ a|safe }};
+var myLineChart = new Chart(ctxL, {
+type: 'line',
+data: {
+labels: aLocal,
+datasets: [{
+label: "IA",
+data:  {{b}},
+backgroundColor: [
+'rgba(105, 0, 132, .2)',
+],
+borderColor: [
+'rgba(200, 99, 132, .7)',
+],
+borderWidth: 2
+},
+{
+label: "Actuarial",
+data:  {{c}},
+backgroundColor: [
+'rgba(0, 137, 132, .2)',
+],
+borderColor: [
+'rgba(0, 10, 130, .7)',
+],
+borderWidth: 2
+}
+]
+},
+options: {
+responsive: true
+}
+});
+//chart end
+
+}
+reserveTypeSwitch();
+}
+
+window.onload = checkRequestType
+//result div end
+
+//reserve type form switch
+function reserveTypeSwitch(){
+if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Contract'){
+	document.getElementById("contract").style.display="block";
+}
+if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Total'){
+	document.getElementById("contract").style.display="none";
+}
+}
+//reserve type form switch end
+
+
+
+</script>
+  
+{% endblock %}

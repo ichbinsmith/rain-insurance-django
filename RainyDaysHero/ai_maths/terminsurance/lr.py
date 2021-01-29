@@ -80,7 +80,7 @@ def learning_curve(degree=1):
      plt . ylabel ('R²', fontsize =20)
      plt . title ('learning curve',fontsize =16)
      plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-     plt.show()    
+     #plt.show()    
      return r2train,r2test, r2valid, listei  
 
 
@@ -99,7 +99,7 @@ def plot_polynomiale(degremax):
     plt . ylabel ('R²', fontsize =20)
     plt . title ('R² as a function of the degree',fontsize =16)
     plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-    plt.show()
+    #plt.show()
 
 
 def learning_curve_poly_3d(N):
