@@ -1,1 +1,1 @@
-web: gunicorn rain_insurance_django.wsgi --log-file - --timeout 500
+web: gunicorn rain_insurance_django.wsgi --timeout 300 --log-file - 
