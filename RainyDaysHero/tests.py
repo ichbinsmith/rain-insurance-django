@@ -17,3 +17,4 @@ class TIPremiumTestCase(TestCase):
         self.assertEqual(TermInsuranceAnnual(40,2,5,2/100,500), '3.49')
         self.assertEqual(TermInsuranceAnnual(60,35,40,1/100,2000),'86.59')
         self.assertEqual(TermInsuranceAnnual(45,7,20,2.6/100,8000),'144.91')
+        
