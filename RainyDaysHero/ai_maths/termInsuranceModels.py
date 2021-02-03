@@ -19,8 +19,9 @@ def term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,degree=4):
 def term_insurance_predicted_knn(x,m,n,i,a,nn=8):
 	return str("%.2f" % KNN.term_insurance_predicted_knn(x,m,n,i,a))
 
-@sync_to_async
+
 #@background(schedule=0)
+@sync_to_async
 def reserves_sum_knn(stress_MT=0,stress_interest_rates=0,adapt=True):
 	print("background task 'reserves_sum_knn' is running")
 	return reserves.reserves_sum_knn(stress_MT,stress_interest_rates,adapt)

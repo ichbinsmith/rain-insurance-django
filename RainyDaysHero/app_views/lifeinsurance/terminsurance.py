@@ -104,8 +104,6 @@ async def terminsuranceReserve(request):
         template = loader.get_template('RainyDaysHero/life-insurance/TI/terminsuranceReserve.html')
         return HttpResponse(template.render(context, request))
 
-def justTesting(request):
-    pass
 def terminsuranceAccounting(request):
     context = {}
     if request.method == 'GET':
