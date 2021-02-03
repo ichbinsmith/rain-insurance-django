@@ -209,7 +209,8 @@ def reserves_predicted(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True
     plt . ylabel ('Reserves', fontsize =20)
     plt . title ('Reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
     plt . legend ( handles =[p1,p2,p3,p4,p4,p5],fontsize =16)
-    #plt.show()          
+    #plt.show()  
+    print("background task 'reserves' ends")        
     return([i for i in range(0,n+1)],recurrence1,recurrence2,list_annual_premium2[0],list_annual_premium1[0],list_natural_premium2[0],list_natural_premium1[0])    
         
 
@@ -314,7 +315,8 @@ def reserves_predicted_scaled(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, ada
     plt . ylabel ('Reserves', fontsize =20)
     plt . title ('Reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
     plt . legend ( handles =[p1,p2,p3,p4,p5,p6],fontsize =16)
-    #plt.show()          
+    #plt.show()   
+    print("background task 'reserves' ends")         
     return ([i for i in range(0,n+1)],recurrence1,recurrence2,list_annual_premium2[0],list_annual_premium1[0],list_natural_premium2[0],list_natural_premium1[0])    
 
 def reserves_sum(stress_MT=0,stress_interest_rates=0,adapt=False):
@@ -390,6 +392,7 @@ def reserves_sum(stress_MT=0,stress_interest_rates=0,adapt=False):
      plt . title ('Reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
      plt . legend ( handles =[p1 , p2,p3],fontsize =16)
      #plt.show()
+     print("background task 'reserves' ends")  
      return ([i for i in range(0,41)],reserve_total,natural_premium_total,level_annual_premium_total)          
 
 def reserves_sum_knn(stress_MT=0,stress_interest_rates=0,adapt=True): 
@@ -475,6 +478,7 @@ def reserves_sum_knn(stress_MT=0,stress_interest_rates=0,adapt=True):
     #plt.show()
     reserve_total=recurrence2
 
+    print("background task 'reserves' ends")  
     return([i for i in range(0,41)],reserve_total,natural_premium_total,level_annual_premium_total)
     
     
@@ -559,6 +563,7 @@ def reserves_sum_scale(stress_MT=0,stress_interest_rates=0,adapt=True):
     #plt.show()
     reserve_total=recurrence2
 
+    print("background task 'reserves' ends")  
     return([i for i in range(0,41)],reserve_total,natural_premium_total,level_annual_premium_total)
 
 

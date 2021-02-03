@@ -60,8 +60,9 @@ def terminsuranceAnalysis(request):
         pass
 
 
-def terminsuranceReserve(request):
+async def terminsuranceReserve(request):
     context = {}
+    print('The request',request)
     if request.method == 'GET':
         template = loader.get_template('RainyDaysHero/life-insurance/TI/terminsuranceReserve.html')
         form = TermInsuranceReserveForm(request.POST)
@@ -93,15 +94,18 @@ def terminsuranceReserve(request):
             interestRateStress=float(form['interestRateStress'].value())/100
             adaptedModel=form['adaptedModel'].value()=='Yes'
             print(mortalityStress,interestRateStress,adaptedModel)
-            reserveResponseIA=termInsuranceModels.reserves_sum_knn(mortalityStress,interestRateStress,adaptedModel)
-            reserveResponseActuarial=termInsuranceModels.reserves_sum(mortalityStress,interestRateStress,adaptedModel)
+            reserveResponseIA= await termInsuranceModels.reserves_sum_knn(mortalityStress,interestRateStress,adaptedModel)
+            reserveResponseActuarial= await termInsuranceModels.reserves_sum(mortalityStress,interestRateStress,adaptedModel)
 
+            print(reserveResponseIA)
             context['a']=json.dumps(list(reserveResponseIA[0]))
             context['b']=json.dumps(list(reserveResponseIA[1]))
             context['c']=json.dumps(list(reserveResponseActuarial[1]))
         template = loader.get_template('RainyDaysHero/life-insurance/TI/terminsuranceReserve.html')
         return HttpResponse(template.render(context, request))
 
+def justTesting(request):
+    pass
 def terminsuranceAccounting(request):
     context = {}
     if request.method == 'GET':

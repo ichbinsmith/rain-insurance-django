@@ -13,3 +13,4 @@ sklearn
 mglearn
 joblib
 statsmodels
+django-background-tasks
