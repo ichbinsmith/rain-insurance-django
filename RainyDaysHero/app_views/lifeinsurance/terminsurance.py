@@ -84,7 +84,7 @@ async def terminsuranceReserve(request):
             interestRateStress=float(form['interestRateStress'].value())/100
             adaptedModel=form['adaptedModel'].value()=='Yes'
             print(x,m,n,i,a,mortalityStress,interestRateStress,adaptedModel)
-            reserveResponse=termInsuranceModels.reserves_predicted(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
+            reserveResponse= await termInsuranceModels.reserves_predicted(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
             
             context['a']=json.dumps(list(reserveResponse[0]))
             context['b']=json.dumps(list(reserveResponse[1]))
