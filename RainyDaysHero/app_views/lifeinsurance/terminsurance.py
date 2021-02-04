@@ -77,28 +77,52 @@ def terminsuranceReserve(request):
         context['requestType']='POST'
 
         reserveType = form['contractOrTotal'].value()
+        IAorActuarial = form['IAorActuarial'].value()
+        context['IAorActuarial']=IAorActuarial
+
         if reserveType=='Contract':
             x,m,n,i,a = int(form['clientAge'].value()),int(form['numberOfPayements'].value()),int(form['maturity'].value()),float(form['interestRate'].value())/100,float(form['amount'].value())
             mortalityStress=float(form['mortalityStress'].value())/100
             interestRateStress=float(form['interestRateStress'].value())/100
             adaptedModel=form['adaptedModel'].value()=='Yes'
             print(x,m,n,i,a,mortalityStress,interestRateStress,adaptedModel)
-            reserveResponse=termInsuranceModels.reserves_predicted(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
-            
-            context['a']=json.dumps(list(reserveResponse[0]))
-            context['b']=json.dumps(list(reserveResponse[1]))
-            context['c']=json.dumps(list(reserveResponse[2]))
+            if IAorActuarial=='IA':
+                reserveResponse=termInsuranceModels.reserves_predicted(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
+                context['a']=json.dumps(list(reserveResponse[0]))
+                context['b']=json.dumps(list(reserveResponse[1]))
+                context['c']=json.dumps(list(reserveResponse[1]))
+            elif IAorActuarial=='Actuarial':
+                reserveResponse=termInsuranceModels.reserves_predicted(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
+                context['a']=json.dumps(list(reserveResponse[0]))
+                context['b']=json.dumps(list(reserveResponse[1]))
+                context['c']=json.dumps(list(reserveResponse[1]))
+            else:
+                reserveResponse=termInsuranceModels.reserves_predicted(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
+                context['a']=json.dumps(list(reserveResponse[0]))
+                context['b']=json.dumps(list(reserveResponse[1]))
+                context['c']=json.dumps(list(reserveResponse[2]))
         else:
             mortalityStress=float(form['mortalityStress'].value())/100
             interestRateStress=float(form['interestRateStress'].value())/100
             adaptedModel=form['adaptedModel'].value()=='Yes'
             print(mortalityStress,interestRateStress,adaptedModel)
-            reserveResponseIA=termInsuranceModels.reserves_sum_knn(mortalityStress,interestRateStress,adaptedModel)
-            reserveResponseActuarial=termInsuranceModels.reserves_sum(mortalityStress,interestRateStress,adaptedModel)
 
-            context['a']=json.dumps(list(reserveResponseIA[0]))
-            context['b']=json.dumps(list(reserveResponseIA[1]))
-            context['c']=json.dumps(list(reserveResponseActuarial[1]))
+            if IAorActuarial=='IA':
+                reserveResponseIA=termInsuranceModels.reserves_sum_knn(mortalityStress,interestRateStress,adaptedModel)
+                context['a']=json.dumps(list(reserveResponseIA[0]))
+                context['b']=json.dumps(list(reserveResponseIA[1]))
+                context['c']=json.dumps(list(reserveResponseIA[1]))
+            elif IAorActuarial=='Actuarial':
+                reserveResponseActuarial=termInsuranceModels.reserves_sum(mortalityStress,interestRateStress,adaptedModel)
+                context['a']=json.dumps(list(reserveResponseActuarial[0]))
+                context['b']=json.dumps(list(reserveResponseActuarial[1]))
+                context['c']=json.dumps(list(reserveResponseActuarial[1]))
+            else:
+                reserveResponseIA=termInsuranceModels.reserves_sum_knn(mortalityStress,interestRateStress,adaptedModel)
+                reserveResponseActuarial=termInsuranceModels.reserves_sum(mortalityStress,interestRateStress,adaptedModel)
+                context['a']=json.dumps(list(reserveResponseIA[0]))
+                context['b']=json.dumps(list(reserveResponseIA[1]))
+                context['c']=json.dumps(list(reserveResponseActuarial[1]))
         template = loader.get_template('RainyDaysHero/life-insurance/TI/terminsuranceReserve.html')
         return HttpResponse(template.render(context, request))
 

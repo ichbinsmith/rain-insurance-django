@@ -60,3 +60,6 @@ class TermInsuranceReserveForm(forms.Form):
     amount = forms.FloatField(label='Amount')
     amount.widget.attrs.update({'class': 'form-control','value':1000})
 
+    IAorActuarial = forms.ChoiceField(label = 'IA, Actuarial or Both',choices = ( ("IA", "IA"), ("Actuarial", "Actuarial"), ("Both", "Both") ))
+    IAorActuarial.widget.attrs.update({'class': 'form-control'})
+
