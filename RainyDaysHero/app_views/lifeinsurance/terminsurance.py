@@ -87,20 +87,21 @@ def terminsuranceReserve(request):
             adaptedModel=form['adaptedModel'].value()=='Yes'
             print(x,m,n,i,a,mortalityStress,interestRateStress,adaptedModel)
             if IAorActuarial=='IA':
-                reserveResponse=termInsuranceModels.reserves_predicted(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
+                reserveResponse=termInsuranceModels. reserves_predicted_scale_knn(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
                 context['a']=json.dumps(list(reserveResponse[0]))
                 context['b']=json.dumps(list(reserveResponse[1]))
                 context['c']=json.dumps(list(reserveResponse[1]))
             elif IAorActuarial=='Actuarial':
-                reserveResponse=termInsuranceModels.reserves_predicted(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
+                reserveResponse=termInsuranceModels.reserves_true(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
                 context['a']=json.dumps(list(reserveResponse[0]))
                 context['b']=json.dumps(list(reserveResponse[1]))
                 context['c']=json.dumps(list(reserveResponse[1]))
             else:
-                reserveResponse=termInsuranceModels.reserves_predicted(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
-                context['a']=json.dumps(list(reserveResponse[0]))
-                context['b']=json.dumps(list(reserveResponse[1]))
-                context['c']=json.dumps(list(reserveResponse[2]))
+                reserveResponseIA=termInsuranceModels.reserves_predicted_scale_knn(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
+                reserveResponseActuarial=termInsuranceModels.reserves_true(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)               
+                context['a']=json.dumps(list(reserveResponseIA[0]))
+                context['b']=json.dumps(list(reserveResponseIA[1]))
+                context['c']=json.dumps(list(reserveResponseActuarial[1]))            
         else:
             mortalityStress=float(form['mortalityStress'].value())/100
             interestRateStress=float(form['interestRateStress'].value())/100
@@ -164,6 +165,6 @@ def predictTIPremiumLive(x,n,m,i,a,mdl):
     elif mdl=='lasso':
         return termInsuranceModels.term_insurance_predicted_polynomiale_lasso(x,m,n,i,a,6)
     elif mdl=='ps':
-        return termInsuranceModels.term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,4)
+        return termInsuranceModels.term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,8)
     elif mdl=='knn':
         return termInsuranceModels.term_insurance_predicted_knn(x,m,n,i,a)
