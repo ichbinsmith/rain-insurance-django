@@ -16,7 +16,7 @@ import after_response
 from django.templatetags.static import static
 
 ## forms
-from RainyDaysHero.app_forms.termInsuranceForm import TermInsuranceForm,TermInsuranceReserveForm
+from RainyDaysHero.app_forms.termInsuranceForm import TermInsuranceForm,TermInsuranceReserveForm,TermInsuranceStressForm, TermInsuranceBSForm
 
 ## libs for IA - load trained models
 from joblib import dump, load #load - save models
@@ -131,11 +131,70 @@ def terminsuranceAccounting(request):
     context = {}
     if request.method == 'GET':
         template = loader.get_template('RainyDaysHero/life-insurance/TI/terminsuranceAccounting.html')
-        form = TermInsuranceForm(request.POST)
+        form = TermInsuranceBSForm(request.POST)
         context = dict(form= form)
         return HttpResponse(template.render(context, request))
     else:
-        pass
+        template = loader.get_template('RainyDaysHero/life-insurance/TI/terminsuranceAccountingResult.html')
+        form = TermInsuranceBSForm(request.POST)
+        context = dict(form= form)
+        return HttpResponse(template.render(context, request))
+
+
+def terminsuranceStress(request):
+    context = {}
+    if request.method == 'GET':
+        template = loader.get_template('RainyDaysHero/life-insurance/TI/terminsuranceStresstest.html')
+        form = TermInsuranceStressForm(request.POST)
+        context = dict(form= form)
+
+
+        context['requestType']='GET'
+        context['plotNumber']='1'
+        context['a'] = json.dumps(list([0,1,2,3]))
+        context['b'] = json.dumps(list([4,3,2,1]))
+        context['c'] = json.dumps(list([1,2,3,4]))
+        context['d'] = json.dumps(list([1,2,2,1]))
+        context['labelOne'] = 'Nein'
+        context['labelTwo'] = 'Nein'
+        context['labelThree'] = 'Nein'
+        return HttpResponse(template.render(context, request))
+    else:
+        template = loader.get_template('RainyDaysHero/life-insurance/TI/terminsuranceStresstest.html')
+        form = TermInsuranceStressForm(request.POST)
+        context = dict(form= form)
+        context['requestType']='POST'
+        context['plotNumber']='1'
+        context['a'] = json.dumps(list([0,1,2,3]))
+        context['b'] = json.dumps(list([4,3,2,1]))
+        context['c'] = json.dumps(list([1,2,3,4]))
+        context['d'] = json.dumps(list([1,2,2,1]))
+        context['labelOne'] = 'Nein'
+        context['labelTwo'] = 'Nein'
+        context['labelThree'] = 'Nein'
+
+        x,m,n,i,a = int(form['clientAge'].value()),int(form['numberOfPayements'].value()),int(form['maturity'].value()),float(form['interestRate'].value())/100,float(form['amount'].value())
+        stressOn=form['stressOn'].value()
+        stressType=form['stressType'].value()
+
+        if(form['stressType'].value()=='All'):
+            context['requestType']='POST'
+            context['a'] = json.dumps(list([0,1,2,3]))
+            context['b'] = json.dumps(list([4,3,2,1]))
+            context['c'] = json.dumps(list([1,2,3,4]))
+            context['d'] = json.dumps(list([1,2,2,1]))
+            if stressType=='All':
+                context['plotNumber']='3'
+                context['labelOne'] = 'IA non adapted'
+                context['labelTwo'] = 'IA adapted'
+                context['labelThree'] = 'Actuarial'
+            else:
+                context['plotNumber']='1'
+                context['labelOne'] = stressType
+                context['labelTwo'] = 'Nein'
+                context['labelThree'] = 'Nein'
+
+        return HttpResponse(template.render(context, request))
 
 '''
 Prediction using saved models
