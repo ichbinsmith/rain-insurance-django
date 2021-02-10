@@ -32,30 +32,30 @@ y = df['target']
 def balance_sheet_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True): 
     if adapt==True:
         bs=reserves.reserves_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
-        Premiums=bs[1]
-        Financial_income=(bs[0]+Premiums)*i
-        Last_premium_reserves=bs[0]
-        Claims=bs[2]*(1+i)
-        Premium_reserves=bs[0][1:len(bs[0])]
+        Premiums=bs[1+1]
+        Financial_income=(bs[0+1]+Premiums)*i
+        Last_premium_reserves=bs[0+1]
+        Claims=bs[2+1]*(1+i)
+        Premium_reserves=bs[0+1][1:len(bs[0+1])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
         Total_liability=list()
         for age in range(0,len(Premium_reserves)):
-             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,TH)
+             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,stresstest.StressTest_table(TH,stress_MT)[0])
              Total_Asset.append(Financial_income[age]+Premiums[age]+ Last_premium_reserves[age])
              Total_liability.append(Claims[age]+Premium_reserves[age])
     else:
         bs=reserves.reserves_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
-        Premiums=bs[1]
-        Financial_income=(bs[0]+Premiums)*i
-        Last_premium_reserves=bs[0]
-        Claims=bs[2]*(1+i)
-        Premium_reserves=bs[0][1:len(bs[1])]
+        Premiums=bs[1+1]
+        Financial_income=(bs[0+1]+Premiums)*i
+        Last_premium_reserves=bs[0+1]
+        Claims=bs[2+1]*(1+i)
+        Premium_reserves=bs[0+1][1:len(bs[1])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
         Total_liability=list()
         for age in range(0,len(Premium_reserves)):
-             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,TH)
+             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,stresstest.StressTest_table(TH,stress_MT)[0])
              Total_Asset.append(Financial_income[age]+Premiums[age]+ Last_premium_reserves[age])
              Total_liability.append(Claims[age]+Premium_reserves[age])
             
@@ -65,11 +65,11 @@ def balance_sheet_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True
 def balance_sheet_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True): 
     if adapt==True:
         bs=reserves.reserves_predicted_scale_knn(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
-        Premiums=bs[1]
-        Financial_income=(bs[0]+Premiums)*i
-        Last_premium_reserves=bs[0]
-        Claims=bs[2]*(1+i)
-        Premium_reserves=bs[0][1:len(bs[0])]
+        Premiums=bs[1+1]
+        Financial_income=(bs[0+1]+Premiums)*i
+        Last_premium_reserves=bs[0+1]
+        Claims=bs[2+1]*(1+i)
+        Premium_reserves=bs[0+1][1:len(bs[0+1])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
         Total_liability=list()
@@ -79,11 +79,11 @@ def balance_sheet_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True)
              Total_liability.append(Claims[age]+Premium_reserves[age])
     else:
         bs=reserves.reserves_predicted_scale_knn(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
-        Premiums=bs[1]
-        Financial_income=(bs[0]+Premiums)*i
-        Last_premium_reserves=bs[0]
-        Claims=bs[2]*(1+i)
-        Premium_reserves=bs[0][1:len(bs[0])]
+        Premiums=bs[1+1]
+        Financial_income=(bs[0+1]+Premiums)*i
+        Last_premium_reserves=bs[0+1]
+        Claims=bs[2+1]*(1+i)
+        Premium_reserves=bs[0+1][1:len(bs[0])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
         Total_liability=list()
