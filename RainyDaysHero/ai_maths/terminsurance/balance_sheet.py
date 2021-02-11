@@ -189,7 +189,6 @@ def total_balance_sheet_true(stress_MT=0,stress_interest_rates=0, adapt=True):
         i=X.iloc[contract].interest_rate
         a=X.iloc[contract].amount
         bs=balance_sheet_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
-        print(contract)
         for term in range(0,n):
             for smash in range (0,7):
                 listcontract[term][smash]=listcontract[term][smash]+bs[smash][term]

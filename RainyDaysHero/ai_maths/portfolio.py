@@ -4,14 +4,14 @@ from .pureendowment import Pure_endowment, PE_reserves, balancesheetPE, stresste
 
 
 import matplotlib.pyplot as plt
-import  reserves,balance_sheet, balancesheetPE, PE_reserves
 import numpy as np
 import os
 import pandas as pd
 
 TH = [100000,99511,99473,99446,99424,99406,99390,99376,99363,99350,99338,99325,99312,99296,99276,99250,99213,99163,99097,99015,98921,98820,98716,98612,98509,98406,98303,98198,98091,97982,97870,97756,97639,97517,97388,97249,97100,96939,96765,96576,96369,96141,95887,95606,95295,94952,94575,94164,93720,93244,92736,92196,91621,91009,90358,89665,88929,88151,87329,86460,85538,84558,83514,82399,81206,79926,78552,77078,75501,73816,72019,70105,68070,65914,63637,61239,58718,56072,53303,50411,47390,44234,40946,37546,34072,30575,27104,23707,20435,17338,14464,11852,9526,7498,5769,4331,3166,2249,1549,1032,663,410,244,139,75,39,19,9,4,2,1]
 lx = TH
-df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))+"/static/RainyDaysHero/data/LI/TI/dataset.csv")
+
+df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))+"/static/RainyDaysHero/data/LI/TI/dataset.csv")
 
 X =df[['age','nb_payements','maturity','interest_rate','amount']]
 
@@ -81,7 +81,7 @@ def Portfolio_predicted(stress_MT=0,stress_interest_rates=0, adapt=True):
         modelTI= reserves.best_model_scale_knn(stress_MT,stress_interest_rates,X=X)
         modelPE=PE_reserves.best_model_scale_knn(stress_MT,stress_interest_rates,X=X)
     else:        
-        modelTI= reserves.best_model_scale_knn(stress_MT=0,stress_interest_rates=0,X=X)  
+        modelTI= reserves.best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)
         modelPE=PE_reserves.best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)
 
     for contract in range(0,len(X)):

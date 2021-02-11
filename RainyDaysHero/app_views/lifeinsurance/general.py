@@ -1,32 +1,13 @@
-from django.shortcuts import render
-from django.http import Http404
 from django.http import HttpResponse
 from django.template import loader
-from django.http import HttpResponseRedirect
-from django.http import FileResponse
-from django.shortcuts import render
 import json
-
-import io
-import os
-from random import choice
-from string import ascii_uppercase
-
-import after_response
-from django.templatetags.static import static
 
 ## forms
 from RainyDaysHero.app_forms.lifeIsuranceGeneralForms import PortfolioForm, LxQxStressForm
 
-## libs for IA - load trained models
-from joblib import dump, load #load - save models
-from sklearn.preprocessing import PolynomialFeatures
-
-
 ## Our IA module & actuarial formules
 from RainyDaysHero.ai_maths import termInsuranceModels
-from RainyDaysHero.ai_maths import premiumComputation
-
+from RainyDaysHero.ai_maths import portfolio as portfolioo
 
 
 def portfolio(request):
@@ -47,9 +28,9 @@ def portfolio(request):
 
         ##TO DO : use appropriate function
         if IAOrActuarial=='IA':
-            result = termInsuranceModels.total_balance_sheet_true(mortalityStress, interestRateStress, adaptedModel)
+            result = portfolioo.Portfolio_predicted(mortalityStress,interestRateStress,adaptedModel)
         else:
-            result = termInsuranceModels.total_balance_sheet_true(mortalityStress, interestRateStress, adaptedModel)
+            result = portfolioo.Portfolio_true(mortalityStress, interestRateStress, adaptedModel)
         res = []
         for x in result:
             res.append(list(x))

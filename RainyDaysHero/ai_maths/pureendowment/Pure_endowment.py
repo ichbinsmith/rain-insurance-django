@@ -1,37 +1,17 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Feb  5 14:08:07 2021
+import matplotlib
 
-@author: Mon PC
-"""
+matplotlib.use('Agg')
 
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Dec 23 18:44:55 2020
-
-@author: Mon PC
-"""
 import pandas as pd
 import numpy as np
 import mglearn as mg
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Ridge
-from sklearn.linear_model import Lasso
-from sklearn.svm import SVR
-from sklearn.metrics import mean_squared_error
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsRegressor
-matplotlib.use('Agg')
-import csv
 import os
-from mpl_toolkits.mplot3d import Axes3D
-from pylab import show,figure
 import statsmodels.api as sm
-import statsmodels.formula.api as smf
 from sklearn.preprocessing import MinMaxScaler
 
 df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))+"/static/RainyDaysHero/data/LI/PE/dataset.csv")

@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Feb  5 14:28:26 2021
-
-@author: Mon PC
-"""
-
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -15,10 +7,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsRegressor
 
-import csv
 import os
-matplotlib.use('Agg')
-
 from sklearn.preprocessing import MinMaxScaler
 
 df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))+"/static/RainyDaysHero/data/LI/PE/dataset.csv")
