@@ -14,6 +14,7 @@ from string import ascii_uppercase
 
 import after_response
 from django.templatetags.static import static
+import numpy as np
 
 ## forms
 from RainyDaysHero.app_forms.termInsuranceForm import TermInsuranceForm,TermInsuranceReserveForm,TermInsuranceStressForm, TermInsuranceBSForm
@@ -153,8 +154,9 @@ def terminsuranceAccounting(request):
                 result = termInsuranceModels.total_balance_sheet_predicted(mortalityStress,interestRateStress,adaptedModel)
             else:
                 result = termInsuranceModels.total_balance_sheet_true(mortalityStress,interestRateStress,adaptedModel)
-        for x in result:
-            print(x);print()
+        #for x in result:
+            #print(x);print()
+        context['years'] = result
         return HttpResponse(template.render(context, request))
 
 
@@ -253,6 +255,7 @@ def terminsuranceStress(request):
                     res = termInsuranceModels.plot_p_and_l_point_interest(TH,x,i,n,m,a)
                     context['a'] = json.dumps(list(res[0]))
                     context['b'] = json.dumps(list(map(float,list(res[1]))))
+
         return HttpResponse(template.render(context, request))
 
 '''

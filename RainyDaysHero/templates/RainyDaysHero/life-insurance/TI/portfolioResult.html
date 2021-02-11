@@ -8,18 +8,52 @@
 
 {% block content %}
 
-	<div class="container my-2 block-content" style={visibility='hidden'}>
-	  <div class="row">
-	    <div class="col-md-12 mx-auto myform">
-	    <h3 class="formtitle">Portfolio Result</h1>
+ <div class="container my-2 block-content" >
+        <div class="row">
+            <div class="col-md-12 mx-auto myform">
+                <h3 class="formtitle">Term Insurance Accounting Result</h3>
+                {% for year in years %}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col" colspan="4">Balance sheet year {{year.7}} </th>
+                        </tr>
+                         <tr>
+                            <th scope="col" colspan="2">ASSET</th>
+                             <th scope="col" colspan="2">LIABILITY</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Premiums</td>
+                            <td>10</td>
+                            <td>Claims</td>
+                            <td>20</td>
+                        </tr>
+                         <tr>
+                            <td>Financial Income</td>
+                            <td>100</td>
+                            <td>Premium Reserves</td>
+                            <td>200</td>
+                        </tr>
+                         <tr>
+                            <td>Last Premium Reserves</td>
+                            <td>12345</td>
+                        </tr>
+                        <tr>
+                            <td>Total Asset</td>
+                            <td>5000</td>
+                            <td>Total Liability</td>
+                            <td>6000</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                {% endfor %}
 
-	    Portfolio Result.
-	    <br> <br>
+                <br> <br>
 
-
-
-	    </div>
-	  </div>
-	</div>
+            </div>
+        </div>
+    </div>
     
 {% endblock %}

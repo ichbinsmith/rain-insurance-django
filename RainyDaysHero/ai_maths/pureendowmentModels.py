@@ -1,10 +1,9 @@
+import numpy as np
 from .pureendowment import Pure_endowment, PE_reserves, balancesheetPE, stresstest_PE
 
 
 def Pure_endowment_predicted_polynomiale_scaled(x,m,n,i,a,degree=8):
 	return Pure_endowment.Pure_endowment_predicted_polynomiale_scaled(x,m,n,i,a,degree)
-
-
 
 ##Reserves
 def reserves_sum(stress_MT=0,stress_interest_rates=0,adapt=True):

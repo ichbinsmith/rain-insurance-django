@@ -40,6 +40,18 @@ def portfolio(request):
         template = loader.get_template('RainyDaysHero/life-insurance/TI/portfolioResult.html')
         form = PortfolioForm(request.POST)
         context = dict(form= form)
+        IAOrActuarial = form['IAorActuarial'].value()
+        adaptedModel = form['adaptedModel'].value() == 'Yes'
+        mortalityStress = float(form['mortalityStress'].value()) / 100
+        interestRateStress = float(form['interestRateStress'].value()) / 100
+
+        ##TO DO : use appropriate function
+        if IAOrActuarial=='IA':
+            result = termInsuranceModels.total_balance_sheet_true(mortalityStress, interestRateStress, adaptedModel)
+        else:
+            result = termInsuranceModels.total_balance_sheet_true(mortalityStress, interestRateStress, adaptedModel)
+
+        context['years'] = result
         return HttpResponse(template.render(context, request))
 
 
