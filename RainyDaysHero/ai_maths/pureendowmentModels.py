@@ -55,7 +55,7 @@ def balance_sheet_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True)
 	for term in range(0,n):
 	            for smash in range (0,7):
 	                listcontract[term][smash]=test[smash][term]
-	            listcontract[term][7]=term+1     
+	            listcontract[term][7]=int(term+1)     
 	return(listcontract)
 
 def balance_sheet_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True):
@@ -65,7 +65,7 @@ def balance_sheet_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True
 	for term in range(0,n):
 	            for smash in range (0,7):
 	                listcontract[term][smash]=test[smash][term]
-	            listcontract[term][7]=term+1     
+	            listcontract[term][7]=int(term+1)     
 	return(listcontract)
 
 

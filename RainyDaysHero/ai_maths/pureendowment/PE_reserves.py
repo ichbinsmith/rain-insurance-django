@@ -21,7 +21,7 @@ matplotlib.use('Agg')
 
 from sklearn.preprocessing import MinMaxScaler
 
-df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))+"/static/RainyDaysHero/data/LI/TI/dataset.csv")
+df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))+"/static/RainyDaysHero/data/LI/PE/dataset.csv")
 
 X =df[['age','nb_payements','maturity','interest_rate','amount']]
 
@@ -173,14 +173,14 @@ def reserves_sum(stress_MT=0,stress_interest_rates=0,adapt=True):
              level_annual_premium_total.append(np.sum(level_annual_premium[:,term]))
              natural_premium_total.append(np.sum(natural_premium[:,term]))
              reserve_total.append(np.sum(listcontract[:,term]))
-     p1,=plt.plot(np.arange(0,41,1),level_annual_premium_total,label='level annual premiums')    
-     p2,=plt.plot(np.arange(0,41,1),reserve_total,label='real reserves')
-     p3,=plt.plot(np.arange(0,41,1),natural_premium_total,label='natural premium')
-     plt . xlabel ('Years', fontsize =20)
-     plt . ylabel ('Reserves', fontsize =20)
-     plt . title ('Reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
-     plt . legend ( handles =[p1 , p2,p3],fontsize =16)
-     plt.show()
+#     p1,=plt.plot(np.arange(0,41,1),level_annual_premium_total,label='level annual premiums')    
+#     p2,=plt.plot(np.arange(0,41,1),reserve_total,label='real reserves')
+#     p3,=plt.plot(np.arange(0,41,1),natural_premium_total,label='natural premium')
+#     plt . xlabel ('Years', fontsize =20)
+#     plt . ylabel ('Reserves', fontsize =20)
+#     plt . title ('Reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
+#     plt . legend ( handles =[p1 , p2,p3],fontsize =16)
+#     plt.show()
      return([i for i in range(1,42)],reserve_total,natural_premium_total,level_annual_premium_total)          
 
 
@@ -270,14 +270,14 @@ def reserves_sum_knn(stress_MT=0,stress_interest_rates=0,adapt=True):
             natural_premium_total.append(np.sum(natural_premium[:,term]))
             level_annual_premium_total.append(np.sum( level_annual_premium[:,term]))
 
-    p1,=plt.plot(np.arange(0,41,1),level_annual_premium_total,label='level annual premiums')    
-    p3,=plt.plot(np.arange(0,41,1),natural_premium_total,label='natural premium')
-    p2,=plt.plot(np.arange(0,41,1),recurrence2,label='KNN reserves')
-    plt . xlabel ('Years', fontsize =20)
-    plt . ylabel ('Reserves', fontsize =20)
-    plt . title ('KNN reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
-    plt . legend ( handles =[p1 , p2,p3],fontsize =16)
-    plt.show()
+#    p1,=plt.plot(np.arange(0,41,1),level_annual_premium_total,label='level annual premiums')    
+#    p3,=plt.plot(np.arange(0,41,1),natural_premium_total,label='natural premium')
+#    p2,=plt.plot(np.arange(0,41,1),recurrence2,label='KNN reserves')
+#    plt . xlabel ('Years', fontsize =20)
+#    plt . ylabel ('Reserves', fontsize =20)
+#    plt . title ('KNN reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
+#    plt . legend ( handles =[p1 , p2,p3],fontsize =16)
+#    plt.show()
     reserve_total=recurrence2
 
     return([i for i in range(1,42)],reserve_total,natural_premium_total,level_annual_premium_total)
@@ -393,15 +393,15 @@ def reserves_predicted_scale_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, 
             else:
                 listcontract[0][term]=(left)/down
         recurrence1=listcontract[0]   
-    p1,=plt.plot(np.arange(0,n+1,1),recurrence1,label='AI model reserves')   
-    p5,=plt.plot(np.arange(0,n,1),list_natural_premium1[0][0:n],label='KNN model natural premiums')
-    p6,=plt.plot(np.arange(0,n,1),list_annual_premium1[0][0:n],label='KNN model annual premiums')  
-
-    plt . xlabel ('Years', fontsize =20)
-    plt . ylabel ('Reserves', fontsize =20)
-    plt . title ('Reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
-    plt . legend ( handles =[p1,p5,p6],fontsize =16)
-    plt.show()          
+#    p1,=plt.plot(np.arange(0,n+1,1),recurrence1,label='AI model reserves')   
+#    p5,=plt.plot(np.arange(0,n,1),list_natural_premium1[0][0:n],label='KNN model natural premiums')
+#    p6,=plt.plot(np.arange(0,n,1),list_annual_premium1[0][0:n],label='KNN model annual premiums')  
+#
+#    plt . xlabel ('Years', fontsize =20)
+#    plt . ylabel ('Reserves', fontsize =20)
+#    plt . title ('Reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
+#    plt . legend ( handles =[p1,p5,p6],fontsize =16)
+#    plt.show()          
     return([i for i in range(1,n+2)],recurrence1,list_annual_premium1[0],list_natural_premium1[0])    
         
 
@@ -456,35 +456,16 @@ def reserves_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True):
                 listcontract[0][term]=(left)/down
         recurrence2=listcontract[0]
         
-    p2,=plt.plot([i for i in range(1,n+2)],recurrence2,label='real reserves')
-    p3,=plt.plot(np.arange(1,n+1,1),list_natural_premium2[0][0:n],label='real natural premiums')
-    p4,=plt.plot(np.arange(1,n+1,1),list_annual_premium2[0][0:n],label='real annual premiums')    
-    plt . xlabel ('Years', fontsize =20)
-    plt . ylabel ('Reserves', fontsize =20)
-    plt . title ('Reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
-    plt . legend ( handles =[p2,p3,p4],fontsize =16)
-    plt.show()          
+#    p2,=plt.plot([i for i in range(1,n+2)],recurrence2,label='real reserves')
+#    p3,=plt.plot(np.arange(1,n+1,1),list_natural_premium2[0][0:n],label='real natural premiums')
+#    p4,=plt.plot(np.arange(1,n+1,1),list_annual_premium2[0][0:n],label='real annual premiums')    
+#    plt . xlabel ('Years', fontsize =20)
+#    plt . ylabel ('Reserves', fontsize =20)
+#    plt . title ('Reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
+#    plt . legend ( handles =[p2,p3,p4],fontsize =16)
+#    plt.show()          
     return([i for i in range(1,n+2)],recurrence2,list_annual_premium2[0],list_natural_premium2[0])    
  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

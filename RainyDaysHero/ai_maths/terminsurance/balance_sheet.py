@@ -193,7 +193,7 @@ def total_balance_sheet_true(stress_MT=0,stress_interest_rates=0, adapt=True):
         for term in range(0,n):
             for smash in range (0,7):
                 listcontract[term][smash]=listcontract[term][smash]+bs[smash][term]
-            listcontract[term][7]=term+1      
+            listcontract[term][7]=int(term+1)      
     return(listcontract)   
         
 
@@ -214,7 +214,7 @@ def total_balance_sheet_predicted(stress_MT=0,stress_interest_rates=0, adapt=Tru
         for term in range(0,n):
             for smash in range (0,7):
                 listcontract[term][smash]=listcontract[term][smash]+bs[smash][term]
-            listcontract[term][7]=term+1      
+            listcontract[term][7]=int(term+1)      
     return(listcontract)   
     
     
