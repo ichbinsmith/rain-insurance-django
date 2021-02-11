@@ -1,0 +1,64 @@
+{% extends 'RainyDaysHero/base-second.html' %}
+
+{% block additionnal-head-conf %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/css/styleQuotationForm.css' %}">
+    <script type="text/javascript" src="{% static 'RainyDaysHero/js/chart-min.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="container my-2 block-content" >
+        <div class="row">
+            <div class="col-md-12 mx-auto myform">
+                <h3 class="formtitle">Term Insurance Accounting Result</h3>
+                <br>
+                <br>
+                {% for year in years %}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr class="table-primary">
+                                <th scope="col" colspan="4">Balance sheet year {{year.7}} </th>
+                            </tr>
+                            <tr>
+                                <th scope="col" colspan="2" class="table-success">ASSET</th>
+                                <th scope="col" colspan="2" class="table-warning">LIABILITY</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Premiums</td>
+                                <td>{{ year.0 }}</td>
+                                <td>Claims</td>
+                                <td>{{ year.3 }}</td>
+                            </tr>
+                            <tr>
+                                <td>Financial Income</td>
+                                <td>{{ year.1 }}</td>
+                                <td>Premium Reserves</td>
+                                <td>{{ year.4 }}</td>
+                            </tr>
+                            <tr>
+                                <td>Last Premium Reserves</td>
+                                <td>{{ year.2 }}</td>
+                            </tr>
+                            <tr class="table-info">
+                                <td>Total Asset</td>
+                                <td>{{ year.5 }}</td>
+                                <td>Total Liability</td>
+                                <td>{{ year.6 }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+
+                <br> <br>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

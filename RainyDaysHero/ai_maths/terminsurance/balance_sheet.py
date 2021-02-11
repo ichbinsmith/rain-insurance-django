@@ -5,7 +5,7 @@ Created on Fri Jan 29 01:27:52 2021
 @author: Mon PC
 """
 
-import  reserves,stresstest
+from RainyDaysHero.ai_maths.terminsurance import  reserves,stresstest
 import numpy as np
 import os
 import pandas as pd
@@ -32,30 +32,30 @@ y = df['target']
 def balance_sheet_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True): 
     if adapt==True:
         bs=reserves.reserves_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
-        Premiums=bs[1]
-        Financial_income=(bs[0]+Premiums)*i
-        Last_premium_reserves=bs[0]
-        Claims=bs[2]*(1+i)
-        Premium_reserves=bs[0][1:len(bs[0])]
+        Premiums=bs[1+1]
+        Financial_income=(bs[0+1]+Premiums)*i
+        Last_premium_reserves=bs[0+1]
+        Claims=bs[2+1]*(1+i)
+        Premium_reserves=bs[0+1][1:len(bs[0+1])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
         Total_liability=list()
         for age in range(0,len(Premium_reserves)):
-             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,TH)
+             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,stresstest.StressTest_table(TH,stress_MT)[0])
              Total_Asset.append(Financial_income[age]+Premiums[age]+ Last_premium_reserves[age])
              Total_liability.append(Claims[age]+Premium_reserves[age])
     else:
         bs=reserves.reserves_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
-        Premiums=bs[1]
-        Financial_income=(bs[0]+Premiums)*i
-        Last_premium_reserves=bs[0]
-        Claims=bs[2]*(1+i)
-        Premium_reserves=bs[0][1:len(bs[1])]
+        Premiums=bs[1+1]
+        Financial_income=(bs[0+1]+Premiums)*i
+        Last_premium_reserves=bs[0+1]
+        Claims=bs[2+1]*(1+i)
+        Premium_reserves=bs[0+1][1:len(bs[1])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
         Total_liability=list()
         for age in range(0,len(Premium_reserves)):
-             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,TH)
+             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,stresstest.StressTest_table(TH,stress_MT)[0])
              Total_Asset.append(Financial_income[age]+Premiums[age]+ Last_premium_reserves[age])
              Total_liability.append(Claims[age]+Premium_reserves[age])
             
@@ -65,32 +65,34 @@ def balance_sheet_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True
 def balance_sheet_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True): 
     if adapt==True:
         bs=reserves.reserves_predicted_scale_knn(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
-        Premiums=bs[1]
-        Financial_income=(bs[0]+Premiums)*i
-        Last_premium_reserves=bs[0]
-        Claims=bs[2]*(1+i)
-        Premium_reserves=bs[0][1:len(bs[0])]
+        Premiums=bs[1+1]
+        Financial_income=(bs[0+1]+Premiums)*i
+        Last_premium_reserves=bs[0+1]
+        Claims=bs[2+1]*(1+i)
+        Premium_reserves=bs[0+1][1:len(bs[0+1])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
         Total_liability=list()
         for age in range(0,len(Premium_reserves)):
-             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,TH)
              Total_Asset.append(Financial_income[age]+Premiums[age]+ Last_premium_reserves[age])
+             
+             Premium_reserves[age]=Total_Asset[age]-Claims[age]
              Total_liability.append(Claims[age]+Premium_reserves[age])
     else:
         bs=reserves.reserves_predicted_scale_knn(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
-        Premiums=bs[1]
-        Financial_income=(bs[0]+Premiums)*i
-        Last_premium_reserves=bs[0]
-        Claims=bs[2]*(1+i)
-        Premium_reserves=bs[0][1:len(bs[0])]
+        Premiums=bs[1+1]
+        Financial_income=(bs[0+1]+Premiums)*i
+        Last_premium_reserves=bs[0+1]
+        Claims=bs[2+1]*(1+i)
+        Premium_reserves=bs[0+1][1:len(bs[0])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
         Total_liability=list()
         for age in range(0,len(Premium_reserves)):
-             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,TH)
              Total_Asset.append(Financial_income[age]+Premiums[age]+ Last_premium_reserves[age])
-             Total_liability.append(Claims[age]+Premium_reserves[age])            
+            
+             Premium_reserves[age]=Total_Asset[age]-Claims[age]
+             Total_liability.append(Claims[age]+Premium_reserves[age])  
     return Premiums[0:-1],Financial_income[0:-1],Last_premium_reserves[0:-1],Claims[0:-1],Premium_reserves,Total_Asset, Total_liability
 
 
@@ -179,7 +181,7 @@ def balance_sheet_predicted_model(x,n,i,a,m,model,stress_MT=0,stress_interest_ra
 ##  We now compute the total balance sheet
 
 def total_balance_sheet_true(stress_MT=0,stress_interest_rates=0, adapt=True):
-    listcontract=np.zeros((40,7))
+    listcontract=np.zeros((40,8))
     for contract in range(0,len(X)):
         x=int(X.iloc[contract].age)
         m=int(X.iloc[contract].nb_payements)
@@ -187,20 +189,20 @@ def total_balance_sheet_true(stress_MT=0,stress_interest_rates=0, adapt=True):
         i=X.iloc[contract].interest_rate
         a=X.iloc[contract].amount
         bs=balance_sheet_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
-        print(contract)
         for term in range(0,n):
             for smash in range (0,7):
                 listcontract[term][smash]=listcontract[term][smash]+bs[smash][term]
+            listcontract[term][7]=int(term+1)      
     return(listcontract)   
         
 
-def total_balance_sheet_predicted(stress_MT=0,stress_interest_rates=15, adapt=True):
+def total_balance_sheet_predicted(stress_MT=0,stress_interest_rates=0, adapt=True):
     if adapt==True:
         ## First, We compute the best model
         model= reserves.best_model_scale_knn(stress_MT,stress_interest_rates,X=X)
     else:        
         model= reserves.best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)  
-    listcontract=np.zeros((40,7))
+    listcontract=np.zeros((40,8))
     for contract in range(0,len(X)):
         x=int(X.iloc[contract].age)
         m=int(X.iloc[contract].nb_payements)
@@ -211,6 +213,7 @@ def total_balance_sheet_predicted(stress_MT=0,stress_interest_rates=15, adapt=Tr
         for term in range(0,n):
             for smash in range (0,7):
                 listcontract[term][smash]=listcontract[term][smash]+bs[smash][term]
+            listcontract[term][7]=int(term+1)      
     return(listcontract)   
     
     

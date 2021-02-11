@@ -63,19 +63,56 @@
 
   function checkForm(form)
   {
-    // client age 
-    if(form.clientAge.value > 100) {
-      alert("The client age must be less than 100 !");
-      form.clientAge.focus();
-      return false;
-    }
+  	if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Contract'){
+	    //POSITIVITY
+	    //i > 0
+	    if(form.interestRate.value < 0) {
+	      alert("The interest rate must be positive !");
+	      form.interest.focus();
+	      return false;
+	    }
 
-    // n >=m
-    if(form.maturity.value < form.numberOfPayements.value) {
-      alert("The number of payement (m) must be less or equal to the maturity (n) !");
-      form.numberOfPayements.focus();
-      return false;
-    }
+	    //amount > 0
+	    if(form.amount.value <= 0) {
+	      alert("The amount must be strictly positive !");
+	      form.amount.focus();
+	      return false;
+	    }
+
+	    // client age 
+	    if(form.clientAge.value < 0) {
+	      alert("The client age must be positive!");
+	      form.clientAge.focus();
+	      return false;
+	    }
+	    // n
+	    if(form.maturity.value <= 0) {
+	      alert("The maturity (n) must be strictly positive !");
+	      form.maturity.focus();
+	      return false;
+	    }
+	    // m
+	    if(form.numberOfPayements.value <= 0) {
+	      alert("The number of payement (m) must be strictly positive !");
+	      form.numberOfPayements.focus();
+	      return false;
+	    }
+
+	    //SPECIAL CONDITIONS
+	    // client age 
+	    if(form.clientAge.value > 100) {
+	      alert("The client age must be less than 100 !");
+	      form.clientAge.focus();
+	      return false;
+	    }
+
+	    // n >=m
+	    if(form.maturity.value < form.numberOfPayements.value) {
+	      alert("The number of payement (m) must be less or equal to the maturity !");
+	      form.numberOfPayements.focus();
+	      return false;
+	    }
+	}
 
     // validation was successful
     return true;

@@ -1,68 +1,105 @@
 {% extends 'RainyDaysHero/base-second.html' %}
 
 {% block additionnal-head-conf %}
-	{% load static %}
+    {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/css/styleQuotationForm.css' %}">
 {% endblock %}
 
 {% block content %}
 
-	<div class="container my-2 block-content" style={visibility='hidden'}>
-	  <div class="row">
-	    <div class="col-md-12 mx-auto myform">
-	    <h3 class="formtitle">Term Insurance models analysis</h1>
-	    	<p style="text-align: justify;">
+    <div class="container my-2 block-content">
+        <div class="row">
+            <div class="col-md-12 mx-auto">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link text-dark active" id="nav-product-tab" data-toggle="tab" href="#nav-product" role="tab" aria-controls="nav-product" aria-selected="true">Model Analysis</a>
+                        <a class="nav-item nav-link text-dark " id="nav-userguide-tab" data-toggle="tab" href="#nav-userguide" role="tab" aria-controls="nav-userguide" aria-selected="false">P&L</a>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
 
-			What are the different AI models used? <br>
-			First, we use the linear regression. For the second model, called “Lasso”, we first transform the data in order to be able to use a polynomial regression on it and then we use the Lasso regression on this data. That’s why we can show the results with different degrees. The third model is the K-Nearest-Neighbors model. The fourth model implied 2 different polynomial regressions, one for the premiums under 1000 and one for the premiums above. The last one, called “polynomial scaled”, is a scaled polynomial regression that we complete with a KNN method when we predict data which don’t belong to the dataset.<br> 
-			How do we plot the learning curves?<br>
-			There are 3150 data in the dataset. First, we split the dataset in 3: the training set, the validation set and the test set. The training set represents 56% of the dataset, the validation set represents 19% of the dataset and the test set represents 25% of the dataset. The models are only trained on the training set and never with the 2 other sets. The learning curves show the evolution of the precision (R²) with respect to the train set size. On the x-axis, we have the number of data used in the trainset and in the y-axis, we have the precision of the model applied on the validation set and on the test set. 
-			Keep in mind that the test and validation set size never change.
-			</p>
-	    <br> <br>
+                    <div class="tab-pane fade show active" id="nav-product" role="tabpanel" aria-labelledby="nav-product-tab">
+                        <h3 class="formtitle">Term Insurance models analysis</h3>
+                        <p style="text-align: justify;">
 
-	    <ul>
-	    	<li>
-	    		Linear regression (precision: 0.2825 - Root mean squared error: 417.07)
-	    	</li><br>
-	    	<div class="form-group"> 
-	    		<img src="{% static 'RainyDaysHero/images/TI/lc/lc-lr.png' %}" width="500" height="300" >
-	    	</div>
+                            What are the different AI models used? <br>
+                            First, we use the linear regression. For the second model, called “Lasso”, we first transform the data in order to be able to use a polynomial regression on it and then we use the Lasso regression on this data. That’s why we can show the results with different degrees. The third model is the K-Nearest-Neighbors model. The fourth model implied 2 different polynomial regressions, one for the premiums under 1000 and one for the premiums above. The last one, called “polynomial scaled”, is a scaled polynomial regression that we complete with a KNN method when we predict data which don’t belong to the dataset.<br>
+                            How do we plot the learning curves?<br>
+                            There are 3150 data in the dataset. First, we split the dataset in 3: the training set, the validation set and the test set. The training set represents 56% of the dataset, the validation set represents 19% of the dataset and the test set represents 25% of the dataset. The models are only trained on the training set and never with the 2 other sets. The learning curves show the evolution of the precision (R²) with respect to the train set size. On the x-axis, we have the number of data used in the trainset and in the y-axis, we have the precision of the model applied on the validation set and on the test set.
+                            Keep in mind that the test and validation set size never change.
+                        </p>
+                        <br> <br>
 
-	    	<li>
-	    		Lasso (precision: 0.9052 - Root mean squared error: 148.47)
-	    	</li><br>
-	    	<div class="form-group"> 
-	    		<img src="{% static 'RainyDaysHero/images/TI/lc/lc-lasso.png' %}" width="500" height="300" >
-	    	</div>
+                        <ul>
+                            <li>
+                                Linear regression (precision: 0.2825 - Root mean squared error: 417.07)
+                            </li><br>
+                            <div class="form-group">
+                                <img src="{% static 'RainyDaysHero/images/TI/lc/lc-lr.png' %}" width="500" height="300" >
+                            </div>
 
-	    	<li>
-	    		K-Nearest Neighbors (precision: 0.9642 - Root mean squared error: 90.86)
-	    	</li><br>
-	    	<div class="form-group"> 
-	    		<img src="{% static 'RainyDaysHero/images/TI/lc/lc-knn.png' %}" width="500" height="300" > 
-	    		<img src="{% static 'RainyDaysHero/images/TI/r2/R2-neighbors-KNN.png' %}" width="500" height="300" >
-	    	</div>
+                            <li>
+                                Lasso (precision: 0.9052 - Root mean squared error: 148.47)
+                            </li><br>
+                            <div class="form-group">
+                                <img src="{% static 'RainyDaysHero/images/TI/lc/lc-lasso.png' %}" width="500" height="300" >
+                            </div>
 
-	    	<li>
-	    		Polynomial regression (precision: 0.9876 - Root mean squared error: 79.71)
-	    	</li><br>
-	    	<div class="form-group"> 
-	    		<img src="{% static 'RainyDaysHero/images/TI/lc/lc-plr.png' %}" width="500" height="300" >
-	    		<img src="{% static 'RainyDaysHero/images/TI/r2/R2-degree-poly-regression.png' %}" width="500" height="300" >
-	    	</div>
+                            <li>
+                                K-Nearest Neighbors (precision: 0.9642 - Root mean squared error: 90.86)
+                            </li><br>
+                            <div class="form-group">
+                                <img src="{% static 'RainyDaysHero/images/TI/lc/lc-knn.png' %}" width="500" height="300" >
+                                <img src="{% static 'RainyDaysHero/images/TI/r2/R2-neighbors-KNN.png' %}" width="500" height="300" >
+                            </div>
 
-	    	<li>
-	    		Polynomial scaled (precision: 0.9990 - Root mean squared error: 14.90)
-	    	</li><br>
-	    	<div class="form-group"> 
-	    		<img src="{% static 'RainyDaysHero/images/TI/lc/lc-psc.png' %}" width="500" height="300" > 
-	    		<img src="{% static 'RainyDaysHero/images/TI/r2/R2-degree-poly-scaled.png' %}" width="500" height="300" >
-	    	</div>
-	    </ul>
+                            <li>
+                                Polynomial regression (precision: 0.9876 - Root mean squared error: 79.71)
+                            </li><br>
+                            <div class="form-group">
+                                <img src="{% static 'RainyDaysHero/images/TI/lc/lc-plr.png' %}" width="500" height="300" >
+                                <img src="{% static 'RainyDaysHero/images/TI/r2/R2-degree-poly-regression.png' %}" width="500" height="300" >
+                            </div>
 
-	    </div>
-	  </div>
-	</div>
-    
+                            <li>
+                                Polynomial scaled (precision: 0.9990 - Root mean squared error: 14.90)
+                            </li><br>
+                            <div class="form-group">
+                                <img src="{% static 'RainyDaysHero/images/TI/lc/lc-psc.png' %}" width="500" height="300" >
+                                <img src="{% static 'RainyDaysHero/images/TI/r2/R2-degree-poly-scaled.png' %}" width="500" height="300" >
+                            </div>
+                        </ul>
+
+                    </div>
+
+                    <div class="tab-pane fade" id="nav-userguide" role="tabpanel" aria-labelledby="nav-userguide-tab">
+                        <div class="form-group">
+                            <img src="{% static 'RainyDaysHero/images/TI/pnl/age.png' %}" width="500" height="300" >
+                            <br> <br>
+                        </div>
+                        <div class="form-group">
+                            <img src="{% static 'RainyDaysHero/images/TI/pnl/payement.png' %}" width="500" height="300" >
+                            <br> <br>
+                        </div>
+                        <div class="form-group">
+                            <img src="{% static 'RainyDaysHero/images/TI/pnl/maturity.png' %}" width="500" height="300" >
+                            <br> <br>
+                        </div>
+                        <div class="form-group">
+                            <img src="{% static 'RainyDaysHero/images/TI/pnl/rate.png' %}" width="500" height="300" >
+                            <br> <br>
+                        </div>
+                        <div class="form-group">
+                            <img src="{% static 'RainyDaysHero/images/TI/pnl/amount.png' %}" width="500" height="300" >
+                            <br> <br>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

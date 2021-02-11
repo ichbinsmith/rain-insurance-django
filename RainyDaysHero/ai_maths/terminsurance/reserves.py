@@ -1,6 +1,7 @@
 from RainyDaysHero.ai_maths.terminsurance import KNN,stresstest
 
 TH = [100000,99511,99473,99446,99424,99406,99390,99376,99363,99350,99338,99325,99312,99296,99276,99250,99213,99163,99097,99015,98921,98820,98716,98612,98509,98406,98303,98198,98091,97982,97870,97756,97639,97517,97388,97249,97100,96939,96765,96576,96369,96141,95887,95606,95295,94952,94575,94164,93720,93244,92736,92196,91621,91009,90358,89665,88929,88151,87329,86460,85538,84558,83514,82399,81206,79926,78552,77078,75501,73816,72019,70105,68070,65914,63637,61239,58718,56072,53303,50411,47390,44234,40946,37546,34072,30575,27104,23707,20435,17338,14464,11852,9526,7498,5769,4331,3166,2249,1549,1032,663,410,244,139,75,39,19,9,4,2,1]
+
 import pandas as pd
 import numpy as np
 import mglearn as mg
@@ -210,7 +211,7 @@ def reserves_predicted(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True
     plt . title ('Reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
     plt . legend ( handles =[p1,p2,p3,p4,p4,p5],fontsize =16)
     #plt.show()          
-    return([i for i in range(0,n+1)],recurrence1,recurrence2,list_annual_premium2[0],list_annual_premium1[0],list_natural_premium2[0],list_natural_premium1[0])    
+    return([i for i in range(1,n+2)],recurrence1,recurrence2,list_annual_premium2[0],list_annual_premium1[0],list_natural_premium2[0],list_natural_premium1[0])    
         
 
 
@@ -288,7 +289,7 @@ def reserves_sum(stress_MT=0,stress_interest_rates=0,adapt=False):
      plt . title ('Reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
      plt . legend ( handles =[p1 , p2,p3],fontsize =16)
      #plt.show()
-     return ([i for i in range(0,41)],reserve_total,natural_premium_total,level_annual_premium_total)          
+     return ([i for i in range(1,42)],reserve_total,natural_premium_total,level_annual_premium_total)          
 
 
 def reserves_sum_knn(stress_MT=0,stress_interest_rates=0,adapt=True): 
@@ -374,7 +375,7 @@ def reserves_sum_knn(stress_MT=0,stress_interest_rates=0,adapt=True):
     # plt.show()
     reserve_total=recurrence2
 
-    return([i for i in range(0,41)], reserve_total,natural_premium_total,level_annual_premium_total)
+    return([i for i in range(1,42)], reserve_total,natural_premium_total,level_annual_premium_total)
     
        
 
@@ -527,13 +528,8 @@ def reserves_predicted_scale_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, 
     # plt . title ('Reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
     # plt . legend ( handles =[p1,p5,p6],fontsize =16)
     # plt.show()          
-    return([i for i in range(0,n+1)],recurrence1,list_annual_premium1[0],list_natural_premium1[0])    
+    return([i for i in range(1,n+2)],recurrence1,list_annual_premium1[0],list_natural_premium1[0])    
         
-
-
-
-
-
 
 
 def reserves_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True):
@@ -587,7 +583,7 @@ def reserves_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True):
 #    plt . title ('Reserves with stress on mortality table={}'.format(stress*100)+"%"+" and stress on interest rates={}".format(stress_i*100)+"%",fontsize =16)
 #    plt . legend ( handles =[p2,p3,p4],fontsize =16)
 #    plt.show()          
-    return([i for i in range(0,n+1)],recurrence2,list_annual_premium2[0],list_natural_premium2[0])    
+    return([i for i in range(1,n+2)],recurrence2,list_annual_premium2[0],list_natural_premium2[0])    
  
 
 

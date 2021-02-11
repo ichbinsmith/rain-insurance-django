@@ -16,6 +16,10 @@ from .app_views.lifeinsurance.terminsurance import terminsurance
 from .app_views.lifeinsurance.terminsurance import terminsuranceAnalysis
 from .app_views.lifeinsurance.terminsurance import terminsuranceReserve
 from .app_views.lifeinsurance.terminsurance import terminsuranceAccounting
+from .app_views.lifeinsurance.terminsurance import terminsuranceStress
+from .app_views.lifeinsurance.general import portfolio
+from .app_views.lifeinsurance.general import lxQxStress
+
 
 
 
@@ -28,7 +32,10 @@ urlpatterns = [
     path('terminsurance/', terminsurance, name='terminsurance'),
     path('terminsurance-analysis/', terminsuranceAnalysis, name='terminsuranceAnalysis'),
     path('terminsurance-reserve/', terminsuranceReserve, name='terminsuranceReserve'),
+    path('terminsurance-stress/', terminsuranceStress, name='terminsuranceStress'),
     path('terminsurance-accounting/', terminsuranceAccounting, name='terminsuranceAccounting'),
+    path('lx-qx-stress/', lxQxStress, name='lxQxStress'),
+    path('portfolio/', portfolio, name='portfolio'),
     path('contact/', contact, name='contact'),
     path('about/', about, name='about'),
     path('userguide/', userguide, name='userguide'),
