@@ -37,7 +37,6 @@ for inc in range(20,70,10):
     
 ##We will now compute the balance sheet and multiply all the contratcs computed by the percentage of people of this age
 
-
 def Portfolio_true(stress_MT=0,stress_interest_rates=0, adapt=True):
     listcontract=np.zeros((40,8))
     for contract in range(0,len(X)):
