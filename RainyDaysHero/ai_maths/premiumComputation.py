@@ -30,6 +30,11 @@ def TermInsuranceAnnual(x,m,n,i,a):
     for j in range(1,n+1): NA+=MNQX(x,1,j-1) * TechDF(j,i)
     return  f'{((NA / AnnuityFromZeroToM(x,i,m) )* a):.2f}' 
 
+def TermInsuranceAnnualToTest(x,m,n,i,a):
+    NA = 0
+    for j in range(1,n+1): NA+=MNQX(x,1,j-1) * TechDF(j,i)
+    return  f'{((NA / AnnuityFromZeroToM(x,i,m) )* a):.9f}' 
+
 #Pure Endowment
 def SinglePremiumPE(x,n,i,a):
     return (1/(1+i)**n * (lx[n+x]/lx[x]) )*a

@@ -262,7 +262,16 @@ if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='To
 	      form.numberOfPayements.focus();
 	      return false;
 	    }
+
+
 	}
+
+	//stress on mortality must be in [-100,100]
+    if(form.mortalityStress.value < -100 || form.mortalityStress.value > 100 ) {
+      alert("The mortality stress must be in range [-100,100] !");
+      form.mortalityStress.focus();
+      return false;
+    }
 
     // validation was successful
     return true;

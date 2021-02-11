@@ -55,20 +55,28 @@ def lxQxStress(request):
         context['c'] = json.dumps(list([1,2,3,4]))
         context['labelOne'] = 'None'
         context['labelTwo'] = 'None'
+
         return HttpResponse(template.render(context, request))
     else:
         template = loader.get_template('RainyDaysHero/life-insurance/TI/lxQxStress.html')
         form = LxQxStressForm(request.POST)
         if form.is_valid():
             context['form'] = form
-            #compute price
-            stressOn, stressOnTable= form['stressOn'].value(),form['stressOnTable'].value()
+            #compute lxqx
 
-            context['a'] = json.dumps(list([0,1,2,3]))
-            context['b'] = json.dumps(list([4,3,2,1]))
-            context['c'] = json.dumps(list([1,2,3,4]))
+            stressOn, stressOnTable= form['stressOn'].value(),float(form['stressOnTable'].value())/100
+
+            if stressOn=='Lx':
+                context['a'] = json.dumps(list([i for i in range(111)]))
+                context['b'] = json.dumps(list(termInsuranceModels.lx_evolution(0)[1]))
+                context['c'] = json.dumps(list(termInsuranceModels.lx_evolution(stressOnTable)[1]))
+            else:
+                context['a'] = json.dumps(list([i for i in range(111)]))
+                context['b'] = json.dumps(list(termInsuranceModels.qx_evolution(0)[1]))
+                context['c'] = json.dumps(list(termInsuranceModels.qx_evolution(stressOnTable)[1]))
             context['labelOne'] = stressOn
             context['labelTwo'] = stressOn+' Stressed'
             context['requestType'] = 'POST'
+
             return HttpResponse(template.render(context, request))
 
