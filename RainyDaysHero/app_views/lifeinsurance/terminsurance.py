@@ -136,6 +136,25 @@ def terminsuranceAccounting(request):
         template = loader.get_template('RainyDaysHero/life-insurance/TI/terminsuranceAccountingResult.html')
         form = TermInsuranceBSForm(request.POST)
         context = dict(form= form)
+        accountingType = form['contractOrTotal'].value()
+        IAOrActuarial = form['IAorActuarial'].value()
+        adaptedModel = form['adaptedModel'].value() == 'Yes'
+        mortalityStress = float(form['mortalityStress'].value()) / 100
+        interestRateStress = float(form['interestRateStress'].value()) / 100
+
+        if accountingType == 'Contract':
+            x,m,n,i,a = int(form['clientAge'].value()),int(form['numberOfPayements'].value()),int(form['maturity'].value()),float(form['interestRate'].value())/100,float(form['amount'].value())
+            if IAOrActuarial=='IA':
+                result = termInsuranceModels.balance_sheet_knn(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
+            else:
+                result = termInsuranceModels.balance_sheet_true(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
+        else:
+            if IAOrActuarial=='IA':
+                result = termInsuranceModels.total_balance_sheet_predicted(mortalityStress,interestRateStress,adaptedModel)
+            else:
+                result = termInsuranceModels.total_balance_sheet_true(mortalityStress,interestRateStress,adaptedModel)
+        for x in result:
+            print(x);print()
         return HttpResponse(template.render(context, request))
 
 
