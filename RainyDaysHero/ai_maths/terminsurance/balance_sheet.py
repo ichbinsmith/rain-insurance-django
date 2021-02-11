@@ -181,7 +181,7 @@ def balance_sheet_predicted_model(x,n,i,a,m,model,stress_MT=0,stress_interest_ra
 ##  We now compute the total balance sheet
 
 def total_balance_sheet_true(stress_MT=0,stress_interest_rates=0, adapt=True):
-    listcontract=np.zeros((40,7))
+    listcontract=np.zeros((40,8))
     for contract in range(0,len(X)):
         x=int(X.iloc[contract].age)
         m=int(X.iloc[contract].nb_payements)
@@ -193,6 +193,7 @@ def total_balance_sheet_true(stress_MT=0,stress_interest_rates=0, adapt=True):
         for term in range(0,n):
             for smash in range (0,7):
                 listcontract[term][smash]=listcontract[term][smash]+bs[smash][term]
+            listcontract[term][8]=term+1      
     return(listcontract)   
         
 
@@ -202,7 +203,7 @@ def total_balance_sheet_predicted(stress_MT=0,stress_interest_rates=0, adapt=Tru
         model= reserves.best_model_scale_knn(stress_MT,stress_interest_rates,X=X)
     else:        
         model= reserves.best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)  
-    listcontract=np.zeros((40,7))
+    listcontract=np.zeros((40,8))
     for contract in range(0,len(X)):
         x=int(X.iloc[contract].age)
         m=int(X.iloc[contract].nb_payements)
@@ -213,6 +214,7 @@ def total_balance_sheet_predicted(stress_MT=0,stress_interest_rates=0, adapt=Tru
         for term in range(0,n):
             for smash in range (0,7):
                 listcontract[term][smash]=listcontract[term][smash]+bs[smash][term]
+            listcontract[term][8]=term+1      
     return(listcontract)   
     
     

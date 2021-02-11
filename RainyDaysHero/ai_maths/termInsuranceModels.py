@@ -71,17 +71,19 @@ def total_balance_sheet_predicted(stress_MT=0,stress_interest_rates=0, adapt=Tru
 
 def balance_sheet_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True):
 	test= balance_sheet.balance_sheet_knn(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
-	listcontract=listcontract=np.zeros((m,7))
+	listcontract=listcontract=np.zeros((m,8))
 	for term in range(0,n):
 	            for smash in range (0,7):
 	                listcontract[term][smash]=test[smash][term]
+	            listcontract[term][8]=term+1    
 	return(listcontract)
 
 def balance_sheet_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True):
 	test= balance_sheet.balance_sheet_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
 
-	listcontract=listcontract=np.zeros((m,7))
+	listcontract=listcontract=np.zeros((m,8))
 	for term in range(0,n):
 	            for smash in range (0,7):
 	                listcontract[term][smash]=test[smash][term]
+	            listcontract[term][8]=term+1     
 	return(listcontract)
