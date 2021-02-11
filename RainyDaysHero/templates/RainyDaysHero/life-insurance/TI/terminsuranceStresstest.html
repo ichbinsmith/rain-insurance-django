@@ -1,265 +1,362 @@
 {% extends 'RainyDaysHero/base-second.html' %}
 
 {% block additionnal-head-conf %}
-	{% load static %}
+    {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/css/styleQuotationForm.css' %}">
     <script type="text/javascript" src="{% static 'RainyDaysHero/js/chart-min.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 
-	<div class="container my-2 block-content" style={visibility='hidden'}>
-	  <div class="row">
-	    <div class="col-md-6 mx-auto myform">
-	    <h3 class="formtitle">Term Insurance Stresstest</h3>
+    <div class="container my-2 block-content">
+        <div class="row">
+            <div class="col-md-6 mx-auto myform">
+                <h3 class="formtitle">Term Insurance Stresstest</h3>
 
-		<form action="/rdh/terminsurance-stress/" method="post" onsubmit="return checkForm(this);" >
-			{% csrf_token %}
+                <form action="/rdh/terminsurance-stress/" method="post" onsubmit="return checkForm(this);" >
+                    {% csrf_token %}
 
-		<div class="form-group">
-	        {{ form.contractOrTotal }}
-	        <label class="form-control-placeholder" for="{{ form.contractOrTotal.id_for_label }}">{{form.contractOrTotal.label}}</label>
-	     </div>
+                    <div class="form-group">
+                        {{ form.contractOrTotal }}
+                        <label class="form-control-placeholder" for="{{ form.contractOrTotal.id_for_label }}">{{form.contractOrTotal.label}}</label>
+                    </div>
 
-		<!--<div id="contract" style="display: none;">-->
-		<div id="contract">
+                    <!--<div id="contract" style="display: none;">-->
+                    <div id="contract">
 
-			<div class="form-group">
-		        {{ form.stressOn }}
-		        <label class="form-control-placeholder" for="{{ form.stressOn.id_for_label }}">{{form.stressOn.label}}</label>
-		     </div>
+                        <div class="form-group">
+                            {{ form.stressOn }}
+                            <label class="form-control-placeholder" for="{{ form.stressOn.id_for_label }}">{{form.stressOn.label}}</label>
+                        </div>
 
-			<div class="form-group">
-		        {{ form.stressType }}
-		        <label class="form-control-placeholder" for="{{ form.stressType.id_for_label }}">{{form.stressType.label}}</label>
-		     </div>
+                        <div class="form-group">
+                            {{ form.stressType }}
+                            <label class="form-control-placeholder" for="{{ form.stressType.id_for_label }}">{{form.stressType.label}}</label>
+                        </div>
 
-			  <div class="form-group">
-		        {{ form.clientAge}}
-		        <label class="form-control-placeholder" for="{{ form.clientAge.id_for_label }}">Age</label>
-		      </div>
+                        <div class="form-group">
+                            {{ form.clientAge}}
+                            <label class="form-control-placeholder" for="{{ form.clientAge.id_for_label }}">Age</label>
+                        </div>
 
-		      <div class="form-group">
-		        {{ form.numberOfPayements}}
-		        <label class="form-control-placeholder" for="{{ form.numberOfPayements.id_for_label }}">Number of payements</label>
-		      </div>
+                        <div class="form-group">
+                            {{ form.numberOfPayements}}
+                            <label class="form-control-placeholder" for="{{ form.numberOfPayements.id_for_label }}">Number of payements</label>
+                        </div>
 
-		      <div class="form-group">
-		        {{ form.maturity }}
-		        <label class="form-control-placeholder" for="{{ form.maturity.id_for_label }}">Maturity</label>
-		      </div>
+                        <div class="form-group">
+                            {{ form.maturity }}
+                            <label class="form-control-placeholder" for="{{ form.maturity.id_for_label }}">Maturity</label>
+                        </div>
 
-		      <div class="form-group">
-		        {{ form.interestRate }}
-		        <label class="form-control-placeholder" for="{{ form.interestRate.id_for_label }}">{{ form.interestRate.label }}</label>
-		      </div>
+                        <div class="form-group">
+                            {{ form.interestRate }}
+                            <label class="form-control-placeholder" for="{{ form.interestRate.id_for_label }}">{{ form.interestRate.label }}</label>
+                        </div>
 
-		      <div class="form-group">
-		        {{ form.amount }}
-		        <label class="form-control-placeholder" for="{{ form.amount.id_for_label }}">{{ form.amount.label }}</label>
-		      </div>
+                        <div class="form-group">
+                            {{ form.amount }}
+                            <label class="form-control-placeholder" for="{{ form.amount.id_for_label }}">{{ form.amount.label }}</label>
+                        </div>
 
-		      <div class="form-group">
-		        <button type="submit" class="btn btn-dark">Compute</button>
-		      </div>
-			
-		</div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-dark">Compute</button>
+                        </div>
 
-		</form>
+                    </div>
 
-	    </div> <!--My form-->
+                </form>
 
-	    <!--Stress contract result-->
-	    <div id="stressContractResult" class="col-md-6 mx-auto myform"> 
-	    	 <h3 class="formtitle">Stresstest Contract result</h3>
-		     <div class="form-group">
-		            <div class="card">
-		                <div class="card-body">
-		                    <canvas id="reserveChart"></canvas>
-		                </div>
-		            </div>
-	         </div>
+            </div> <!--My form-->
 
-	    </div> 
-	    <!--Stress contract result-->
+            <!--Stress contract result-->
+            <div id="stressContractResult" class="col-md-6 mx-auto myform">
+                <h3 class="formtitle">Stresstest Contract result</h3>
+                <div class="form-group">
+                    <div class="card">
+                        <div class="card-body">
+                            <canvas id="reserveChart"></canvas>
+                        </div>
+                    </div>
+                </div>
 
-	    <!--Stress Total result-->
-	    <div id="stressTotalResult" class="col-md-12 mx-auto myform"> 
-	    	 <h3 class="formtitle">Stress Total result</h3>
-		     <div class="form-group">
-		            RESULT TOTAL
-	         </div>
-	    </div>
-	    <!--Stress Total result-->
+            </div>
+            <!--Stress contract result-->
 
-	  </div> <!--Row-->
+            <!--Stress Total result-->
+            <div id="stressTotalResult" class="col-md-12 mx-auto myform">
+                <h3 class="formtitle">Analysis for all contracts</h3>
+                <div class="form-group">
+                    <p style="text-align: justify;">
+                        In order to stress the mortality table, we will change the death probability for all ages, qx, and then compute again the new lx of the table. The formula used is this: qx stressed=qx(1-stress)
 
-	</div> <!--Container-->
+                    </p>
 
+                    <p style="text-align: justify;">
+                        When the stress is under 0, the death probability increases and when the stress is over 0, the death probability decreases.
+                        In order to stress the interest rate, we will just add the stress to the current interest rate, i.
+                        When the stress is under 0, the interest rates decrease and when the stress is over 0, the interest rates increase.
 
-<script type="text/javascript">
-//stress type form switch
-function stressTypeSwitch(){
-	if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Contract'){
-		document.getElementById("stressTotalResult").style.display="none";
-		document.getElementById("contract").style.display="block";
-	}
-	if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Total'){
-		document.getElementById("stressTotalResult").style.display="block";
-		document.getElementById("contract").style.display="none";
-		document.getElementById("stressContractResult").style.display="none";
-	}
-}
-//stress type form switch end
-function checkRequestType(){
-if('{{requestType}}'=='GET'){
-	document.getElementById("stressTotalResult").style.display="none";
-	document.getElementById("stressContractResult").style.display="none";
-}else{
-	document.getElementById("stressTotalResult").style.display="none";
-	document.getElementById("stressContractResult").style.display="block";
-	var ctxL = document.getElementById("reserveChart").getContext('2d');
-	var aLocal = {{ a|safe }};
-	var bLocal = {{ b|safe }};
-	var cLocal = {{ c|safe }};
-	var dLocal = {{ d|safe }};
+                    </p>
 
-	if('{{plotNumber}}'=='1'){
-		//chart begin
-		var myLineChart = new Chart(ctxL, {
-		type: 'line',
-		data: {
-			labels: aLocal,
-			datasets: [{
-				label: '{{labelOne}}',
-				data:  bLocal,
-				backgroundColor: [
-				'rgba(105, 0, 132, .2)',
-				],
-				borderColor: [
-				'rgba(200, 99, 132, .7)',
-				],
-				borderWidth: 2
-			}
-			]
-		},
-		options: {
-		responsive: true
-		}
-		});
-		//chart end
+                    <p style="text-align: justify;">
+                        We will divide the stress test in different steps and consider that we are working on 2 different companies: the first one, using the actuarial calculation and the second one, using the artificial calculation.
+                        We will begin with the stress on the mortality table.
 
-	}else{
-		//chart begin
-		var myLineChart = new Chart(ctxL, {
-		type: 'line',
-		data: {
-			labels: aLocal,
-			datasets: [{
-				label: '{{labelOne}}',
-				data:  bLocal,
-				backgroundColor: [
-				'rgba(105, 0, 132, .2)',
-				],
-				borderColor: [
-				'rgba(200, 99, 132, .7)',
-				],
-				borderWidth: 2
-			},
-			{
-				label: '{{labelTwo}}',
-				data:  cLocal,
-				backgroundColor: [
-				'rgba(0, 137, 132, .2)',
-				],
-				borderColor: [
-				'rgba(0, 10, 130, .7)',
-				],
-				borderWidth: 2
-			},
-			{
-				label: '{{labelThree}}',
-				data:  dLocal,
-				backgroundColor: [
-				'rgba(0, 17, 172, .2)',
-				],
-				borderColor: [
-				'rgba(0, 10, 130, .7)',
-				],
-				borderWidth: 2
-			}
-			]
-		},
-		options: {
-		responsive: true
-		}
-		});
-		//chart end
-	}
+                    </p>
+
+                    <p style="text-align: justify;">
+                        Step 0: <br>
+                        We will compute the profit and loss of the sum of all the contracts without any stress test.
+                        Without any stress, the implicit loading for the first company is 0.
+                        For the second company, there is already a profit of 1429.63.
+
+                    </p>
+
+                    <p style="text-align: justify;">
+                        Step 1: <br>
+                        We stress the mortality table.
+                        The profit and loss of the first company is not 0 anymore
+                        On the left of the graph, the death probability increases and in the right it decreases.<br>
+
+                    </p>
+                    <img src="{% static 'RainyDaysHero/images/TI/stress/Picture1.png' %}" width="500" height="300" >
+                    <br>
+                    <br>
+                    <br>
+
+                    <p style="text-align: justify;">
+                        The profit and loss for the second company is not 0 neither and the gap increased.
+                    </p>
+                    <img src="{% static 'RainyDaysHero/images/TI/stress/Picture2.png' %}" width="500" height="300" >
+                    <br>
+                    <br>
+                    <br>
+
+                    <p style="text-align: justify;">
+                        Step 2: <br>
+                        Now both companies will adapt their prices. In reality it can take a long time but here we will disregard this fact.
+                        The first company has a profit and loss equal to 0 again because the company adapted the mortality table.
+                        The second one adapted its AI based on the prices found on the market. The profit and loss will decrease a lot compared to the step 1, but it won’t be 0. By the way, it is not equal to the profit of step 0 because the AI is now adapted to a stressed market.
+
+                    </p>
+                    <img src="{% static 'RainyDaysHero/images/TI/stress/Picture3.png' %}" width="500" height="300" >
+                    <br>
+                    <br>
+                    <br>
+
+                    <p style="text-align: justify;">
+                        We will do the same but with the stress on the interest rate. <br> <br>
+                        Step 0: <br>
+                        We will compute the profit and loss of the sum of all the contracts without any stress test.
+                        Without any stress, the implicit loading for the first company is 0.
+                        For the second company, there is already a profit of 1429.63. <br> <br>
+
+                        Step 1: <br>
+                        We stress the interest rate.
+                        The profit and loss of the first company is not 0 anymore
+                        On the left of the graph, the interest rate decreases and in the right it increases.
+
+                    </p>
+                    <img src="{% static 'RainyDaysHero/images/TI/stress/Picture4.png' %}" width="500" height="300" >
+                    <br>
+                    <br>
+                    <br>
+
+                    <p style="text-align: justify;">
+                        The profit and loss for the second company is not 0 neither and the gap increased.
+                    </p>
+                    <img src="{% static 'RainyDaysHero/images/TI/stress/Picture5.png' %}" width="500" height="300" >
+                    <br>
+                    <br>
+                    <br>
+
+                    <p style="text-align: justify;">
+                        Step 2: <br>
+                        Now both companies adapt their prices.
+                        The first company has a profit and loss equal to 0 again because the company adapted the mortality table.
+                        The second one adapted its AI based on the prices found on the market. The profit and loss will decrease a lot compared to the step 1, but it won’t be 0. By the way, it is not equal to the profit of step 0 because the AI is now adapted to a stressed market.
+
+                    </p>
+
+                    <img src="{% static 'RainyDaysHero/images/TI/stress/Picture6.png' %}" width="500" height="300" >
+                    <br>
+                    <br>
+                    <br>
 
 
- }
- stressTypeSwitch();
-}
+                </div>
+            </div>
+            <!--Stress Total result-->
 
-window.onload = checkRequestType
+        </div> <!--Row-->
 
-  function checkForm(form)
-  {
-  	if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Contract'){
-	    //POSITIVITY
-	    //i > 0
-	    if(form.interestRate.value < 0) {
-	      alert("The interest rate must be positive !");
-	      form.interest.focus();
-	      return false;
-	    }
+    </div> <!--Container-->
 
-	    //amount > 0
-	    if(form.amount.value <= 0) {
-	      alert("The amount must be strictly positive !");
-	      form.amount.focus();
-	      return false;
-	    }
 
-	    // client age 
-	    if(form.clientAge.value < 0) {
-	      alert("The client age must be positive!");
-	      form.clientAge.focus();
-	      return false;
-	    }
-	    // n
-	    if(form.maturity.value <= 0) {
-	      alert("The maturity (n) must be strictly positive !");
-	      form.maturity.focus();
-	      return false;
-	    }
-	    // m
-	    if(form.numberOfPayements.value <= 0) {
-	      alert("The number of payement (m) must be strictly positive !");
-	      form.numberOfPayements.focus();
-	      return false;
-	    }
+    <script type="text/javascript">
+        //stress type form switch
+        function stressTypeSwitch(){
+            if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Contract'){
+                document.getElementById("stressTotalResult").style.display="none";
+                document.getElementById("contract").style.display="block";
+            }
+            if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Total'){
+                document.getElementById("stressTotalResult").style.display="block";
+                document.getElementById("contract").style.display="none";
+                document.getElementById("stressContractResult").style.display="none";
+            }
+        }
+        //stress type form switch end
+        function checkRequestType(){
+            if('{{requestType}}'=='GET'){
+                document.getElementById("stressTotalResult").style.display="none";
+                document.getElementById("stressContractResult").style.display="none";
+            }else{
+                document.getElementById("stressTotalResult").style.display="none";
+                document.getElementById("stressContractResult").style.display="block";
+                var ctxL = document.getElementById("reserveChart").getContext('2d');
+                var aLocal = {{ a|safe }};
+                var bLocal = {{ b|safe }};
+                var cLocal = {{ c|safe }};
+                var dLocal = {{ d|safe }};
 
-	    //SPECIAL CONDITIONS
-	    // client age 
-	    if(form.clientAge.value > 100) {
-	      alert("The client age must be less than 100 !");
-	      form.clientAge.focus();
-	      return false;
-	    }
+                if('{{plotNumber}}'=='1'){
+                    //chart begin
+                    var myLineChart = new Chart(ctxL, {
+                        type: 'line',
+                        data: {
+                            labels: aLocal,
+                            datasets: [{
+                                label: '{{labelOne}}',
+                                data:  bLocal,
+                                backgroundColor: [
+                                    'rgba(105, 0, 132, .2)',
+                                ],
+                                borderColor: [
+                                    'rgba(200, 99, 132, .7)',
+                                ],
+                                borderWidth: 2
+                            }
+                            ]
+                        },
+                        options: {
+                            responsive: true
+                        }
+                    });
+                    //chart end
 
-	    // n >=m
-	    if(form.maturity.value < form.numberOfPayements.value) {
-	      alert("The number of payement (m) must be less or equal to the maturity !");
-	      form.numberOfPayements.focus();
-	      return false;
-	    }
-	}
+                }else{
+                    //chart begin
+                    var myLineChart = new Chart(ctxL, {
+                        type: 'line',
+                        data: {
+                            labels: aLocal,
+                            datasets: [{
+                                label: '{{labelOne}}',
+                                data:  bLocal,
+                                backgroundColor: [
+                                    'rgba(105, 0, 132, .2)',
+                                ],
+                                borderColor: [
+                                    'rgba(200, 99, 132, .7)',
+                                ],
+                                borderWidth: 2
+                            },
+                                {
+                                    label: '{{labelTwo}}',
+                                    data:  cLocal,
+                                    backgroundColor: [
+                                        'rgba(0, 137, 132, .2)',
+                                    ],
+                                    borderColor: [
+                                        'rgba(0, 10, 130, .7)',
+                                    ],
+                                    borderWidth: 2
+                                },
+                                {
+                                    label: '{{labelThree}}',
+                                    data:  dLocal,
+                                    backgroundColor: [
+                                        'rgba(0, 17, 172, .2)',
+                                    ],
+                                    borderColor: [
+                                        'rgba(0, 10, 130, .7)',
+                                    ],
+                                    borderWidth: 2
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true
+                        }
+                    });
+                    //chart end
+                }
 
-    // validation was successful
-    return true;
-  }
 
-</script> 
+            }
+            stressTypeSwitch();
+        }
+
+        window.onload = checkRequestType
+
+        function checkForm(form)
+        {
+            if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Contract'){
+                //POSITIVITY
+                //i > 0
+                if(form.interestRate.value < 0) {
+                    alert("The interest rate must be positive !");
+                    form.interest.focus();
+                    return false;
+                }
+
+                //amount > 0
+                if(form.amount.value <= 0) {
+                    alert("The amount must be strictly positive !");
+                    form.amount.focus();
+                    return false;
+                }
+
+                // client age
+                if(form.clientAge.value < 0) {
+                    alert("The client age must be positive!");
+                    form.clientAge.focus();
+                    return false;
+                }
+                // n
+                if(form.maturity.value <= 0) {
+                    alert("The maturity (n) must be strictly positive !");
+                    form.maturity.focus();
+                    return false;
+                }
+                // m
+                if(form.numberOfPayements.value <= 0) {
+                    alert("The number of payement (m) must be strictly positive !");
+                    form.numberOfPayements.focus();
+                    return false;
+                }
+
+                //SPECIAL CONDITIONS
+                // client age
+                if(form.clientAge.value > 100) {
+                    alert("The client age must be less than 100 !");
+                    form.clientAge.focus();
+                    return false;
+                }
+
+                // n >=m
+                if(form.maturity.value < form.numberOfPayements.value) {
+                    alert("The number of payement (m) must be less or equal to the maturity !");
+                    form.numberOfPayements.focus();
+                    return false;
+                }
+            }
+
+            // validation was successful
+            return true;
+        }
+
+    </script>
 {% endblock %}
