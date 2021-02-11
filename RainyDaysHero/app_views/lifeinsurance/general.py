@@ -50,10 +50,12 @@ def portfolio(request):
             result = termInsuranceModels.total_balance_sheet_true(mortalityStress, interestRateStress, adaptedModel)
         else:
             result = termInsuranceModels.total_balance_sheet_true(mortalityStress, interestRateStress, adaptedModel)
-
-        context['years'] = result
+        res = []
+        for x in result:
+            res.append(list(x))
+            res[-1][-1] = int(res[-1][-1])
+        context['years'] = res
         return HttpResponse(template.render(context, request))
-
 
 def lxQxStress(request):
     context = {}

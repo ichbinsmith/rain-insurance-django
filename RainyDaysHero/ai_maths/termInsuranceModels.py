@@ -4,17 +4,17 @@ TH = [100000,99511,99473,99446,99424,99406,99390,99376,99363,99350,99338,99325,9
 
 
 def term_insurance_predicted(x,m,n,i,a,degree):
-    return pr.term_insurance_predicted(x,m,n,i,a,degree)
+	return pr.term_insurance_predicted(x,m,n,i,a,degree)
 
 def term_insurance_predicted_polynomiale_no_constraint(x,m,n,i,a,degree):
-    return lr.term_insurance_predicted_polynomiale_no_constraint(x,m,n,i,a,degree)
+	return lr.term_insurance_predicted_polynomiale_no_constraint(x,m,n,i,a,degree)
 
 
 def term_insurance_predicted_polynomiale_lasso(x,m,n,i,a,degree,alpha=0.1):
-    return lasso.term_insurance_predicted_polynomiale_lasso(x,m,n,i,a,degree)  
+	return lasso.term_insurance_predicted_polynomiale_lasso(x,m,n,i,a,degree)
 
 def term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,degree=8):
-    return polynomial_scaled.term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,degree)
+	return polynomial_scaled.term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,degree)
 
 def term_insurance_predicted_knn(x,m,n,i,a,nn=8):
 	return str("%.2f" % KNN.term_insurance_predicted_knn(x,m,n,i,a))
@@ -73,9 +73,9 @@ def balance_sheet_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True)
 	test= balance_sheet.balance_sheet_knn(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
 	listcontract=listcontract=np.zeros((m,8))
 	for term in range(0,n):
-	            for smash in range (0,7):
-	                listcontract[term][smash]=test[smash][term]
-	            listcontract[term][7]=int(term+1)    
+		for smash in range (0,7):
+			listcontract[term][smash]=test[smash][term]
+		listcontract[term][7]=int(term+1)
 	return(listcontract)
 
 def balance_sheet_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True):
@@ -83,7 +83,7 @@ def balance_sheet_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True
 
 	listcontract=listcontract=np.zeros((m,8))
 	for term in range(0,n):
-	            for smash in range (0,7):
-	                listcontract[term][smash]=test[smash][term]
-	            listcontract[term][7]=int(term+1)     
+		for smash in range (0,7):
+			listcontract[term][smash]=test[smash][term]
+		listcontract[term][7]=int(term+1)
 	return(listcontract)

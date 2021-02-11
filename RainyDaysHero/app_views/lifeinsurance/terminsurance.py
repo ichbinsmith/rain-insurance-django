@@ -154,9 +154,11 @@ def terminsuranceAccounting(request):
                 result = termInsuranceModels.total_balance_sheet_predicted(mortalityStress,interestRateStress,adaptedModel)
             else:
                 result = termInsuranceModels.total_balance_sheet_true(mortalityStress,interestRateStress,adaptedModel)
-        #for x in result:
-            #print(x);print()
-        context['years'] = result
+        res = []
+        for x in result:
+            res.append(list(x))
+            res[-1][-1] = int(res[-1][-1])
+        context['years'] = res
         return HttpResponse(template.render(context, request))
 
 

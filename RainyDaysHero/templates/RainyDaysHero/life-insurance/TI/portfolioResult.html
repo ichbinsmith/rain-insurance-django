@@ -8,46 +8,50 @@
 
 {% block content %}
 
- <div class="container my-2 block-content" >
+    <div class="container my-2 block-content" >
         <div class="row">
             <div class="col-md-12 mx-auto myform">
-                <h3 class="formtitle">Term Insurance Accounting Result</h3>
+                <h3 class="formtitle">Portfolio Result</h3>
+                <br>
+                <br>
                 {% for year in years %}
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col" colspan="4">Balance sheet year {{year.7}} </th>
-                        </tr>
-                         <tr>
-                            <th scope="col" colspan="2">ASSET</th>
-                             <th scope="col" colspan="2">LIABILITY</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Premiums</td>
-                            <td>10</td>
-                            <td>Claims</td>
-                            <td>20</td>
-                        </tr>
-                         <tr>
-                            <td>Financial Income</td>
-                            <td>100</td>
-                            <td>Premium Reserves</td>
-                            <td>200</td>
-                        </tr>
-                         <tr>
-                            <td>Last Premium Reserves</td>
-                            <td>12345</td>
-                        </tr>
-                        <tr>
-                            <td>Total Asset</td>
-                            <td>5000</td>
-                            <td>Total Liability</td>
-                            <td>6000</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr class="table-primary">
+                                <th scope="col" colspan="4">Balance sheet year {{year.7}} </th>
+                            </tr>
+                            <tr>
+                                <th scope="col" colspan="2" class="table-success">ASSET</th>
+                                <th scope="col" colspan="2" class="table-warning">LIABILITY</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Premiums</td>
+                                <td>{{ year.0 }}</td>
+                                <td>Claims</td>
+                                <td>{{ year.3 }}</td>
+                            </tr>
+                            <tr>
+                                <td>Financial Income</td>
+                                <td>{{ year.1 }}</td>
+                                <td>Premium Reserves</td>
+                                <td>{{ year.4 }}</td>
+                            </tr>
+                            <tr>
+                                <td>Last Premium Reserves</td>
+                                <td>{{ year.2 }}</td>
+                            </tr>
+                            <tr class="table-info">
+                                <td>Total Asset</td>
+                                <td>{{ year.5 }}</td>
+                                <td>Total Liability</td>
+                                <td>{{ year.6 }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 {% endfor %}
 
                 <br> <br>
@@ -55,5 +59,4 @@
             </div>
         </div>
     </div>
-    
 {% endblock %}
