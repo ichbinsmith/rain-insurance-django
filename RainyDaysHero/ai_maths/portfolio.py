@@ -39,7 +39,7 @@ for inc in range(20,70,10):
 
 
 def Portfolio_true(stress_MT=0,stress_interest_rates=0, adapt=True):
-    listcontract=np.zeros((40,7))
+    listcontract=np.zeros((40,8))
     for contract in range(0,len(X)):
         x=int(X.iloc[contract].age)
         m=int(X.iloc[contract].nb_payements)
@@ -51,6 +51,7 @@ def Portfolio_true(stress_MT=0,stress_interest_rates=0, adapt=True):
         for term in range(0,n):
             for smash in range (0,7):
                 listcontract[term][smash]=listcontract[term][smash]+bsTI[smash][term]*v["var%d" % x]*(17/100)+bsPE[smash][term]*v["var%d" % x] *(83/100)
+            listcontract[term][7]=int(term+1)        
     return(listcontract)   
         
 def plot_portfolio_true(stress_MT=0,stress_interest_rates=0, adapt=True):
@@ -74,7 +75,7 @@ def plot_portfolio_true(stress_MT=0,stress_interest_rates=0, adapt=True):
     return([i for i in range(1,42)],Reserves,Claims,Premiums)
 
 def Portfolio_predicted(stress_MT=0,stress_interest_rates=0, adapt=True):
-    listcontract=np.zeros((40,7))
+    listcontract=np.zeros((40,8))
     if adapt==True:
         ## First, We compute the best model
         modelTI= reserves.best_model_scale_knn(stress_MT,stress_interest_rates,X=X)
@@ -94,6 +95,7 @@ def Portfolio_predicted(stress_MT=0,stress_interest_rates=0, adapt=True):
         for term in range(0,n):
             for smash in range (0,7):
                 listcontract[term][smash]=listcontract[term][smash]+bsTI[smash][term]*v["var%d" % x]*(17/100)+bsPE[smash][term]*v["var%d" % x]*(83/100) 
+            listcontract[term][7]=int(term+1)        
     return(listcontract)   
         
 def plot_portfolio_predicted(stress_MT=0,stress_interest_rates=0, adapt=True):
