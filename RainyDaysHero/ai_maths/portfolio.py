@@ -1,17 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Feb  3 19:25:15 2021
 
-@author: Mon PC
-"""
-
-##here we will compute the portfolio and compute the blance sheet
-##What is the profil of an insured person?
+from .terminsurance import reserves,stresstest,balance_sheet
+from .pureendowment import Pure_endowment, PE_reserves, balancesheetPE, stresstest_PE
 
 
 import matplotlib.pyplot as plt
-
-import  reserves,balance_sheet
+import  reserves,balance_sheet, balancesheetPE, PE_reserves
 import numpy as np
 import os
 import pandas as pd
@@ -25,12 +18,14 @@ X =df[['age','nb_payements','maturity','interest_rate','amount']]
 y = df['target']
 ##We will consider that we are working with a population of 1000 people and we will use the mortality table to know how many people we have
 ##  And then take the percentage given by assurland.com
-age_20=int(TH[20]*21/100)
-age_30=int(TH[30]*31.4/100)
-age_40=int(TH[40]*35.1/100)
-age_50=int(TH[50]*36.5/100)
-age_60=int(TH[60]*41.8/100)
-age_70=int(TH[70]*43/100)
+##ffa assurance gives us the number in 2019: 83% of insurances for retirement and 17% for health/death
+
+age_20=int(TH[20]*21/100000)
+age_30=int(TH[30]*31.4/100000)
+age_40=int(TH[40]*35.1/100000)
+age_50=int(TH[50]*36.5/100000)
+age_60=int(TH[60]*41.8/100000)
+age_70=int(TH[70]*43/100000)
 
 all_age=[age_20,age_30,age_40,age_50,age_60,age_70]
 v = locals()
@@ -51,13 +46,14 @@ def Portfolio_true(stress_MT=0,stress_interest_rates=0, adapt=True):
         n=int(X.iloc[contract].maturity)
         i=X.iloc[contract].interest_rate
         a=X.iloc[contract].amount
-        bs=balance_sheet.balance_sheet_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
+        bsTI=balance_sheet.balance_sheet_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
+        bsPE=balancesheetPE.balance_sheet_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
         for term in range(0,n):
             for smash in range (0,7):
-                listcontract[term][smash]=(listcontract[term][smash]+bs[smash][term]*v["var%d" % x]/100) 
+                listcontract[term][smash]=listcontract[term][smash]+bsTI[smash][term]*v["var%d" % x]*(17/100)+bsPE[smash][term]*v["var%d" % x] *(83/100)
     return(listcontract)   
         
-def plot_portfolio_true(stress_MT=0,stress_interest_rates=15, adapt=True):
+def plot_portfolio_true(stress_MT=0,stress_interest_rates=0, adapt=True):
     test= Portfolio_true(stress_MT,stress_interest_rates, adapt)
     Premiums=list([0])
     Claims=list([0])
@@ -67,23 +63,25 @@ def plot_portfolio_true(stress_MT=0,stress_interest_rates=15, adapt=True):
         Premiums.append(test[h][0])
         Claims.append(test[h][3])        
     # plt.close()    
-    # p1,=plt.plot(np.arange(0,41,1),Reserves,label='Reserves')    
-    # p2,=plt.plot(np.arange(0,41,1),Claims,label='Claims')
-    # p3,=plt.plot(np.arange(0,41,1),Premiums,label='Level annual premiums')
+    # p1,=plt.plot(np.arange(1,42,1),Reserves,label='Reserves')    
+    # p2,=plt.plot(np.arange(1,42,1),Claims,label='Claims')
+    # p3,=plt.plot(np.arange(1,42,1),Premiums,label='Level annual premiums')
     # plt . xlabel ('Years', fontsize =20)
     # plt . ylabel ('Reserves', fontsize =20)
     # plt . title ('Portfolio reserves with stress on mortality table={}'.format(stress_MT)+"%"+" and stress on interest rates={}".format(stress_interest_rates)+"%",fontsize =16)
     # plt . legend ( handles =[p1 , p2,p3],fontsize =16)
     # plt.show()   
-    return([i for i in range(0,41)],Reserves,Claims,Premiums)
+    return([i for i in range(1,42)],Reserves,Claims,Premiums)
 
 def Portfolio_predicted(stress_MT=0,stress_interest_rates=0, adapt=True):
     listcontract=np.zeros((40,7))
     if adapt==True:
         ## First, We compute the best model
-        model= reserves.best_model_scale_knn(stress_MT,stress_interest_rates,X=X)
+        modelTI= reserves.best_model_scale_knn(stress_MT,stress_interest_rates,X=X)
+        modelPE=PE_reserves.best_model_scale_knn(stress_MT,stress_interest_rates,X=X)
     else:        
-        model= reserves.best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)  
+        modelTI= reserves.best_model_scale_knn(stress_MT=0,stress_interest_rates=0,X=X)  
+        modelPE=PE_reserves.best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)
 
     for contract in range(0,len(X)):
         x=int(X.iloc[contract].age)
@@ -91,10 +89,11 @@ def Portfolio_predicted(stress_MT=0,stress_interest_rates=0, adapt=True):
         n=int(X.iloc[contract].maturity)
         i=X.iloc[contract].interest_rate
         a=X.iloc[contract].amount
-        bs=balance_sheet.balance_sheet_predicted_model(x,n,i,a,m,model,stress_MT,stress_interest_rates, adapt)
+        bsTI=balance_sheet.balance_sheet_predicted_model(x,n,i,a,m,modelTI,stress_MT,stress_interest_rates, adapt)
+        bsPE=balancesheetPE.balance_sheet_predicted_model(x,n,i,a,m,modelPE,stress_MT,stress_interest_rates, adapt)
         for term in range(0,n):
             for smash in range (0,7):
-                listcontract[term][smash]=(listcontract[term][smash]+bs[smash][term]*v["var%d" % x]/100) 
+                listcontract[term][smash]=listcontract[term][smash]+bsTI[smash][term]*v["var%d" % x]*(17/100)+bsPE[smash][term]*v["var%d" % x]*(83/100) 
     return(listcontract)   
         
 def plot_portfolio_predicted(stress_MT=0,stress_interest_rates=0, adapt=True):
@@ -107,21 +106,13 @@ def plot_portfolio_predicted(stress_MT=0,stress_interest_rates=0, adapt=True):
         Premiums.append(test[h][0])
         Claims.append(test[h][3])       
     # plt.close()
-    # p1,=plt.plot(np.arange(0,41,1),Reserves,label='Reserves')    
-    # p2,=plt.plot(np.arange(0,41,1),Claims,label='Claims')
-    # p3,=plt.plot(np.arange(0,41,1),Premiums,label='Level annual premiums')
+    # p1,=plt.plot(np.arange(1,42,1),Reserves,label='Reserves')    
+    # p2,=plt.plot(np.arange(1,42,1),Claims,label='Claims')
+    # p3,=plt.plot(np.arange(1,42,1),Premiums,label='Level annual premiums')
     # plt . xlabel ('Years', fontsize =20)
     # plt . ylabel ('Reserves', fontsize =20)
     # plt . title ('Portfolio reserves with stress on mortality table={}'.format(stress_MT)+"%"+" and stress on interest rates={}".format(stress_interest_rates)+"%",fontsize =16)
     # plt . legend ( handles =[p1 , p2,p3],fontsize =16)
     # plt.show()   
-    return([i for i in range(0,41)],Reserves,Claims,Premiums)
-
-
-
-##compute the price of an actuary
-
-
-
-
+    return([i for i in range(1,42)],Reserves,Claims,Premiums)
 

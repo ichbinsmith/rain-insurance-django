@@ -1,4 +1,4 @@
-from .terminsurance import lr,pr,lasso,polynomial_scaled,KNN,reserves,stresstest
+from .terminsurance import lr,pr,lasso,polynomial_scaled,KNN,reserves,stresstest,balance_sheet
 
 
 def term_insurance_predicted(x,m,n,i,a,degree):
@@ -24,7 +24,6 @@ def reserves_sum(stress_MT=0,stress_interest_rates=0,adapt=True):
 	return reserves.reserves_sum(stress_MT,stress_interest_rates,adapt)
 
 
-## à changer
 
 def reserves_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True):
 	return reserves.reserves_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
@@ -39,6 +38,11 @@ def lx_evolution(stress):
 	return stresstest.lx_evolution(stress)
 def qx_evolution(stress):
 	return stresstest.qx_evolution(stress)
+
+
+
+def profit_and_loss(x,m,n,i,a):
+	return stresstest.profit_and_loss(x,m,n,i,a)
 
 
 

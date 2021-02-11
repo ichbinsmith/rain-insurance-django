@@ -5,7 +5,7 @@ Created on Fri Jan 29 01:27:52 2021
 @author: Mon PC
 """
 
-import  reserves,stresstest
+from RainyDaysHero.ai_maths.terminsurance import  reserves,stresstest
 import numpy as np
 import os
 import pandas as pd
@@ -74,8 +74,9 @@ def balance_sheet_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True)
         Total_Asset=list()
         Total_liability=list()
         for age in range(0,len(Premium_reserves)):
-             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,TH)
              Total_Asset.append(Financial_income[age]+Premiums[age]+ Last_premium_reserves[age])
+             
+             Premium_reserves[age]=Total_Asset[age]-Claims[age]
              Total_liability.append(Claims[age]+Premium_reserves[age])
     else:
         bs=reserves.reserves_predicted_scale_knn(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
@@ -88,9 +89,10 @@ def balance_sheet_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True)
         Total_Asset=list()
         Total_liability=list()
         for age in range(0,len(Premium_reserves)):
-             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,TH)
              Total_Asset.append(Financial_income[age]+Premiums[age]+ Last_premium_reserves[age])
-             Total_liability.append(Claims[age]+Premium_reserves[age])            
+            
+             Premium_reserves[age]=Total_Asset[age]-Claims[age]
+             Total_liability.append(Claims[age]+Premium_reserves[age])  
     return Premiums[0:-1],Financial_income[0:-1],Last_premium_reserves[0:-1],Claims[0:-1],Premium_reserves,Total_Asset, Total_liability
 
 
@@ -194,7 +196,7 @@ def total_balance_sheet_true(stress_MT=0,stress_interest_rates=0, adapt=True):
     return(listcontract)   
         
 
-def total_balance_sheet_predicted(stress_MT=0,stress_interest_rates=15, adapt=True):
+def total_balance_sheet_predicted(stress_MT=0,stress_interest_rates=0, adapt=True):
     if adapt==True:
         ## First, We compute the best model
         model= reserves.best_model_scale_knn(stress_MT,stress_interest_rates,X=X)

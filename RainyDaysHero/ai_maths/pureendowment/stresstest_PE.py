@@ -1,17 +1,11 @@
 
 
-TH = [100000,99511,99473,99446,99424,99406,99390,99376,99363,99350,99338,99325,99312,99296,99276,99250,99213,99163,99097,99015,98921,98820,98716,98612,98509,98406,98303,98198,98091,97982,97870,97756,97639,97517,97388,97249,97100,96939,96765,96576,96369,96141,95887,95606,95295,94952,94575,94164,93720,93244,92736,92196,91621,91009,90358,89665,88929,88151,87329,86460,85538,84558,83514,82399,81206,79926,78552,77078,75501,73816,72019,70105,68070,65914,63637,61239,58718,56072,53303,50411,47390,44234,40946,37546,34072,30575,27104,23707,20435,17338,14464,11852,9526,7498,5769,4331,3166,2249,1549,1032,663,410,244,139,75,39,19,9,4,2,1]
 import pandas as pd
 import numpy as np
 import mglearn as mg
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Ridge
-from sklearn.linear_model import Lasso
-from sklearn.svm import SVR
-from sklearn.metrics import mean_squared_error
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
+
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsRegressor
@@ -20,16 +14,13 @@ import matplotlib
 matplotlib.use('Agg')
 import csv
 import os
-from mpl_toolkits.mplot3d import Axes3D
-from pylab import show,figure
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
+
 from sklearn.preprocessing import MinMaxScaler
 
 #lx - table
-lx = TH
+lx = TF
 
-df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))+"/static/RainyDaysHero/data/LI/TI/dataset.csv")
+df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))+"/static/RainyDaysHero/data/LI/PE/dataset.csv")
 
 X =df[['age','nb_payements','maturity','interest_rate','amount']]
 
@@ -40,26 +31,21 @@ X_trainval, X_test, y_trainval, y_test = train_test_split(X, y, random_state=5)
 X_train, X_valid, y_train, y_valid = train_test_split(X_trainval, y_trainval, random_state=1)
 
 
-def TermInsurance(x,n,i,a):
-    NA = 0
-    for j in range(1,n+1): NA+=MNQX(x,1,j-1) * TechDF(j,i)
-    return NA * a
+TF = [100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,100000.000000000000000,99987.943454803000000,99976.891621705800000,99966.844500708300000,99956.797379710800000,99946.750258713400000,99935.698425616100000,99924.646592518900000,99912.590047321900000,99899.528790025200000,99883.453396429200000,99863.359154434300000,99839.246064040300000,99810.109413147700000,99776.953913856000000,99741.788990364800000,99706.624066873600000,99672.463855482200000,99637.262739119000000,99602.061622755800000,99562.808587152700000,99520.536087272300000,99474.237635022500000,99422.906742310700000,99365.536921044500000,99302.128171224000000,99232.680492849200000,99157.193885920100000,99073.655374251900000,98981.058469752200000,98879.403172420900000,98766.676506073400000,98642.878470709600000,98507.002578237200000,98358.042340563700000,98195.997757689200000,98004.419419985400000,97798.724783713900000,97579.922155915400000,97348.011536589700000,97104.001232777500000,96846.882937438200000,96573.631729450100000,96282.230994732200000,95970.664119203400000,95638.931102863600000,95264.475758390500000,94869.779584486300000,94452.818498208100000,94010.556375141100000,93537.933007927700000,93029.888189210000000,92482.373753101900000,91837.624008223600000,91136.853353442800000,90372.931854771900000,89538.729578223200000,88625.079465812800000,87620.777335560000000,86517.674691479100000,85305.585913587900000,83972.288257907500000,82501.484732466400000,80663.431201173300000,78624.843847641900000,76364.941964904500000,73862.944845993400000,71093.915642547400000,68033.956541553500000,64662.286836044200000,60970.594243232300000,56968.230081253200000,52685.326375210200000,48171.756821825700000,43502.331966183500000,38775.760166380100000,33634.170688786900000,28741.863237795800000,24153.183658068700000,19508.781438646500000,15400.161585067600000,11857.408133916700000,8887.683951047370000,6469.500438899080000,4562.745548692110000,3110.116353598300000,2042.849341423850000,1289.315853633560000,779.319804862954000,449.827975601043000,246.402585361081000,127.499012192652000,63.033219510974200,28.651463414079200,12.893158536335600,5.730292682815840,1.432573170703960]
 
+omega = 110
+#omega = 112
 
-#Annuity : from 0 - to M-1 --> M values
-def AnnuityFromZeroToM(x,i,m,lx):
-    A=0
-    for j in range(m):
-#        print(j)
-        A+= NPX(x,j,lx)*TechDF(j,i)
-    return A
+#lx - table
+lx = TF
 
-#Term Insurance Annual Premium 
-def TermInsuranceAnnual(x,n,i,a,m,lx):
-    NA = 0
-    for j in range(1,n+1):
-        NA+=MNQX(x,1,j-1,lx) * TechDF(j,i)
-    return (NA / AnnuityFromZeroToM(x,i,m,lx) )* a
+def SinglePremiumPE(x,n,i,a,lx):
+    return (1/(1+i)**n * (lx[n+x]/lx[x]) )*a
+
+def PEAnnual(x,p,n,i,a,lx):
+    AP = 0
+    for j in range(p): AP+= SinglePremiumPE(x,j,i,a,lx)
+    return (SinglePremiumPE(x,n,i,a,lx) / AP )*a
 
 
 def Lx(x):
@@ -86,56 +72,42 @@ def Qx(x,lx):
         return 1
     return Dx(x,lx)/lx[x]
 
-#Ex
-def Ex(x,lx):
-    if x+1 == len(lx):
-        return 0
-    return sum(lx[x+1:])/lx[x]
-#npx 
-def NPX(x,n,lx):
-
-#    print(n)
-#    print(lx[int(x+n)]/lx[x])
-    return lx[int(x+n)]/lx[x]
-
-#nqx 
-def NQX(x,n,lx):
-    return (lx[x] - lx[x+n] ) / lx[x]
 
 
-#mnqx 
-def MNQX(x,n,m,lx):
-    return NPX(x,m,lx) * NQX(x+m,n,lx)
+def A_x_to_n(x,i,n,lx):
+    s=0
+    for j in range(0,n):
+        s+=lx[x+j]/lx[x]/(1+i)**j
+    return(s)    
 
 
-#techDF - actualization factor
-def TechDF(n,i):
-    return 1 / ((1+i)**n)
 
 
-def StressTest_table(TH,stress):
-    tablelx=TH.copy()
+def StressTest_table(TF,stress):
+    tablelx=TF.copy()
     tablelx.append(0)
     new_Qx=list()
     tablelx[0]=100000
-    for i in range(0,len(TH)):
-        new_Qx.append(Qx(i,TH)*(1-stress))
+    for i in range(0,len(TF)):
+        new_Qx.append(Qx(i,TF)*(1-stress))
 
         tablelx[i+1]=(tablelx[i]*(1-new_Qx[i]))
     return(tablelx,new_Qx)
+ 
 
-def TI_evolution(TH,x,i,n,m,a):
+
+def PE_evolution(TH,x,i,n,m,a):
     TI=list()
     listi=list()
     for j in range(1,100):
         tablelx=StressTest_table(TH,j/100)[0]
-        TI.append(TermInsuranceAnnual(x,n,i,a,m,tablelx))
+        TI.append(PEAnnual(x,m,n,i,a,tablelx))
         listi.append(j)
-#    plt.plot(listi,TI)
-#    plt . xlabel ('discount (%)', fontsize =20)
-#    plt . ylabel ('Annual premium', fontsize =20)
-#    plt . title ('Evolution of the Annual premium of a term insurance with respect to the discount',fontsize =16)
-    return(TI)    
+    plt.plot(listi,TI)
+    # plt . xlabel ('discount (%)', fontsize =20)
+    # plt . ylabel ('Annual premium', fontsize =20)
+    # plt . title ('Evolution of the Annual premium of a Pure endowment with respect to the discount',fontsize =16)
+     return(TI)    
 
 
 ##############################################
@@ -144,23 +116,16 @@ def TI_evolution(TH,x,i,n,m,a):
 
 ##############################################
 
-def lx_evolution(stress=0):
-    TH_bis=TH.copy()    
-    TH_bis.append(0)
-    return [i for i in range(0,len(StressTest_table(TH,stress)[0]))],StressTest_table(TH,stress)[0], TH_bis
-
-def qx_evolution(stress=0):
-    return [i for i in range(0,len(StressTest_table(TH,stress)[0]))], StressTest_table(TH,stress)[1],StressTest_table(TH,0)[1]
 
   
-def plot_p_and_l_point_interest(TH,x,i,n,m,a):
+def plot_p_and_l_point_interest(TF,x,i,n,m,a):
     P_and_L=list()
-    TI=TermInsuranceAnnual(x,n,i,a,m,TH) 
+    TI=PEAnnual(x,m,n,i,a,TF)
     stresslist=list()
     for stress in range(-15,25):
         stress=stress/1000
         stresslist.append(stress)        
-        P_and_L.append(TI-TermInsuranceAnnual(x,n,i+stress,a,m,TH))
+        P_and_L.append(TI-PEAnnual(x,m,n,i+stress,a,TF))
     # plt.xlabel('Interest rate increase', fontsize=20)    
     # plt . ylabel ('Profit and loss', fontsize =20)
     # plt . title ('P & L as a function of the interest rate stress ',fontsize =16)
@@ -172,15 +137,15 @@ def plot_p_and_l_point_interest(TH,x,i,n,m,a):
     
 
 
-def plot_p_and_l_point(TH,x,i,n,m,a):
+def plot_p_and_l_point(TF,x,i,n,m,a):
     P_and_L=list()
-    TI=TermInsuranceAnnual(x,n,i,a,m,TH) 
+    TI=PEAnnual(x,m,n,i,a,TF)
     stresslist=list()
     for stress in range(-10,10):
         stress=stress/100
         stresslist.append(stress)        
-        TH_stressed=StressTest_table(TH,stress)[0]        
-        P_and_L.append(TI-TermInsuranceAnnual(x,n,i,a,m,TH_stressed))
+        TF_stressed=StressTest_table(TF,stress)[0]        
+        P_and_L.append(TI-PEAnnual(x,m,n,i,a,TF_stressed))
     # plt.xlabel('Stress ', fontsize=20)    
     # plt . ylabel ('Profit and loss', fontsize =20)
     # plt . title ('P & L with stress on mortality table',fontsize =16)
@@ -189,15 +154,15 @@ def plot_p_and_l_point(TH,x,i,n,m,a):
     # plt.plot()     
     return stresslist, P_and_L
 
-def plot_p_and_l_point_knn(TH,x,i,n,m,a,degree=8):
+def plot_p_and_l_point_knn(TF,x,i,n,m,a,degree=8):
     P_and_L=list()
-    TI=term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,degree)
+    TI=Pure_endowment_predicted(x,m,n,i,a,degree)
     stresslist=list()
     for stress in range(-10,10):
         stress=stress/100
         stresslist.append(stress)        
-        TH_stressed=StressTest_table(TH,stress)[0]        
-        P_and_L.append(TI-TermInsuranceAnnual(x,n,i,a,m,TH_stressed))
+        TF_stressed=StressTest_table(TF,stress)[0]        
+        P_and_L.append(TI-PEAnnual(x,m,n,i,a,TF_stressed))
     # plt.xlabel('Stress ', fontsize=20)    
     # plt . ylabel ('Profit and loss', fontsize =20)
     # plt . title ('P & L as a function of the stress ',fontsize =16)
@@ -207,14 +172,14 @@ def plot_p_and_l_point_knn(TH,x,i,n,m,a,degree=8):
     # plt.plot()        
     return stresslist, P_and_L
 
-def plot_p_and_l_point_interest_knn(TH,x,i,n,m,a,degree=8):
+def plot_p_and_l_point_interest_knn(TF,x,i,n,m,a,degree=8):
     P_and_L=list()
-    TI=term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,degree)
+    TI=Pure_endowment_predicted(x,m,n,i,a,degree)
     stresslist=list()
     for stress in range(-15,25):
         stress=stress/1000
         stresslist.append(stress)        
-        P_and_L.append(TI-TermInsuranceAnnual(x,n,i+stress,a,m,TH))
+        P_and_L.append(TI-PEAnnual(x,m,n,i+stress,a,TF))
     # plt.xlabel('Interest rate increase', fontsize=20)    
     # plt . ylabel ('Profit and loss', fontsize =20)
     # plt . title ('P & L as a function of the interest rate stress ',fontsize =16)
@@ -231,6 +196,7 @@ def plot_p_and_l_point_new(x,m,n,i,a,stress_MT=True):
         for stress in range(-10,10):
             stress=stress/100
             new_knn=new_p_and_l_point(x,m,n,i,a,stress,stress_interest=0)
+            
             stresslist.append(stress)        
             P_and_L.append(new_knn)
            
@@ -243,7 +209,8 @@ def plot_p_and_l_point_new(x,m,n,i,a,stress_MT=True):
     else:
         for stress in range(-15,25):
             stress=stress/1000
-            new_knn=new_p_and_l_point(x,m,n,i,a,0,stress)         
+            new_knn=new_p_and_l_point(x,m,n,i,a,0,stress)
+            
             stresslist.append(stress)        
             P_and_L.append(new_knn)            
     
@@ -266,39 +233,6 @@ def plot_p_and_l_point_new(x,m,n,i,a,stress_MT=True):
 ################################################
 
 
-    
-    
-
-
- 
-def term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,degree=8):
-    if (m>n):
-        return('error')
-    data=[[x,m,n,i,a]] 
-    premium_to_predict=pd.DataFrame(data=data,columns=['age','nb_payements','maturity','interest_rate','amount'])
-
-    scaler = MinMaxScaler()
-    X_train_scaled  = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X)    
-    poly_scaled= PolynomialFeatures(degree=degree,include_bias=False)
-    poly_scaled.fit(X_train_scaled)
-    X_poly_train_scaled  = poly_scaled.transform(X_train_scaled)
-    X_poly_test_scaled = poly_scaled.transform(X_test_scaled)
-    model= LinearRegression().fit(X_poly_train_scaled, y_train)
-    y_poly = model.predict(X_poly_test_scaled)
-    y_poly=np.abs(y_poly)
-    ##now we train knn
-    
-    model=KNeighborsRegressor(n_neighbors=20,weights="distance")
-    model.fit(X, y_poly)
-
-    y_test_predict = model.predict(premium_to_predict)
-
-    return  y_test_predict     
-    
-    
-
-
 
 
     
@@ -310,20 +244,20 @@ def new_p_and_l_point(x,m,n,i,a,stress=0,stress_interest=0):
     prediction = rec[0].predict(premium_to_predict)
     stress=stress
     stress_i=stress_interest
-    TH_stressed=StressTest_table(TH,stress)[0]        
-    P_and_L= prediction-TermInsuranceAnnual(x,n,i+stress_i,a,m,TH_stressed)
+    TF_stressed=StressTest_table(TF,stress)[0]        
+    P_and_L= prediction-PEAnnual(x,m,n,i+stress_i,a,TF_stressed)
     return P_and_L[0]               
-    
+
 def best_model_scale_knn(stress_MT=0,stress_interest=0,X=X):
     ##put the stress in %
     y_stressed=list()
     stress=stress_MT
     stress_i=stress_interest
-    TH_stressed=StressTest_table(TH,stress)[0]
+    TF_stressed=StressTest_table(TF,stress)[0]
     X_new=X.copy()
     X_new.interest_rate=X_new.interest_rate+stress_i
     for contract in range(0,len(X)):
-        y_stressed.append(TermInsuranceAnnual(int(X_new.iloc[contract].age),int(X_new.iloc[contract].maturity),X_new.iloc[contract].interest_rate,X_new.iloc[contract].amount,int(X_new.iloc[contract].nb_payements),TH_stressed))    
+        y_stressed.append(PEAnnual(int(X_new.iloc[contract].age),int(X_new.iloc[contract].nb_payements),int(X_new.iloc[contract].maturity), X_new.iloc[contract].interest_rate,X_new.iloc[contract].amount,TF_stressed))   
 
     X_trainval, X_test, y_trainval, y_test = train_test_split(X_new, y_stressed, random_state=1)
 
@@ -384,7 +318,6 @@ def best_model_scale_knn(stress_MT=0,stress_interest=0,X=X):
     
     return model, nn_list_scaled, train_scores, valid_scores, test_scores,y_stressed  ,test_scores_scaled  
 
-
     
 def plot_p_and_l_knn_sum_stress():
     p_and_l=list()
@@ -393,10 +326,10 @@ def plot_p_and_l_knn_sum_stress():
     for stress in range(-10,10):
         TI_stressed=list()
         stress=stress/100
-        TH_stressed=StressTest_table(TH,stress)[0]
+        TF_stressed=StressTest_table(TF,stress)[0]
         stresslist.append(stress)
         for contract in range(0,len(X)):
-            TI_stressed.append(TermInsuranceAnnual(int(X.iloc[contract].age),int(X.iloc[contract].maturity),X.iloc[contract].interest_rate,X.iloc[contract].amount,int(X.iloc[contract].nb_payements),TH_stressed))
+            TI_stressed.append(PEAnnual(int(X.iloc[contract].age),int(X.iloc[contract].nb_payements),int(X.iloc[contract].maturity), X.iloc[contract].interest_rate,X.iloc[contract].amount,TF_stressed))
         p_and_l.append(knn_sum-sum(TI_stressed))
 
     # plt.xlabel('Stress ', fontsize=20)    
@@ -417,7 +350,7 @@ def plot_p_and_l_sum_interest_knn():
         stress=stress/1000
         stresslist.append(stress)
         for contract in range(0,len(X)):
-            TI_stressed.append(TermInsuranceAnnual(int(X.iloc[contract].age),int(X.iloc[contract].maturity),X.iloc[contract].interest_rate+stress,X.iloc[contract].amount,int(X.iloc[contract].nb_payements),TH))
+            TI_stressed.append(PEAnnual(int(X.iloc[contract].age),int(X.iloc[contract].nb_payements),int(X.iloc[contract].maturity), X.iloc[contract].interest_rate+stress,X.iloc[contract].amount,TF))
         p_and_l.append(knn_sum-sum(TI_stressed))
 
     # plt.xlabel('Interest rate increase', fontsize=20)    
@@ -432,60 +365,12 @@ def plot_p_and_l_sum_interest_knn():
          
     
 
-#def best_model_stress(stress_MT=0,stress_interest=0,X=X):
-#    ##put the stress in %
-#    y_stressed=list()
-#    stress=stress_MT/100
-#    stress_i=stress_interest/100
-#    TH_stressed=StressTest_table(TH,stress)[0]
-#    X_new=X.copy()
-#    X_new.interest_rate=X.interest_rate+stress_i
-#    for contract in range(0,len(X)):
-#        y_stressed.append(TermInsuranceAnnual(int(X_new.iloc[contract].age),int(X_new.iloc[contract].maturity),X_new.iloc[contract].interest_rate,X_new.iloc[contract].amount,int(X_new.iloc[contract].nb_payements),TH_stressed))    
-#
-#    X_trainval, X_test, y_trainval, y_test = train_test_split(X_new, y_stressed, random_state=1)
-#
-#    X_train, X_valid, y_train, y_valid = train_test_split(X_trainval, y_trainval, random_state=1)
-#    valid_scores=list()
-#    test_scores=list()
-#    train_scores=list()
-#    nn_list=list()
-#    for nn in range (1,20):
-#        model=KNeighborsRegressor(n_neighbors=nn,weights="distance")
-#        model.fit(X_train, y_train)
-#        valid_scores.append(model.score(X_valid,y_valid))
-#        test_scores.append(model.score(X_test,y_test))
-#        train_scores.append(model.score(X_train,y_train))
-#        nn_list.append(nn)
-#    m = max(test_scores)
-#    max_nn=0
-#    for nn in  range (1,20):
-#        if test_scores[nn-1]==m:
-#            max_nn=nn
-#    model=KNeighborsRegressor(n_neighbors=max_nn,weights="distance")
-#    model.fit(X_train, y_train)       
-#    return model, nn_list, train_scores, valid_scores, test_scores, y_stressed    
-
-# def plot_stress_model(stress=0,stress_interest=0):
-#     ##put stres in %
-#     rec=best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)
-#     listnn=rec[1]
-#     p1,=plt.plot(listnn,rec[2],label='train')
-#     p2,=plt.plot(listnn,rec[3],label='validation')
-#     p3,=plt.plot(listnn,rec[4],label='test')
-#     plt . xlabel ('number of neighbors', fontsize =20)
-#     plt . ylabel ('R²', fontsize =20)
-#     plt . title ('R² as a function of the number of neighbors with a stress on mortality table= {}'.format(stress)+'%'+" and on interest rate = {}".format(stress_interest)+ "%",fontsize =16)
-#     plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-#     plt.show()
-
-
         
 def plot_p_and_l_knn_sum_stress_new():
     p_and_l=list()
     stresslist=list()
     for stress in range(-10,10):
-        p_and_l.append(new_p_and_l_sum(stress=stress,stress_interest=0))
+        p_and_l.append(new_p_and_l_sum(stress=stress/100,stress_interest=0))
         stresslist.append(stress/100)
     # plt.xlabel('Stress ', fontsize=20)    
     # plt . ylabel ('Profit and loss', fontsize =20)
@@ -500,7 +385,7 @@ def plot_p_and_l_knn_sum_stress_interest_new():
     p_and_l=list()
     stresslist=list()
     for stress in range(-15,25):
-        p_and_l.append(new_p_and_l_sum(stress=0,stress_interest=stress/10))
+        p_and_l.append(new_p_and_l_sum(stress=0,stress_interest=stress/1000))
         stresslist.append(stress/1000)
     # plt.xlabel('Stress ', fontsize=20)    
     # plt . ylabel ('Profit and loss', fontsize =20)
@@ -515,7 +400,7 @@ def plot_p_and_l_knn_sum_stress_interest_new():
 def new_p_and_l_sum(stress=0,stress_interest=0):
     rec= best_model_scale_knn(stress,stress_interest,X=X)
     X_new=X.copy()
-    X_new.interest_rate=X_new.interest_rate+stress_interest/100
+    X_new.interest_rate=X_new.interest_rate+stress_interest
     return sum((rec[0]).predict(X_new))-sum(rec[5])
 
 
@@ -526,11 +411,11 @@ def plot_p_and_l_sum():
         TI=list()
         TI_stressed=list()
         stress=stress/100
-        TH_stressed=StressTest_table(TH,stress)[0]
+        TF_stressed=StressTest_table(TF,stress)[0]
         stresslist.append(stress)
         for contract in range(0,len(X)):
-            TI.append(TermInsuranceAnnual(int(X.iloc[contract].age),int(X.iloc[contract].maturity),X.iloc[contract].interest_rate,X.iloc[contract].amount,int(X.iloc[contract].nb_payements),TH))
-            TI_stressed.append(TermInsuranceAnnual(int(X.iloc[contract].age),int(X.iloc[contract].maturity),X.iloc[contract].interest_rate,X.iloc[contract].amount,int(X.iloc[contract].nb_payements),TH_stressed))
+            TI.append(PEAnnual(int(X.iloc[contract].age),int(X.iloc[contract].nb_payements),int(X.iloc[contract].maturity), X.iloc[contract].interest_rate,X.iloc[contract].amount,TF))
+            TI_stressed.append(PEAnnual(int(X.iloc[contract].age),int(X.iloc[contract].nb_payements),int(X.iloc[contract].maturity), X.iloc[contract].interest_rate,X.iloc[contract].amount,TF_stressed))
         p_and_l.append(sum(TI)-sum(TI_stressed))
 
     # plt.xlabel('Stress ', fontsize=20)    
@@ -553,8 +438,8 @@ def plot_p_and_l_sum_interest():
         stress=stress/1000
         stresslist.append(stress)
         for contract in range(0,len(X)):
-            TI.append(TermInsuranceAnnual(int(X.iloc[contract].age),int(X.iloc[contract].maturity),X.iloc[contract].interest_rate,X.iloc[contract].amount,int(X.iloc[contract].nb_payements),TH))
-            TI_stressed.append(TermInsuranceAnnual(int(X.iloc[contract].age),int(X.iloc[contract].maturity),X.iloc[contract].interest_rate+stress,X.iloc[contract].amount,int(X.iloc[contract].nb_payements),TH))
+            TI.append(PEAnnual(int(X.iloc[contract].age),int(X.iloc[contract].nb_payements),int(X.iloc[contract].maturity), X.iloc[contract].interest_rate,X.iloc[contract].amount,TF))
+            TI_stressed.append(PEAnnual(int(X.iloc[contract].age),int(X.iloc[contract].nb_payements),int(X.iloc[contract].maturity), X.iloc[contract].interest_rate+stress,X.iloc[contract].amount,TF))
         p_and_l.append(sum(TI)-sum(TI_stressed))
 
     # plt.xlabel('Interest rate increase', fontsize=20)    
@@ -567,35 +452,33 @@ def plot_p_and_l_sum_interest():
     return stresslist, p_and_l
 
 
+def Pure_endowment_predicted(x,m,n,i,a,degree=8):
+    if (m>n):
+        return('error')
+    data=[[x,m,n,i,a]] 
+    premium_to_predict=pd.DataFrame(data=data,columns=['age','nb_payements','maturity','interest_rate','amount'])
 
+    scaler = MinMaxScaler()
+    X_train_scaled  = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X)    
+    poly_scaled= PolynomialFeatures(degree=degree,include_bias=False)
+    poly_scaled.fit(X_train_scaled)
+    X_poly_train_scaled  = poly_scaled.transform(X_train_scaled)
+    X_poly_test_scaled = poly_scaled.transform(X_test_scaled)
+    model= LinearRegression().fit(X_poly_train_scaled, y_train)
+    y_poly = model.predict(X_poly_test_scaled)
+    y_poly=np.abs(y_poly)
+    ##now we train knn
+    
+    model=KNeighborsRegressor(n_neighbors=20,weights="distance")
+    model.fit(X, y_poly)
 
+    y_test_predict = model.predict(premium_to_predict)
 
-# def linear_error(m,i,x,stress):
-#         TH_stressed=StressTest_table(TH,stress)[0]        
-#         somme=0
-#         somme_stress=0
-#         for index in range (0,m):
-#             somme=somme+NPX(x,m,TH)*1/(1+i)**index
-#             somme_stress=somme_stress+NPX(x,m,TH_stressed)*1/(1+i)**index            
-#         return(somme-somme_stress)     
-        
-        
-# def plot_error(i=0.01,stress=10/100,m=1):
-#     s=list()
-#     g=list()
-#     for age in range(1,100):
-#         s.append(linear_error(m,i,age,stress))
-#         g.append(age)
-#     plt.xlabel('age', fontsize=20)    
-#     plt . ylabel ('linear error', fontsize =20)
-#     plt . title ('evolution of the linear error',fontsize =16)
-#     p1,=plt.plot(g,s)
-#     plt . legend ( handles =[p1],fontsize =16)
-        
-#     plt.plot()   
-  
+    return np.abs(y_test_predict[0])
+
 def profit_and_loss(x,m,n,i,a):
-    actuarial=TermInsuranceAnnual(x,n,i,a,m,TH)
+    actuarial=PEAnnual(x,m,n,i,a,lx)
     machine_learning=best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)[0].predict([(x,m,n,i,a)])
     # print('premium computed with actuarial method : ' ,actuarial)
     # print('premium computed with machine learning method: ' ,machine_learning)
@@ -687,3 +570,8 @@ def profit_and_loss_amount():
     # plt.bar(age, pl[0], width=500, color='b' )
     # plt.show() 
 
+
+
+
+
+    
