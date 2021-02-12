@@ -156,9 +156,10 @@ def balance_sheet_predicted_model(x,n,i,a,m,model,stress_MT=0,stress_interest_ra
         Total_Asset=list()
         Total_liability=list()
         for age in range(0,len(Premium_reserves)):
-             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,TH)
              Total_Asset.append(Financial_income[age]+Premiums[age]+ Last_premium_reserves[age])
-             Total_liability.append(Claims[age]+Premium_reserves[age])
+            
+             Premium_reserves[age]=Total_Asset[age]-Claims[age]
+             Total_liability.append(Claims[age]+Premium_reserves[age])  
     else:
         bs=reserves_predicted_model(x,n,i,a,m,model,stress_MT,stress_interest_rates, adapt)
         Premiums=bs[1]
@@ -170,11 +171,11 @@ def balance_sheet_predicted_model(x,n,i,a,m,model,stress_MT=0,stress_interest_ra
         Total_Asset=list()
         Total_liability=list()
         for age in range(0,len(Premium_reserves)):
-             Premium_reserves[age]= Premium_reserves[age]*stresstest.NPX(x+age,1,TH)
              Total_Asset.append(Financial_income[age]+Premiums[age]+ Last_premium_reserves[age])
-             Total_liability.append(Claims[age]+Premium_reserves[age])            
+            
+             Premium_reserves[age]=Total_Asset[age]-Claims[age]
+             Total_liability.append(Claims[age]+Premium_reserves[age])           
     return Premiums[0:-1],Financial_income[0:-1],Last_premium_reserves[0:-1],Claims[0:-1],Premium_reserves,Total_Asset, Total_liability
-
 
 
 
