@@ -41,7 +41,7 @@ def portfolio(request):
 def lxQxStress(request):
     context = {}
     if request.method == 'GET':
-        template = loader.get_template('RainyDaysHero/life-insurance/TI/lxQxStress.html')
+        template = loader.get_template('RainyDaysHero/life-insurance/TI/lxqxStress.html')
         form = LxQxStressForm(request.POST)
         context = dict(form= form)
         context['requestType']='GET'
