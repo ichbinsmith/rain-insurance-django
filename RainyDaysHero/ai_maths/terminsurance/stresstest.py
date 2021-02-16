@@ -118,10 +118,7 @@ def TI_evolution(TH,x,i,n,m,a):
         tablelx=StressTest_table(TH,j/100)[0]
         TI.append(TermInsuranceAnnual(x,n,i,a,m,tablelx))
         listi.append(j)
-#    plt.plot(listi,TI)
-#    plt . xlabel ('discount (%)', fontsize =20)
-#    plt . ylabel ('Annual premium', fontsize =20)
-#    plt . title ('Evolution of the Annual premium of a term insurance with respect to the discount',fontsize =16)
+
     return(TI)    
 
 
@@ -419,53 +416,6 @@ def plot_p_and_l_sum_interest_knn():
          
     
 
-#def best_model_stress(stress_MT=0,stress_interest=0,X=X):
-#    ##put the stress in %
-#    y_stressed=list()
-#    stress=stress_MT/100
-#    stress_i=stress_interest/100
-#    TH_stressed=StressTest_table(TH,stress)[0]
-#    X_new=X.copy()
-#    X_new.interest_rate=X.interest_rate+stress_i
-#    for contract in range(0,len(X)):
-#        y_stressed.append(TermInsuranceAnnual(int(X_new.iloc[contract].age),int(X_new.iloc[contract].maturity),X_new.iloc[contract].interest_rate,X_new.iloc[contract].amount,int(X_new.iloc[contract].nb_payements),TH_stressed))    
-#
-#    X_trainval, X_test, y_trainval, y_test = train_test_split(X_new, y_stressed, random_state=1)
-#
-#    X_train, X_valid, y_train, y_valid = train_test_split(X_trainval, y_trainval, random_state=1)
-#    valid_scores=list()
-#    test_scores=list()
-#    train_scores=list()
-#    nn_list=list()
-#    for nn in range (1,20):
-#        model=KNeighborsRegressor(n_neighbors=nn,weights="distance")
-#        model.fit(X_train, y_train)
-#        valid_scores.append(model.score(X_valid,y_valid))
-#        test_scores.append(model.score(X_test,y_test))
-#        train_scores.append(model.score(X_train,y_train))
-#        nn_list.append(nn)
-#    m = max(test_scores)
-#    max_nn=0
-#    for nn in  range (1,20):
-#        if test_scores[nn-1]==m:
-#            max_nn=nn
-#    model=KNeighborsRegressor(n_neighbors=max_nn,weights="distance")
-#    model.fit(X_train, y_train)       
-#    return model, nn_list, train_scores, valid_scores, test_scores, y_stressed    
-
-# def plot_stress_model(stress=0,stress_interest=0):
-#     ##put stres in %
-#     rec=best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)
-#     listnn=rec[1]
-#     p1,=plt.plot(listnn,rec[2],label='train')
-#     p2,=plt.plot(listnn,rec[3],label='validation')
-#     p3,=plt.plot(listnn,rec[4],label='test')
-#     plt . xlabel ('number of neighbors', fontsize =20)
-#     plt . ylabel ('R²', fontsize =20)
-#     plt . title ('R² as a function of the number of neighbors with a stress on mortality table= {}'.format(stress)+'%'+" and on interest rate = {}".format(stress_interest)+ "%",fontsize =16)
-#     plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-#     plt.show()
-
 
         
 def plot_p_and_l_knn_sum_stress_new():
@@ -544,48 +494,16 @@ def plot_p_and_l_sum_interest():
             TI_stressed.append(TermInsuranceAnnual(int(X.iloc[contract].age),int(X.iloc[contract].maturity),X.iloc[contract].interest_rate+stress,X.iloc[contract].amount,int(X.iloc[contract].nb_payements),TH))
         p_and_l.append(sum(TI)-sum(TI_stressed))
 
-    # plt.xlabel('Interest rate increase', fontsize=20)    
-    # plt . ylabel ('Profit and loss', fontsize =20)
-    # plt . title ('Profit and loss with stress on the interest rates ',fontsize =16)
-    # p1,=plt.plot(stresslist, p_and_l,label='Profit_and_loss',color='red')
-    # plt . legend ( handles =[p1],fontsize =16)
 
-    # plt.plot() 
     return stresslist, p_and_l
 
 
 
-
-
-# def linear_error(m,i,x,stress):
-#         TH_stressed=StressTest_table(TH,stress)[0]        
-#         somme=0
-#         somme_stress=0
-#         for index in range (0,m):
-#             somme=somme+NPX(x,m,TH)*1/(1+i)**index
-#             somme_stress=somme_stress+NPX(x,m,TH_stressed)*1/(1+i)**index            
-#         return(somme-somme_stress)     
-        
-        
-# def plot_error(i=0.01,stress=10/100,m=1):
-#     s=list()
-#     g=list()
-#     for age in range(1,100):
-#         s.append(linear_error(m,i,age,stress))
-#         g.append(age)
-#     plt.xlabel('age', fontsize=20)    
-#     plt . ylabel ('linear error', fontsize =20)
-#     plt . title ('evolution of the linear error',fontsize =16)
-#     p1,=plt.plot(g,s)
-#     plt . legend ( handles =[p1],fontsize =16)
-        
-#     plt.plot()   
   
 def profit_and_loss(x,m,n,i,a):
     actuarial=TermInsuranceAnnual(x,n,i,a,m,TH)
     machine_learning=best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)[0].predict([(x,m,n,i,a)])
-    # print('premium computed with actuarial method : ' ,actuarial)
-    # print('premium computed with machine learning method: ' ,machine_learning)
+
     P_and_L=machine_learning-actuarial
     return( P_and_L)        
 
@@ -601,11 +519,7 @@ def profit_and_loss_age():
             if X.age[smash]==age[smashos]:
                 pl[0][smashos]+=p_and_l[smash]                
 
-    # plt . xlabel ('age', fontsize =20)
-    # plt . ylabel ('profit_and_loss', fontsize =20)
-    # plt . title ('profit and loss as a function of the age',fontsize =16)
-    # plt.bar(age, pl[0], width=1.0, color='b' )
-    # plt.show()    
+   
     
 def profit_and_loss_interest():
     ML=best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)[0].predict(X)
@@ -618,11 +532,7 @@ def profit_and_loss_interest():
             if X.interest_rate[smash]==age[smashos]/100:
                 pl[0][smashos]+=p_and_l[smash]                
 
-    # plt . xlabel ('interest rate (%)', fontsize =20)
-    # plt . ylabel ('profit_and_loss', fontsize =20)
-    # plt . title ('profit and loss as a function of the interest rate',fontsize =16)
-    # plt.bar(age, pl[0], width=0.1, color='b' )
-    # plt.show()  
+
 
 def profit_and_loss_payments():
     ML=best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)[0].predict(X)
@@ -635,11 +545,7 @@ def profit_and_loss_payments():
             if X.nb_payements[smash]==age[smashos]:
                 pl[0][smashos]+=p_and_l[smash]                
 
-    # plt . xlabel ('number of payments', fontsize =20)
-    # plt . ylabel ('profit_and_loss', fontsize =20)
-    # plt . title ('profit and loss as a function of the number of payments',fontsize =16)
-    # plt.bar(age, pl[0], width=1, color='b' )
-    # plt.show() 
+
 
 def profit_and_loss_maturity():
     ML=best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)[0].predict(X)
@@ -652,12 +558,7 @@ def profit_and_loss_maturity():
             if X.maturity[smash]==age[smashos]:
                 pl[0][smashos]+=p_and_l[smash]                
 
-    # plt . xlabel ('Maturity', fontsize =20)
-    # plt . ylabel ('profit_and_loss', fontsize =20)
-    # plt . title ('profit and loss as a function of the maturity',fontsize =16)
-    # plt.bar(age, pl[0], width=1, color='b' )
-    # plt.show() 
-
+ 
 def profit_and_loss_amount():
     ML=best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)[0].predict(X)
     p_and_l=ML-y        
@@ -668,9 +569,5 @@ def profit_and_loss_amount():
             if X.amount[smash]==age[smashos]:
                 pl[0][smashos]+=p_and_l[smash]                
 
-    # plt . xlabel ('Amount', fontsize =20)
-    # plt . ylabel ('profit_and_loss', fontsize =20)
-    # plt . title ('profit and loss as a function of the insured amount',fontsize =16)
-    # plt.bar(age, pl[0], width=500, color='b' )
-    # plt.show() 
+ 
 

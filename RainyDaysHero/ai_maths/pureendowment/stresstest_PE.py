@@ -121,13 +121,7 @@ def plot_p_and_l_point_interest(TF,x,i,n,m,a):
         stress=stress/1000
         stresslist.append(stress)
         P_and_L.append(TI-PEAnnual(x,m,n,i+stress,a,TF))
-    # plt.xlabel('Interest rate increase', fontsize=20)    
-    # plt . ylabel ('Profit and loss', fontsize =20)
-    # plt . title ('P & L as a function of the interest rate stress ',fontsize =16)
-    # p1,=plt.plot(stresslist,P_and_L,label='Profit_and_loss',color='red')
-    # plt . legend ( handles =[p1],fontsize =16)
-
-    # plt.plot()         
+        
     return stresslist, P_and_L
 
 
@@ -141,12 +135,7 @@ def plot_p_and_l_point(TF,x,i,n,m,a):
         stresslist.append(stress)
         TF_stressed=StressTest_table(TF,stress)[0]
         P_and_L.append(TI-PEAnnual(x,m,n,i,a,TF_stressed))
-    # plt.xlabel('Stress ', fontsize=20)    
-    # plt . ylabel ('Profit and loss', fontsize =20)
-    # plt . title ('P & L with stress on mortality table',fontsize =16)
-    # p1,=plt.plot(stresslist,P_and_L,label='Profit_and_loss',color='red')
-    # plt . legend ( handles =[p1],fontsize =16)
-    # plt.plot()     
+    
     return stresslist, P_and_L
 
 def plot_p_and_l_point_knn(TF,x,i,n,m,a,degree=8):
@@ -158,13 +147,7 @@ def plot_p_and_l_point_knn(TF,x,i,n,m,a,degree=8):
         stresslist.append(stress)
         TF_stressed=StressTest_table(TF,stress)[0]
         P_and_L.append(TI-PEAnnual(x,m,n,i,a,TF_stressed))
-    # plt.xlabel('Stress ', fontsize=20)    
-    # plt . ylabel ('Profit and loss', fontsize =20)
-    # plt . title ('P & L as a function of the stress ',fontsize =16)
-    # p1,=plt.plot(stresslist,P_and_L,label='Profit_and_loss',color='red')
-    # plt . legend ( handles =[p1],fontsize =16)
-
-    # plt.plot()        
+      
     return stresslist, P_and_L
 
 def plot_p_and_l_point_interest_knn(TF,x,i,n,m,a,degree=8):
@@ -175,12 +158,7 @@ def plot_p_and_l_point_interest_knn(TF,x,i,n,m,a,degree=8):
         stress=stress/1000
         stresslist.append(stress)
         P_and_L.append(TI-PEAnnual(x,m,n,i+stress,a,TF))
-    # plt.xlabel('Interest rate increase', fontsize=20)    
-    # plt . ylabel ('Profit and loss', fontsize =20)
-    # plt . title ('P & L as a function of the interest rate stress ',fontsize =16)
-    # p1,=plt.plot(stresslist,P_and_L,label='Profit_and_loss',color='red')
-    # plt . legend ( handles =[p1],fontsize =16)
-    # plt.plot() 
+
     return stresslist, P_and_L
 
 
@@ -195,12 +173,6 @@ def plot_p_and_l_point_new(x,m,n,i,a,stress_MT=True):
             stresslist.append(stress)
             P_and_L.append(new_knn)
 
-            # plt.xlabel('Stress ', fontsize=20)    
-            # plt . ylabel ('Profit and loss', fontsize =20)
-            # plt . title ('P & L as a function of the stress ',fontsize =16)
-            # p1,=plt.plot(stresslist,P_and_L,label='Profit_and_loss',color='red')
-            # plt . legend ( handles =[p1],fontsize =16)
-            # plt.plot()
     else:
         for stress in range(-15,25):
             stress=stress/1000
@@ -209,12 +181,7 @@ def plot_p_and_l_point_new(x,m,n,i,a,stress_MT=True):
             stresslist.append(stress)
             P_and_L.append(new_knn)
 
-            # plt.xlabel('Interest rate increase', fontsize=20)    
-            # plt . ylabel ('Profit and loss', fontsize =20)
-            # plt . title ('P & L as a function of the interest rate stress ',fontsize =16)
-            # p1,=plt.plot(stresslist,P_and_L,label='Profit_and_loss',color='red')
-            # plt . legend ( handles =[p1],fontsize =16)
-            # plt.plot()        
+  
 
     return stresslist,P_and_L
 
@@ -327,13 +294,7 @@ def plot_p_and_l_knn_sum_stress():
             TI_stressed.append(PEAnnual(int(X.iloc[contract].age),int(X.iloc[contract].nb_payements),int(X.iloc[contract].maturity), X.iloc[contract].interest_rate,X.iloc[contract].amount,TF_stressed))
         p_and_l.append(knn_sum-sum(TI_stressed))
 
-    # plt.xlabel('Stress ', fontsize=20)    
-    # plt . ylabel ('Profit and loss', fontsize =20)
-    # plt . title ('Profit and loss with stress on the mortality table ',fontsize =16)
-    # p1,=plt.plot(stresslist, p_and_l,label='Profit_and_loss',color='red')
-    # plt . legend ( handles =[p1],fontsize =16)
 
-    # plt.plot()
     return stresslist, p_and_l
 
 def plot_p_and_l_sum_interest_knn():
@@ -348,13 +309,7 @@ def plot_p_and_l_sum_interest_knn():
             TI_stressed.append(PEAnnual(int(X.iloc[contract].age),int(X.iloc[contract].nb_payements),int(X.iloc[contract].maturity), X.iloc[contract].interest_rate+stress,X.iloc[contract].amount,TF))
         p_and_l.append(knn_sum-sum(TI_stressed))
 
-    # plt.xlabel('Interest rate increase', fontsize=20)    
-    # plt . ylabel ('Profit and loss', fontsize =20)
-    # plt . title ('Profit and loss with stress on the interest rates',fontsize =16)
-    # p1,=plt.plot(stresslist, p_and_l,label='Profit_and_loss',color='red')
-    # plt . legend ( handles =[p1],fontsize =16)
 
-    # plt.plot() 
     return stresslist, p_and_l
 
 
@@ -367,13 +322,7 @@ def plot_p_and_l_knn_sum_stress_new():
     for stress in range(-10,10):
         p_and_l.append(new_p_and_l_sum(stress=stress/100,stress_interest=0))
         stresslist.append(stress/100)
-    # plt.xlabel('Stress ', fontsize=20)    
-    # plt . ylabel ('Profit and loss', fontsize =20)
-    # plt . title ('Profit and loss for the AI method with stress on the mortality table ',fontsize =16)
-    # p1,=plt.plot(stresslist, p_and_l,label='Profit_and_loss',color='red')
-    # plt . legend ( handles =[p1],fontsize =16)
-
-    # plt.plot()        
+      
     return stresslist, p_and_l
 
 def plot_p_and_l_knn_sum_stress_interest_new():
@@ -382,13 +331,7 @@ def plot_p_and_l_knn_sum_stress_interest_new():
     for stress in range(-15,25):
         p_and_l.append(new_p_and_l_sum(stress=0,stress_interest=stress/1000))
         stresslist.append(stress/1000)
-    # plt.xlabel('Stress ', fontsize=20)    
-    # plt . ylabel ('Profit and loss', fontsize =20)
-    # plt . title ('Profit and loss for the AI method with stress on the interest rates ',fontsize =16)
-    # p1,=plt.plot(stresslist, p_and_l,label='Profit_and_loss',color='red')
-    # plt . legend ( handles =[p1],fontsize =16)
-
-    # plt.plot()         
+       
     return stresslist, p_and_l
 
 
@@ -413,13 +356,7 @@ def plot_p_and_l_sum():
             TI_stressed.append(PEAnnual(int(X.iloc[contract].age),int(X.iloc[contract].nb_payements),int(X.iloc[contract].maturity), X.iloc[contract].interest_rate,X.iloc[contract].amount,TF_stressed))
         p_and_l.append(sum(TI)-sum(TI_stressed))
 
-    # plt.xlabel('Stress ', fontsize=20)    
-    # plt . ylabel ('Profit and loss', fontsize =20)
-    # plt . title ('Profit and loss with a stress on the mortality table ',fontsize =16)
-    # p1,=plt.plot(stresslist, p_and_l,label='Profit_and_loss',color='red')
-    # plt . legend ( handles =[p1],fontsize =16)
 
-    # plt.plot()
     return stresslist, p_and_l
 
 
@@ -437,13 +374,6 @@ def plot_p_and_l_sum_interest():
             TI_stressed.append(PEAnnual(int(X.iloc[contract].age),int(X.iloc[contract].nb_payements),int(X.iloc[contract].maturity), X.iloc[contract].interest_rate+stress,X.iloc[contract].amount,TF))
         p_and_l.append(sum(TI)-sum(TI_stressed))
 
-    # plt.xlabel('Interest rate increase', fontsize=20)    
-    # plt . ylabel ('Profit and loss', fontsize =20)
-    # plt . title ('Profit and loss with stress on the interest rates ',fontsize =16)
-    # p1,=plt.plot(stresslist, p_and_l,label='Profit_and_loss',color='red')
-    # plt . legend ( handles =[p1],fontsize =16)
-
-    # plt.plot() 
     return stresslist, p_and_l
 
 
@@ -475,8 +405,7 @@ def Pure_endowment_predicted(x,m,n,i,a,degree=8):
 def profit_and_loss(x,m,n,i,a):
     actuarial=PEAnnual(x,m,n,i,a,lx)
     machine_learning=best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)[0].predict([(x,m,n,i,a)])
-    # print('premium computed with actuarial method : ' ,actuarial)
-    # print('premium computed with machine learning method: ' ,machine_learning)
+
     P_and_L=machine_learning-actuarial
     return( P_and_L)
 
@@ -492,11 +421,6 @@ def profit_and_loss_age():
             if X.age[smash]==age[smashos]:
                 pl[0][smashos]+=p_and_l[smash]
 
-                # plt . xlabel ('age', fontsize =20)
-    # plt . ylabel ('profit_and_loss', fontsize =20)
-    # plt . title ('profit and loss as a function of the age',fontsize =16)
-    # plt.bar(age, pl[0], width=1.0, color='b' )
-    # plt.show()    
 
 def profit_and_loss_interest():
     ML=best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)[0].predict(X)
@@ -509,11 +433,7 @@ def profit_and_loss_interest():
             if X.interest_rate[smash]==age[smashos]/100:
                 pl[0][smashos]+=p_and_l[smash]
 
-                # plt . xlabel ('interest rate (%)', fontsize =20)
-    # plt . ylabel ('profit_and_loss', fontsize =20)
-    # plt . title ('profit and loss as a function of the interest rate',fontsize =16)
-    # plt.bar(age, pl[0], width=0.1, color='b' )
-    # plt.show()  
+
 
 def profit_and_loss_payments():
     ML=best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)[0].predict(X)
@@ -526,11 +446,6 @@ def profit_and_loss_payments():
             if X.nb_payements[smash]==age[smashos]:
                 pl[0][smashos]+=p_and_l[smash]
 
-                # plt . xlabel ('number of payments', fontsize =20)
-    # plt . ylabel ('profit_and_loss', fontsize =20)
-    # plt . title ('profit and loss as a function of the number of payments',fontsize =16)
-    # plt.bar(age, pl[0], width=1, color='b' )
-    # plt.show() 
 
 def profit_and_loss_maturity():
     ML=best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)[0].predict(X)
@@ -543,11 +458,7 @@ def profit_and_loss_maturity():
             if X.maturity[smash]==age[smashos]:
                 pl[0][smashos]+=p_and_l[smash]
 
-                # plt . xlabel ('Maturity', fontsize =20)
-    # plt . ylabel ('profit_and_loss', fontsize =20)
-    # plt . title ('profit and loss as a function of the maturity',fontsize =16)
-    # plt.bar(age, pl[0], width=1, color='b' )
-    # plt.show() 
+
 
 def profit_and_loss_amount():
     ML=best_model_scale_knn(stress_MT=0,stress_interest=0,X=X)[0].predict(X)
@@ -558,14 +469,6 @@ def profit_and_loss_amount():
         for smashos in range(0,len(age)):
             if X.amount[smash]==age[smashos]:
                 pl[0][smashos]+=p_and_l[smash]
-
-                # plt . xlabel ('Amount', fontsize =20)
-    # plt . ylabel ('profit_and_loss', fontsize =20)
-    # plt . title ('profit and loss as a function of the insured amount',fontsize =16)
-    # plt.bar(age, pl[0], width=500, color='b' )
-    # plt.show() 
-
-
 
 
 

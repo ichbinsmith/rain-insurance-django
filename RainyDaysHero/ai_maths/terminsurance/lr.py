@@ -60,68 +60,11 @@ def learning_curve(degree=1):
          r2test[i-50] = get_r2_statsmodels(y_test, y_test_predict)
 
          listei[i-50]=i    
-     p1,=plt.plot(listei,r2train,label='train')
-     p2,=plt.plot(listei,r2valid,label='valid')
-     p3,=plt.plot(listei,r2vtest,label='test')     
-     plt . xlabel ('training set size', fontsize =20)
-     plt . ylabel ('R²', fontsize =20)
-     plt . title ('learning curve',fontsize =16)
-     plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-     #plt.show()    
+  
      return r2train,r2test, r2valid, listei  
 
 
-def plot_polynomiale(degremax):
-    liste_erreurs=np.zeros((4,degremax))
-    for i in range(1,degremax):
-        liste_erreurs[0,i]=(Polynomiale(i)[0])
-        liste_erreurs[1,i]=(Polynomiale(i)[1])
-        liste_erreurs[2,i]=(Polynomiale(i)[2])
-        liste_erreurs[3,i]=i
 
-    p1,=plt.plot(liste_erreurs[3,],liste_erreurs[0,],label='train')
-    p2,=plt.plot(liste_erreurs[3,],liste_erreurs[1,],label='validation')
-    p3,=plt.plot(liste_erreurs[3,],liste_erreurs[2,],label='test')
-    plt . xlabel ('degree', fontsize =20)
-    plt . ylabel ('R²', fontsize =20)
-    plt . title ('R² as a function of the degree',fontsize =16)
-    plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-    #plt.show()
-
-
-def learning_curve_poly_3d(N):
-     X_train_new=list()
-     
-     r2test=np.zeros((N,N))
-     
-     listei=list()
-     degreei=list()     
-     for degree in range(0,N):
-         polynomial_features= PolynomialFeatures(degree+1)
-         degreei.append(degree+1)
-         for j in range(1,N+1):
-             i=len(X_train)//N*j
-             X_train_new=X_train[0:i]
-             y_train_new=y_train[0:i]
-             X_train_poly=polynomial_features.fit_transform(X_train_new)
-             X_test_poly=polynomial_features.fit_transform(X_test)
-             model = LinearRegression()
-             model.fit(X_train_poly, y_train_new)         
-
-             y_test_predict = model.predict(X_test_poly)  
-             
-             r2test[degree,j-1]=(get_r2_statsmodels(y_test_predict, y_test)) 
-             listei.append(i)        
-     fig = figure()
-     ax = Axes3D(fig)
-     ax.set_xlabel('training set size')
-     ax.set_ylabel('degree')   
-     ax.set_zlabel('R²')       
-     X, Y = np.meshgrid( np.arange(len(X_train)//N,len(X_train),len(X_train)//N),degreei)
-     
-     ax.plot_surface(X, Y, r2test , rstride=1, cstride=1, cmap='hot')
-     show()    
-     
 
 
 

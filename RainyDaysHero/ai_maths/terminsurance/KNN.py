@@ -6,7 +6,6 @@ from sklearn.neighbors import KNeighborsRegressor
 import matplotlib
 matplotlib.use('Agg')
 import os
-from mpl_toolkits.mplot3d import Axes3D
 from pylab import show,figure
 
 df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))+"/static/RainyDaysHero/data/LI/TI/dataset.csv")
@@ -38,7 +37,7 @@ def best_knn():
     plt . ylabel ('R²', fontsize =20)
     plt . title ('R² as a function of the number of neighbors',fontsize =16)
     plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-    #plt.show()
+
         
 
 def learning_curve_knn(nn):
@@ -65,39 +64,10 @@ def learning_curve_knn(nn):
      plt . ylabel ('R²', fontsize =20)
      plt . title ('learning curve',fontsize =16)
      plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-     #plt.show()    
+
      return r2train,r2test, r2valid
 
-     
-
-def learning_curve_knn_3d(N):
-     X_train_new=list()    
-     r2test=np.zeros((N,N))     
-     listei=list()
-     degreei=list()     
-     for degree in range(1,N+1):
-         degreei.append(degree+1)         
-         reg = KNeighborsRegressor(n_neighbors=degree,weights="distance")
-
-         for j in range(1,N+1):
-             
-             i=len(X_train)//N*j
-             X_train_new=X_train[0:i]
-             y_train_new=y_train[0:i]
-             reg.fit(X_train_new, y_train_new) 
-            
-             r2test[degree-1,j-1]= reg.score(X_test,y_test)
-             listei.append(i)        
-     fig = figure()
-     ax = Axes3D(fig)
-     ax.set_xlabel('training set size')
-     ax.set_ylabel('Number of neighbors')   
-     ax.set_zlabel('R²')       
-     X, Y = np.meshgrid( np.arange(len(X_train)//N,len(X_train),len(X_train)//N),degreei)
-     
-     ax.plot_surface(X, Y, r2test , rstride=1, cstride=1, cmap='hot')
-     show() 
-    
+ 
 
      
 def term_insurance_predicted_knn(x,m,n,i,a,nn=10):
