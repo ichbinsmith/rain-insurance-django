@@ -10,7 +10,7 @@
 {% block content %}
 
 
-	<div class="container my-2 block-content" style={visibility='hidden'}>
+	<div class="container my-2 block-content">
 	  <div class="row">
 	    <div class="col-md-6 mx-auto myform">
 	    <h3 class="formtitle">Term Insurance Reserve</h3>
@@ -243,7 +243,7 @@ if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='To
 	    }
 	    // m
 	    if(form.numberOfPayements.value <= 0) {
-	      alert("The number of payement (m) must be strictly positive !");
+	      alert("The number of payements (m) must be strictly positive !");
 	      form.numberOfPayements.focus();
 	      return false;
 	    }
@@ -258,7 +258,7 @@ if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='To
 
 	    // n >=m
 	    if(form.maturity.value < form.numberOfPayements.value) {
-	      alert("The number of payement (m) must be less or equal to the maturity !");
+	      alert("The number of payements (m) must be less or equal to the maturity !");
 	      form.numberOfPayements.focus();
 	      return false;
 	    }

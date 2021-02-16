@@ -6,13 +6,16 @@
     <script type="text/javascript" src="{% static 'RainyDaysHero/js/chart-min.js' %}"></script>
 {% endblock %}
 
+
 {% block content %}
+
+
 	<div class="container my-2 block-content">
 	  <div class="row">
 	    <div class="col-md-6 mx-auto myform">
-	    <h3 class="formtitle">Term Insurance Accounting</h3>
+	    <h3 class="formtitle">Pure Endowment Reserve</h3>
 
-		<form action="/rdh/terminsurance-accounting/" method="post" onsubmit="return checkForm(this);" >
+		<form action="/rdh/pureendowment-reserve/" method="post" onsubmit="return checkForm(this);">
 			{% csrf_token %}
 
 		<div class="form-group">
@@ -59,7 +62,7 @@
 	        {{ form.amount }}
 	        <label class="form-control-placeholder" for="{{ form.amount.id_for_label }}">{{ form.amount.label }}</label>
 	      </div>
-			
+
 		</div>
 
 		<div class="form-group">
@@ -67,7 +70,7 @@
 	        <label class="form-control-placeholder" for="{{ form.IAorActuarial.id_for_label }}">{{form.IAorActuarial.label}}</label>
 	     </div>
 
-	      
+
 	      <div class="form-group">
 	        <button type="submit" class="btn btn-dark">Compute</button>
 	      </div>
@@ -75,23 +78,138 @@
 
 	    </div> <!--My form-->
 
+	    <div id="reserveResult" class="col-md-6 mx-auto myform"> <!--Reserve result-->
+	    	 <h3 class="formtitle">Reserve result</h3>
+		     <div class="form-group">
+		            <div class="card">
+		                <div class="card-body">
+		                    <canvas id="reserveChart"></canvas>
+		                </div>
+		            </div>
+	         </div>
+
+	    </div> <!--Retrospective result-->
+
 	  </div> <!--Row-->
 
 	</div> <!--Container-->
- 
- <script type="text/javascript">
+<script type="text/javascript">
+//Result div
+function checkRequestType(){
+if('{{requestType}}'=='GET'){
+	document.getElementById("reserveResult").style.display="none";
+}else{
+document.getElementById("reserveResult").style.display="block";
 
-//balance type form switch
-function balanceTypeSwitch(){
-	if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Contract'){
-		document.getElementById("contract").style.display="block";
-	}
-	if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Total'){
-		document.getElementById("contract").style.display="none";
-	}
+var ctxL = document.getElementById("reserveChart").getContext('2d');
+var aLocal = {{ a|safe }};
+
+if('{{IAorActuarial}}'=='IA'){
+//chart begin
+var myLineChart = new Chart(ctxL, {
+type: 'line',
+data: {
+labels: aLocal,
+datasets: [{
+label: "IA",
+data:  {{b}},
+backgroundColor: [
+'rgba(105, 0, 132, .2)',
+],
+borderColor: [
+'rgba(200, 99, 132, .7)',
+],
+borderWidth: 2
 }
-//balance type form switch end
+]
+},
+options: {
+responsive: true
+}
+});
+//chart end
+}
 
+if('{{IAorActuarial}}'=='Actuarial'){
+//chart begin
+var myLineChart = new Chart(ctxL, {
+type: 'line',
+data: {
+labels: aLocal,
+datasets: [{
+label: "Actuarial",
+data:  {{b}},
+backgroundColor: [
+'rgba(105, 0, 132, .2)',
+],
+borderColor: [
+'rgba(200, 99, 132, .7)',
+],
+borderWidth: 2
+}
+]
+},
+options: {
+responsive: true
+}
+});
+//chart end
+}
+if('{{IAorActuarial}}'=='Both'){
+//chart begin
+var myLineChart = new Chart(ctxL, {
+type: 'line',
+data: {
+labels: aLocal,
+datasets: [{
+label: "IA",
+data:  {{b}},
+backgroundColor: [
+'rgba(105, 0, 132, .2)',
+],
+borderColor: [
+'rgba(200, 99, 132, .7)',
+],
+borderWidth: 2
+},
+{
+label: "Actuarial",
+data:  {{c}},
+backgroundColor: [
+'rgba(0, 137, 132, .2)',
+],
+borderColor: [
+'rgba(0, 10, 130, .7)',
+],
+borderWidth: 2
+}
+]
+},
+options: {
+responsive: true
+}
+});
+//chart end
+}
+
+
+}
+reserveTypeSwitch();
+}
+
+window.onload = checkRequestType
+//result div end
+
+//reserve type form switch
+function reserveTypeSwitch(){
+if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Contract'){
+	document.getElementById("contract").style.display="block";
+}
+if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Total'){
+	document.getElementById("contract").style.display="none";
+}
+}
+//reserve type form switch end
 
   function checkForm(form)
   {
@@ -111,7 +229,7 @@ function balanceTypeSwitch(){
 	      return false;
 	    }
 
-	    // client age 
+	    // client age
 	    if(form.clientAge.value < 0) {
 	      alert("The client age must be positive!");
 	      form.clientAge.focus();
@@ -131,7 +249,7 @@ function balanceTypeSwitch(){
 	    }
 
 	    //SPECIAL CONDITIONS
-	    // client age 
+	    // client age
 	    if(form.clientAge.value > 100) {
 	      alert("The client age must be less than 100 !");
 	      form.clientAge.focus();
@@ -144,12 +262,21 @@ function balanceTypeSwitch(){
 	      form.numberOfPayements.focus();
 	      return false;
 	    }
+
+
 	}
+
+	//stress on mortality must be in [-100,100]
+    if(form.mortalityStress.value < -100 || form.mortalityStress.value > 100 ) {
+      alert("The mortality stress must be in range [-100,100] !");
+      form.mortalityStress.focus();
+      return false;
+    }
 
     // validation was successful
     return true;
   }
 
+</script>
 
-</script>   
 {% endblock %}

@@ -3,39 +3,20 @@
 {% block additionnal-head-conf %}
 	{% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/css/styleQuotationForm.css' %}">
-    <script type="text/javascript" src="{% static 'RainyDaysHero/js/chart-min.js' %}"></script>
 {% endblock %}
 
 {% block content %}
+
 	<div class="container my-2 block-content">
 	  <div class="row">
 	    <div class="col-md-6 mx-auto myform">
-	    <h3 class="formtitle">Term Insurance Accounting</h3>
+	    <h3 class="formtitle">Please fill the pricing form</h3>
+	    	It is possible to predict the price from four models: KNN.
+	    <br> <br>
 
-		<form action="/rdh/terminsurance-accounting/" method="post" onsubmit="return checkForm(this);" >
+		<form action="/rdh/pureendowment/" method="post" onsubmit="return checkForm(this);">
 			{% csrf_token %}
-
-		<div class="form-group">
-	        {{ form.contractOrTotal }}
-	        <label class="form-control-placeholder" for="{{ form.contractOrTotal.id_for_label }}">{{form.contractOrTotal.label}}</label>
-	     </div>
-
-	    <!-- required for contract & total -->
-		<div class="form-group">
-	        {{ form.mortalityStress }}
-	        <label class="form-control-placeholder" for="{{ form.mortalityStress.id_for_label }}">{{form.mortalityStress.label}}</label>
-	     </div>
-		<div class="form-group">
-	        {{ form.interestRateStress }}
-	        <label class="form-control-placeholder" for="{{ form.interestRateStress.id_for_label }}">{{form.interestRateStress.label}}</label>
-	     </div>
-		<div class="form-group">
-	        {{ form.adaptedModel }}
-	        <label class="form-control-placeholder" for="{{ form.adaptedModel.id_for_label }}">{{form.adaptedModel.label}}</label>
-	     </div>
-
-		<div id="contract" style="display: none;">
-		  <div class="form-group">
+	      <div class="form-group">
 	        {{ form.clientAge}}
 	        <label class="form-control-placeholder" for="{{ form.clientAge.id_for_label }}">Age</label>
 	      </div>
@@ -59,39 +40,25 @@
 	        {{ form.amount }}
 	        <label class="form-control-placeholder" for="{{ form.amount.id_for_label }}">{{ form.amount.label }}</label>
 	      </div>
-			
-		</div>
 
-		<div class="form-group">
-	        {{ form.IAorActuarial }}
-	        <label class="form-control-placeholder" for="{{ form.IAorActuarial.id_for_label }}">{{form.IAorActuarial.label}}</label>
-	     </div>
-
-	      
 	      <div class="form-group">
-	        <button type="submit" class="btn btn-dark">Compute</button>
+	        {{ form.model }}
+	        <label class="form-control-placeholder" for="{{ form.model.id_for_label }}">{{form.model.label}}</label>
+	      </div>
+
+	      <div class="form-group">
+	        <button type="submit" class="btn btn-dark">Pricing</button>
 	      </div>
 		</form>
+		<div class="form-group">
+	        <label>Predicted Premium (IA based) = {{price}} &euro;</label> <br>
+	        <label>Real Premium (Actuarial Formulae) = {{actuarial_price}} &euro;</label>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
-	    </div> <!--My form-->
-
-	  </div> <!--Row-->
-
-	</div> <!--Container-->
- 
- <script type="text/javascript">
-
-//balance type form switch
-function balanceTypeSwitch(){
-	if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Contract'){
-		document.getElementById("contract").style.display="block";
-	}
-	if(document.getElementById("{{ form.contractOrTotal.id_for_label }}").value=='Total'){
-		document.getElementById("contract").style.display="none";
-	}
-}
-//balance type form switch end
-
+<script>
 
   function checkForm(form)
   {
@@ -111,7 +78,7 @@ function balanceTypeSwitch(){
 	      return false;
 	    }
 
-	    // client age 
+	    // client age
 	    if(form.clientAge.value < 0) {
 	      alert("The client age must be positive!");
 	      form.clientAge.focus();
@@ -131,7 +98,7 @@ function balanceTypeSwitch(){
 	    }
 
 	    //SPECIAL CONDITIONS
-	    // client age 
+	    // client age
 	    if(form.clientAge.value > 100) {
 	      alert("The client age must be less than 100 !");
 	      form.clientAge.focus();
@@ -149,7 +116,6 @@ function balanceTypeSwitch(){
     // validation was successful
     return true;
   }
+</script>
 
-
-</script>   
 {% endblock %}

@@ -12,15 +12,22 @@ from .app_views.raininsurance.quotation import quotation
 from .app_views.raininsurance.retrospective import retrospective
 
 #lifeinsurance views
+from .app_views.lifeinsurance.general import portfolio
+from .app_views.lifeinsurance.general import lxQxStress
+
+##Term Insurance
 from .app_views.lifeinsurance.terminsurance import terminsurance
 from .app_views.lifeinsurance.terminsurance import terminsuranceAnalysis
 from .app_views.lifeinsurance.terminsurance import terminsuranceReserve
 from .app_views.lifeinsurance.terminsurance import terminsuranceAccounting
 from .app_views.lifeinsurance.terminsurance import terminsuranceStress
-from .app_views.lifeinsurance.general import portfolio
-from .app_views.lifeinsurance.general import lxQxStress
 
-
+##Pure Endowment
+from .app_views.lifeinsurance.pe import PureEndowment
+from .app_views.lifeinsurance.pe import PureEndowmentAnalysis
+from .app_views.lifeinsurance.pe import PureEndowmentReserve
+from .app_views.lifeinsurance.pe import PureEndowmentAccounting
+from .app_views.lifeinsurance.pe import PureEndowmentStress
 
 
 app_name = 'rdh'
@@ -34,6 +41,11 @@ urlpatterns = [
     path('terminsurance-reserve/', terminsuranceReserve, name='terminsuranceReserve'),
     path('terminsurance-stress/', terminsuranceStress, name='terminsuranceStress'),
     path('terminsurance-accounting/', terminsuranceAccounting, name='terminsuranceAccounting'),
+    path('pureendowment/', PureEndowment, name='PureEndowment'),
+    path('pureendowment-analysis/', PureEndowmentAnalysis, name='PureEndowmentAnalysis'),
+    path('pureendowment-reserve/', PureEndowmentReserve, name='PureEndowmentReserve'),
+    path('pureendowment-stress/', PureEndowmentStress, name='PureEndowmentStress'),
+    path('pureendowment-accounting/', PureEndowmentAccounting, name='PureEndowmentAccounting'),
     path('lx-qx-stress/', lxQxStress, name='lxQxStress'),
     path('portfolio/', portfolio, name='portfolio'),
     path('contact/', contact, name='contact'),

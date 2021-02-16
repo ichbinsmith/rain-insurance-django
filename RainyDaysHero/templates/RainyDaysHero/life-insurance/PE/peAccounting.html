@@ -10,9 +10,9 @@
 	<div class="container my-2 block-content">
 	  <div class="row">
 	    <div class="col-md-6 mx-auto myform">
-	    <h3 class="formtitle">Term Insurance Accounting</h3>
+	    <h3 class="formtitle">Pure Endowment Accounting</h3>
 
-		<form action="/rdh/terminsurance-accounting/" method="post" onsubmit="return checkForm(this);" >
+		<form action="/rdh/pureendowment-accounting/" method="post" onsubmit="return checkForm(this);" >
 			{% csrf_token %}
 
 		<div class="form-group">
@@ -59,7 +59,7 @@
 	        {{ form.amount }}
 	        <label class="form-control-placeholder" for="{{ form.amount.id_for_label }}">{{ form.amount.label }}</label>
 	      </div>
-			
+
 		</div>
 
 		<div class="form-group">
@@ -67,7 +67,7 @@
 	        <label class="form-control-placeholder" for="{{ form.IAorActuarial.id_for_label }}">{{form.IAorActuarial.label}}</label>
 	     </div>
 
-	      
+
 	      <div class="form-group">
 	        <button type="submit" class="btn btn-dark">Compute</button>
 	      </div>
@@ -78,7 +78,7 @@
 	  </div> <!--Row-->
 
 	</div> <!--Container-->
- 
+
  <script type="text/javascript">
 
 //balance type form switch
@@ -111,7 +111,7 @@ function balanceTypeSwitch(){
 	      return false;
 	    }
 
-	    // client age 
+	    // client age
 	    if(form.clientAge.value < 0) {
 	      alert("The client age must be positive!");
 	      form.clientAge.focus();
@@ -131,7 +131,7 @@ function balanceTypeSwitch(){
 	    }
 
 	    //SPECIAL CONDITIONS
-	    // client age 
+	    // client age
 	    if(form.clientAge.value > 100) {
 	      alert("The client age must be less than 100 !");
 	      form.clientAge.focus();
@@ -151,5 +151,5 @@ function balanceTypeSwitch(){
   }
 
 
-</script>   
+</script>
 {% endblock %}
