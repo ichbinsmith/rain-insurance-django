@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Jan 29 01:27:52 2021
-
-@author: Mon PC
-"""
-
 from RainyDaysHero.ai_maths.terminsurance import  reserves,stresstest
 import numpy as np
 import os

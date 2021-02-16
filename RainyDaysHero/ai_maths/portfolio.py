@@ -1,9 +1,8 @@
 
-from .terminsurance import reserves,stresstest,balance_sheet
-from .pureendowment import Pure_endowment, PE_reserves, balancesheetPE, stresstest_PE
+from .terminsurance import reserves,balance_sheet
+from .pureendowment import PE_reserves, balancesheetPE
 
 
-import matplotlib.pyplot as plt
 import numpy as np
 import os
 import pandas as pd
