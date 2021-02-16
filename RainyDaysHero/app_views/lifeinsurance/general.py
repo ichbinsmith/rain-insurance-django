@@ -53,7 +53,7 @@ def lxQxStress(request):
 
         return HttpResponse(template.render(context, request))
     else:
-        template = loader.get_template('RainyDaysHero/life-insurance/TI/lxQxStress.html')
+        template = loader.get_template('RainyDaysHero/life-insurance/TI/lxqxStress.html')
         form = LxQxStressForm(request.POST)
         if form.is_valid():
             context['form'] = form
