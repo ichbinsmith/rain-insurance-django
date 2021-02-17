@@ -78,19 +78,7 @@ def term_insurance_predicted_knn(x,m,n,i,a,nn=10):
     model.fit(X_train, y_train)      
     y_test_predict = model.predict(premium_to_predict)
     return(y_test_predict[0])    
-    
 
-def profit_and_loss_knn(x,m,n,i,a,nn=10):
-    if (m>n):
-        return('error')
-  
-    actuarial=TermInsuranceAnnual(x,m,n,i,a)
-    machine_learning=term_insurance_predicted_knn(x,m,n,i,a,nn)
-    print('premium computed with actuarial method : ' ,actuarial)
-    print('premium computed with machine learning method: ' ,machine_learning)
-    P_and_L=machine_learning-actuarial
-    return( P_and_L)     
-    
 
 def knn_model(X_train,y_train,nn):
     model=KNeighborsRegressor(n_neighbors=nn,weights="distance")
