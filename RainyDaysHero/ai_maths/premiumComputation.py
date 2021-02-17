@@ -42,7 +42,7 @@ def SinglePremiumPE(x,n,i,a):
 def PEAnnual(x,p,n,i,a):
     AP = 0
     for j in range(p): AP+= SinglePremiumPE(x,j,i,a)
-    return (SinglePremiumPE(x,n,i,a) / AP )*a
+    return f'{(SinglePremiumPE(x,n,i,a) / AP )*a:.2f}'
 
 
 #Whole life

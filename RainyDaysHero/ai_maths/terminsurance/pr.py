@@ -1,27 +1,14 @@
 import pandas as pd
 import numpy as np
-import mglearn as mg
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Ridge
-from sklearn.linear_model import Lasso
-from sklearn.svm import SVR
-from sklearn.metrics import mean_squared_error
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score
-from sklearn.linear_model import SGDRegressor
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
-import csv
 import os
 
 import statsmodels.api as sm
-import statsmodels.formula.api as smf
 
 df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))+"/static/RainyDaysHero/data/LI/TI/dataset.csv")
 
@@ -180,15 +167,7 @@ def plot_polyfinal_under0(degremax):
         liste_erreurs[2,i]=(polyfinal_learning_under0(i)[1])
         liste_erreurs[3,i]=i
 
-    p1,=plt.plot(liste_erreurs[3,],liste_erreurs[0,],label='train')
-    p2,=plt.plot(liste_erreurs[3,],liste_erreurs[1,],label='validation')
-    p3,=plt.plot(liste_erreurs[3,],liste_erreurs[2,],label='test')
-    plt . xlabel ('degree', fontsize =20)
-    plt . ylabel ('R²', fontsize =20)
-    plt . title ('R² as a function of the degree',fontsize =16)
-    plt . legend ( handles =[p1 , p2, p3],fontsize =16)
-    #plt.show()
-
+  
 
 
 
@@ -213,102 +192,8 @@ def term_insurance_predicted(x,m,n,i,a,degree):
         final_premium=big.predict(premium_to_predict)        
     if (premium_predicted_vanilla<0):
         final_premium=under0.predict(premium_to_predict) 
-    ##On ramène finalement les valeurs à 0 à 10
+  
     if (premium_predicted_vanilla<0):    
         final_premium=[10]    
     return f'{final_premium[0]:.2f}'
 
-def profit_and_loss(x,m,n,i,a,degree):
-    if (m>=n):
-        return('error')
-    actuarial=TermInsuranceAnnual(x,m,n,i,a)
-    machine_learning=term_insurance_predicted(x,m,n,i,a,degree)
-    print('premium computed with actuarial method : ' ,actuarial)
-    print('premium computed with machine learning method: ' ,machine_learning)
-    P_and_L=machine_learning-actuarial
-    if (P_and_L>0):
-        print('the profit while using Artificial intelligence is',  P_and_L)
-        return( P_and_L)
-    if (P_and_L<0):
-        print('the loss while using Artificial intelligence is',  -P_and_L)
-        return( P_and_L)        
-
-def profit_and_loss_age(x,m,n,i,a,degree):
-    age=list()
-    p_and_l=list()
-    for x in range(1,90):
-        p_and_l.append(profit_and_loss(x,m,n,i,a,degree))
-        age.append(x)
-    plt.plot(age,p_and_l)
-    plt . xlabel ('age', fontsize =20)
-    plt . ylabel ('profit_and_loss', fontsize =20)
-    plt . title ('profit and loss as a function of the age',fontsize =16)
-    #plt.show()    
-    
-def profit_and_loss_interest_rate(x,m,n,i,a,degree):
-    interest=list()
-    p_and_l=list()
-    for i in range(1,1000):
-        p_and_l.append(profit_and_loss(x,m,n,i/1000,a,degree))
-        interest.append(i/1000)
-    plt.plot(interest,p_and_l)
-    plt . xlabel ('interest_rate', fontsize =20)
-    plt . ylabel ('profit_and_loss', fontsize =20)
-    plt . title ('profit and loss as a function of the interest rate',fontsize =16)
-
-def profit_and_loss_amount(x,m,n,i,a,degree):
-    premium=list()
-    p_and_l=list()
-    for a in range(1,50000,10):
-        p_and_l.append(profit_and_loss(x,m,n,i,a,degree))
-        premium.append(a)
-    plt.plot(premium,p_and_l)
-    plt . xlabel ('insured amounts', fontsize =20)
-    plt . ylabel ('profit_and_loss', fontsize =20)
-    plt . title ('profit and loss as a function of the insured amount',fontsize =16)
-
-def profit_and_loss_maturity(x,m,n,i,a,degree):
-    maturity=list()
-    p_and_l=list()
-    for n in range(m+1,105-x):
-        p_and_l.append(profit_and_loss(x,m,n,i,a,degree))
-        maturity.append(n)
-    plt.plot(maturity,p_and_l)
-    plt . xlabel ('maturity', fontsize =20)
-    plt . ylabel ('profit_and_loss', fontsize =20)
-    plt . title ('profit and loss as a function of the maturity',fontsize =16)
-
-def profit_and_loss_payements(x,m,n,i,a,degree):
-    payements=list()
-    p_and_l=list()
-    for m in range(1,n):
-        p_and_l.append(profit_and_loss(x,m,n,i,a,degree))
-        payements.append(m)
-    plt.plot(payements,p_and_l)
-    plt . xlabel ('number of payements', fontsize =20)
-    plt . ylabel ('profit_and_loss', fontsize =20)
-    plt . title ('profit and loss as a function of the number of payements',fontsize =16)
-
-def learning_curve_poly_under0_3d(N):
-     X_train_new=list()
-     r2test=np.zeros((N,N))
-          
-     listei=list()
-     degreei=list()     
-     for degree in range(0,N):
-         degreei.append(degree+1)         
-         for j in range(1,N+1):
-             i=len(X_train)//N*j
-             X_train_new=X_train[0:i]
-             y_train_new=y_train[0:i]
-
-             r2test[degree,j-1]=polyfinal_learning_under0(degree+1,X_train_new,y_train_new)[1]       
-             listei.append(i)        
-     fig = figure()
-     ax = Axes3D(fig)
-     ax.set_xlabel('training set size')
-     ax.set_ylabel('degree')   
-     ax.set_zlabel('R²')       
-     X, Y = np.meshgrid( np.arange(len(X_train)//N,len(X_train),len(X_train)//N),degreei)
-     ax.plot_surface(X, Y, r2test , rstride=1, cstride=1, cmap='hot')
-     show()  

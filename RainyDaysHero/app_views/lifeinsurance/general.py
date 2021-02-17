@@ -16,6 +16,11 @@ def portfolio(request):
         template = loader.get_template('RainyDaysHero/life-insurance/TI/portfolio.html')
         form = PortfolioForm(request.POST)
         context = dict(form= form)
+        context['requestType']='GET'
+        context['a']=list()
+        context['b']=list()
+        context['c']=list()
+        context['d']=list()
         return HttpResponse(template.render(context, request))
     else:
         template = loader.get_template('RainyDaysHero/life-insurance/TI/portfolioResult.html')
@@ -26,15 +31,28 @@ def portfolio(request):
         mortalityStress = float(form['mortalityStress'].value()) / 100
         interestRateStress = float(form['interestRateStress'].value()) / 100
 
-        ##TO DO : use appropriate function
+        recap = None
         if IAOrActuarial=='IA':
             result = portfolioo.Portfolio_predicted(mortalityStress,interestRateStress,adaptedModel)
+            recap = portfolioo.plot_portfolio_predicted(mortalityStress,interestRateStress,adaptedModel)
         else:
             result = portfolioo.Portfolio_true(mortalityStress, interestRateStress, adaptedModel)
+            recap = portfolioo.plot_portfolio_true(mortalityStress,interestRateStress,adaptedModel)
+        context['requestType']='POST'
+        context['labelOne'] = 'Reserves'
+        context['labelTwo'] = 'Claims'
+        context['labelThree'] = 'Level Annual Premiums'
+
+        context['a']=json.dumps(list(recap[0]))
+        context['b']=json.dumps(list(recap[1]))
+        context['c']=json.dumps(list(recap[2]))
+        context['d']=json.dumps(list(recap[3]))
         res = []
         for x in result:
             res.append(list(x))
             res[-1][-1] = int(res[-1][-1])
+            for i in range(len(res[-1])-1):
+                res[-1][i]=f'{res[-1][i]:.2f}'
         context['years'] = res
         return HttpResponse(template.render(context, request))
 

@@ -5,7 +5,7 @@ import json
 import os
 
 ## forms
-from RainyDaysHero.app_forms.pureEndowmentForm import PureEndowmentForm,PureEndowmentReserveForm,PureEndowmentStressForm, PureEndowmentBSForm
+from RainyDaysHero.app_forms.pureEndowmentForm import PureEndowmentForm,PureEndowmentReserveForm,PureEndowmentStressForm,PureEndowmentBSForm
 
 ## libs for IA - load trained models
 from joblib import dump, load #load - save models
@@ -31,9 +31,9 @@ def PureEndowment(request):
             context['form'] = form
             #compute price
             x,m,n,i,a,mdl = form['clientAge'].value(),form['numberOfPayements'].value(),form['maturity'].value(),form['interestRate'].value(),form['amount'].value(),form['model'].value()
-            premium = predictTIPremiumLive(x,n,m,i,a,mdl)
+            premium = predictPEPremiumLive(x,n,m,i,a,mdl)
             context['price'] = premium
-            context['actuarial_price'] = premiumComputation.PureEndowmentAnnual(int(x),int(m),int(n),float(i)/100,float(a))
+            context['actuarial_price'] = premiumComputation.PEAnnual(int(x),int(m),int(n),float(i)/100,float(a))
             return HttpResponse(template.render(context, request))
 
 
@@ -74,7 +74,7 @@ def PureEndowmentReserve(request):
             interestRateStress=float(form['interestRateStress'].value())/100
             adaptedModel=form['adaptedModel'].value()=='Yes'
             if IAorActuarial=='IA':
-                reserveResponse=pureEndowmentModels. reserves_predicted_scale_knn(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
+                reserveResponse=pureEndowmentModels.reserves_predicted_scale_knn(x,n,i,a,m,mortalityStress,interestRateStress, adaptedModel)
                 context['a']=json.dumps(list(reserveResponse[0]))
                 context['b']=json.dumps(list(reserveResponse[1]))
                 context['c']=json.dumps(list(reserveResponse[1]))
@@ -145,9 +145,10 @@ def PureEndowmentAccounting(request):
         for x in result:
             res.append(list(x))
             res[-1][-1] = int(res[-1][-1])
+            for i in range(len(res[-1])-1):
+                res[-1][i]=f'{res[-1][i]:.2f}'
         context['years'] = res
         return HttpResponse(template.render(context, request))
-
 
 def PureEndowmentStress(request):
     context = {}
@@ -262,19 +263,10 @@ def predictTIPremium(x,n,m,i,a,mdl):
         var = polynomial_features.fit_transform([(x,m,n,i,a)])
         model = load(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'static/RainyDaysHero/data/LI/TI/models/'+mdl+'.joblib'))
         return model.predict(var)[0]
-
 '''
 'Live' Prediction
 '''
-def predictTIPremiumLive(x,n,m,i,a,mdl):
+def predictPEPremiumLive(x,n,m,i,a,mdl):
     x,n,m,i,a,mdl = int(x),int(n),int(m),float(i)/100,float(a),mdl
-    if mdl=='lr':
-        return pureEndowmentModels.term_insurance_predicted_polynomiale_no_constraint(x,m,n,i,a,1)
-    elif mdl=='plr':
-        return pureEndowmentModels.term_insurance_predicted(x,m,n,i,a,6)
-    elif mdl=='lasso':
-        return pureEndowmentModels.term_insurance_predicted_polynomiale_lasso(x,m,n,i,a,6)
-    elif mdl=='ps':
-        return pureEndowmentModels.term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,8)
-    elif mdl=='knn':
-        return pureEndowmentModels.term_insurance_predicted_knn(x,m,n,i,a)
+    if mdl=='ps':
+        return pureEndowmentModels.Pure_endowment_predicted_polynomial_scaled(x,m,n,i,a)

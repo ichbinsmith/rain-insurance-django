@@ -1,9 +1,8 @@
 
-from .terminsurance import reserves,stresstest,balance_sheet
-from .pureendowment import Pure_endowment, PE_reserves, balancesheetPE, stresstest_PE
+from .terminsurance import reserves,balance_sheet
+from .pureendowment import PE_reserves, balancesheetPE
 
 
-import matplotlib.pyplot as plt
 import numpy as np
 import os
 import pandas as pd
@@ -32,7 +31,6 @@ v = locals()
 j=0
 for inc in range(20,70,10):
     v["var%d" % inc] = all_age[j]   
-    print(all_age[j])
     j+=1
     
 ##We will now compute the balance sheet and multiply all the contratcs computed by the percentage of people of this age
