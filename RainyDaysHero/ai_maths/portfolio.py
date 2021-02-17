@@ -31,7 +31,6 @@ v = locals()
 j=0
 for inc in range(20,70,10):
     v["var%d" % inc] = all_age[j]   
-    print(all_age[j])
     j+=1
     
 ##We will now compute the balance sheet and multiply all the contratcs computed by the percentage of people of this age

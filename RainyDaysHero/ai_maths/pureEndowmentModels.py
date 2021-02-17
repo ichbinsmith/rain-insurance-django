@@ -2,23 +2,21 @@ import numpy as np
 from .pureendowment import Pure_endowment, PE_reserves, balancesheetPE, stresstest_PE
 
 
-def Pure_endowment_predicted_polynomiale_scaled(x,m,n,i,a,degree=8):
+def Pure_endowment_predicted_polynomial_scaled(x,m,n,i,a,degree=8):
 	return Pure_endowment.Pure_endowment_predicted_polynomiale_scaled(x,m,n,i,a,degree)
 
 ##Reserves
 def reserves_sum(stress_MT=0,stress_interest_rates=0,adapt=True):
-	PE_reserves.reserves_sum(stress_MT,stress_interest_rates,adapt)
+	return PE_reserves.reserves_sum(stress_MT,stress_interest_rates,adapt)
 
-def reserves_sum_knn(stress_MT=0,stress_interest_rates=0,adapt=True): 
-	PE_reserves.reserves_sum_knn(stress_MT,stress_interest_rates,adapt)
+def reserves_sum_knn(stress_MT=0,stress_interest_rates=0,adapt=True):
+	return PE_reserves.reserves_sum_knn(stress_MT,stress_interest_rates,adapt)
 
 def reserves_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True):
-	PE_reserves.reserves_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
+	return PE_reserves.reserves_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
 
-def reserves_predicted_scale_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True):	
-	PE_reserves.reserves_predicted_scale_knn(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
-
-
+def reserves_predicted_scale_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True):
+	return PE_reserves.reserves_predicted_scale_knn(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
 
 def profit_and_loss(x,m,n,i,a):
 	return stresstest_PE.profit_and_loss(x,m,n,i,a)
@@ -53,19 +51,19 @@ def balance_sheet_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True)
 	test= balancesheetPE.balance_sheet_knn(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
 	listcontract=listcontract=np.zeros((m,8))
 	for term in range(0,n):
-	            for smash in range (0,7):
-	                listcontract[term][smash]=test[smash][term]
-	            listcontract[term][7]=int(term+1)     
+		for smash in range (0,7):
+			listcontract[term][smash]=test[smash][term]
+		listcontract[term][7]=int(term+1)
 	return(listcontract)
 
 def balance_sheet_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True):
-	test=balancesheetPE.balance_sheet_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt) 
+	test=balancesheetPE.balance_sheet_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
 
 	listcontract=listcontract=np.zeros((m,8))
 	for term in range(0,n):
-	            for smash in range (0,7):
-	                listcontract[term][smash]=test[smash][term]
-	            listcontract[term][7]=int(term+1)     
+		for smash in range (0,7):
+			listcontract[term][smash]=test[smash][term]
+		listcontract[term][7]=int(term+1)
 	return(listcontract)
 
 
