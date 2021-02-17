@@ -145,9 +145,10 @@ def PureEndowmentAccounting(request):
         for x in result:
             res.append(list(x))
             res[-1][-1] = int(res[-1][-1])
+            for i in range(len(res[-1])-1):
+                res[-1][i]=f'{res[-1][i]:.2f}'
         context['years'] = res
         return HttpResponse(template.render(context, request))
-
 
 def PureEndowmentStress(request):
     context = {}
