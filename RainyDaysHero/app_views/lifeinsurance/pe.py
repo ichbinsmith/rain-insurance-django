@@ -31,7 +31,7 @@ def PureEndowment(request):
             context['form'] = form
             #compute price
             x,m,n,i,a,mdl = form['clientAge'].value(),form['numberOfPayements'].value(),form['maturity'].value(),form['interestRate'].value(),form['amount'].value(),form['model'].value()
-            premium = predictTIPremiumLive(x,n,m,i,a,mdl)
+            premium = predictPEPremiumLive(x,n,m,i,a,mdl)
             context['price'] = premium
             context['actuarial_price'] = premiumComputation.PureEndowmentAnnual(int(x),int(m),int(n),float(i)/100,float(a))
             return HttpResponse(template.render(context, request))
@@ -266,15 +266,7 @@ def predictTIPremium(x,n,m,i,a,mdl):
 '''
 'Live' Prediction
 '''
-def predictTIPremiumLive(x,n,m,i,a,mdl):
+def predictPEPremiumLive(x,n,m,i,a,mdl):
     x,n,m,i,a,mdl = int(x),int(n),int(m),float(i)/100,float(a),mdl
-    if mdl=='lr':
+    if mdl=='ps':
         return pureEndowmentModels.term_insurance_predicted_polynomiale_no_constraint(x,m,n,i,a,1)
-    elif mdl=='plr':
-        return pureEndowmentModels.term_insurance_predicted(x,m,n,i,a,6)
-    elif mdl=='lasso':
-        return pureEndowmentModels.term_insurance_predicted_polynomiale_lasso(x,m,n,i,a,6)
-    elif mdl=='ps':
-        return pureEndowmentModels.term_insurance_predicted_polynomiale_scaled(x,m,n,i,a,8)
-    elif mdl=='knn':
-        return pureEndowmentModels.term_insurance_predicted_knn(x,m,n,i,a)

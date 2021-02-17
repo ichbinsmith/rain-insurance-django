@@ -6,7 +6,6 @@ from sklearn.neighbors import KNeighborsRegressor
 import matplotlib
 matplotlib.use('Agg')
 import os
-from pylab import show,figure
 
 df = pd.read_csv(os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))+"/static/RainyDaysHero/data/LI/TI/dataset.csv")
 
