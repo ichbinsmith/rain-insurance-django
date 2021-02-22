@@ -20,9 +20,9 @@ def balance_sheet_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True
     if adapt==True:
         bs=reserves.reserves_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
         Premiums=bs[1+1]
-        Financial_income=(bs[0+1]+Premiums)*i
+        Financial_income=(bs[0+1]+Premiums)*(i+stress_interest_rates)
         Last_premium_reserves=bs[0+1]
-        Claims=bs[2+1]*(1+i)
+        Claims=bs[2+1]*(1+(i+stress_interest_rates))
         Premium_reserves=bs[0+1][1:len(bs[0+1])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
@@ -34,9 +34,9 @@ def balance_sheet_true(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True
     else:
         bs=reserves.reserves_true(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
         Premiums=bs[1+1]
-        Financial_income=(bs[0+1]+Premiums)*i
+        Financial_income=(bs[0+1]+Premiums)*(i+stress_interest_rates)
         Last_premium_reserves=bs[0+1]
-        Claims=bs[2+1]*(1+i)
+        Claims=bs[2+1]*(1+(i+stress_interest_rates))
         Premium_reserves=bs[0+1][1:len(bs[1])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
@@ -53,9 +53,9 @@ def balance_sheet_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True)
     if adapt==True:
         bs=reserves.reserves_predicted_scale_knn(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
         Premiums=bs[1+1]
-        Financial_income=(bs[0+1]+Premiums)*i
+        Financial_income=(bs[0+1]+Premiums)*(i+stress_interest_rates)
         Last_premium_reserves=bs[0+1]
-        Claims=bs[2+1]*(1+i)
+        Claims=bs[2+1]*(1+(i+stress_interest_rates))
         Premium_reserves=bs[0+1][1:len(bs[0+1])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
@@ -68,9 +68,9 @@ def balance_sheet_knn(x,n,i,a,m,stress_MT=0,stress_interest_rates=0, adapt=True)
     else:
         bs=reserves.reserves_predicted_scale_knn(x,n,i,a,m,stress_MT,stress_interest_rates, adapt)
         Premiums=bs[1+1]
-        Financial_income=(bs[0+1]+Premiums)*i
+        Financial_income=(bs[0+1]+Premiums)*(i+stress_interest_rates)
         Last_premium_reserves=bs[0+1]
-        Claims=bs[2+1]*(1+i)
+        Claims=bs[2+1]*(1+(i+stress_interest_rates))
         Premium_reserves=bs[0+1][1:len(bs[0])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
