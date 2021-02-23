@@ -34,10 +34,26 @@ def portfolio(request):
         recap = None
         if IAOrActuarial=='IA':
             result = portfolioo.Portfolio_predicted(mortalityStress,interestRateStress,adaptedModel)
-            recap = portfolioo.plot_portfolio_predicted(mortalityStress,interestRateStress,adaptedModel)
+            Premiums=list([0])
+            Claims=list([0])
+            Reserves=list([0])
+            for h in range(0,40):
+                Reserves.append(result[h][4])
+                Premiums.append(result[h][0])
+                Claims.append(result[h][3]) 
+            recap=([i for i in range(1,42)],Reserves,Claims,Premiums)   
+            #recap = portfolioo.plot_portfolio_predicted(mortalityStress,interestRateStress,adaptedModel)
         else:
             result = portfolioo.Portfolio_true(mortalityStress, interestRateStress, adaptedModel)
-            recap = portfolioo.plot_portfolio_true(mortalityStress,interestRateStress,adaptedModel)
+            Premiums=list([0])
+            Claims=list([0])
+            Reserves=list([0])
+            for h in range(0,40):
+                Reserves.append(result[h][4])
+                Premiums.append(result[h][0])
+                Claims.append(result[h][3]) 
+            recap=([i for i in range(1,42)],Reserves,Claims,Premiums)    
+            #recap = portfolioo.plot_portfolio_true(mortalityStress,interestRateStress,adaptedModel)
         context['requestType']='POST'
         context['labelOne'] = 'Reserves'
         context['labelTwo'] = 'Claims'

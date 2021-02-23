@@ -91,7 +91,7 @@ def Portfolio_predicted(stress_MT=0,stress_interest_rates=0, adapt=True):
         bsPE=balancesheetPE.balance_sheet_predicted_model(x,n,i,a,m,modelPE,stress_MT,stress_interest_rates, adapt)
         for term in range(0,n):
             for smash in range (0,7):
-                listcontract[term][smash]=listcontract[term][smash]+bsTI[smash][term]*v["var%d" % x]*(17/100)+bsPE[smash][term]*v["var%d" % x]*(83/100) 
+                listcontract[term][smash]=listcontract[term][smash]+bsTI[smash][term]*v["var%d" % x]*1.20+bsPE[smash][term]*v["var%d" % x]
             listcontract[term][7]=int(term+1)        
     return(listcontract)   
         
