@@ -1,117 +1,111 @@
 {% extends 'RainyDaysHero/base-second.html' %}
 
 {% block additionnal-head-conf %}
-	{% load static %}
+    {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'RainyDaysHero/css/styleQuotationForm.css' %}">
 {% endblock %}
 
 {% block content %}
-	<div class="container my-2 block-content">
-	  <div class="row">
-	    <div class="col-md-6 mx-auto myform">
-	    <h3 class="formtitle">Please fill the pricing form</h3>
-	    	It is possible to predict the price from five models: Linear Regression, Lasso, KNN, Polynomial Regression and Polynomial Scaled. <br>
-	    	We recommend using KNN, polynomial regression or polynomial scaled model.
+    <div class="container my-2 block-content">
+        <div class="row">
+            <div class="col-md-6 mx-auto myform">
+                <h3 class="formtitle">Please fill the pricing form</h3>
+                It is possible to predict the price from five models: Linear Regression, Lasso, KNN, Polynomial Regression and Polynomial Scaled. <br>
+                We recommend using KNN, polynomial regression or polynomial scaled model.
 
-	    <br> <br>
+                <br> <br>
 
-		<form action="/rdh/terminsurance/" method="post" onsubmit="return checkForm(this);">
-			{% csrf_token %} 
-	      <div class="form-group">
-	        {{ form.clientAge}}
-	        <label class="form-control-placeholder" for="{{ form.clientAge.id_for_label }}">Age</label>
-	      </div>
+                <form action="/rdh/terminsurance/" method="post" onsubmit="return checkForm(this);">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form.clientAge}}
+                        <label class="form-control-placeholder" for="{{ form.clientAge.id_for_label }}">Age</label>
+                    </div>
 
-	      <div class="form-group">
-	        {{ form.numberOfPayements}}
-	        <label class="form-control-placeholder" for="{{ form.numberOfPayements.id_for_label }}">Number of payements</label>
-	      </div>
+                    <div class="form-group">
+                        {{ form.numberOfPayements}}
+                        <label class="form-control-placeholder" for="{{ form.numberOfPayements.id_for_label }}">Number of payements</label>
+                    </div>
 
-	      <div class="form-group">
-	        {{ form.maturity }}
-	        <label class="form-control-placeholder" for="{{ form.maturity.id_for_label }}">Maturity</label>
-	      </div>
+                    <div class="form-group">
+                        {{ form.maturity }}
+                        <label class="form-control-placeholder" for="{{ form.maturity.id_for_label }}">Maturity</label>
+                    </div>
 
-	      <div class="form-group">
-	        {{ form.interestRate }}
-	        <label class="form-control-placeholder" for="{{ form.interestRate.id_for_label }}">{{ form.interestRate.label }}</label>
-	      </div>
+                    <div class="form-group">
+                        {{ form.interestRate }}
+                        <label class="form-control-placeholder" for="{{ form.interestRate.id_for_label }}">{{ form.interestRate.label }}</label>
+                    </div>
 
-	      <div class="form-group">
-	        {{ form.amount }}
-	        <label class="form-control-placeholder" for="{{ form.amount.id_for_label }}">{{ form.amount.label }}</label>
-	      </div>
+                    <div class="form-group">
+                        {{ form.amount }}
+                        <label class="form-control-placeholder" for="{{ form.amount.id_for_label }}">{{ form.amount.label }}</label>
+                    </div>
 
-	      <div class="form-group">
-	        {{ form.model }}
-	        <label class="form-control-placeholder" for="{{ form.model.id_for_label }}">{{form.model.label}}</label>
-	      </div>
-	      
-	      <div class="form-group">
-	        <button type="submit" class="btn btn-dark">Pricing</button>
-	      </div>
-		</form>
-	    </div>
-	  </div>
-	</div>
-<script>
+                    <div class="form-group">
+                        {{ form.model }}
+                        <label class="form-control-placeholder" for="{{ form.model.id_for_label }}">{{form.model.label}}</label>
+                    </div>
 
-  function checkForm(form)
-  {
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-dark">Pricing</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
 
-    //POSITIVITY
-    //i > 0
-    if(form.interestRate.value < 0) {
-      alert("The interest rate must be positive !");
-      form.interest.focus();
-      return false;
-    }
+        function checkForm(form)
+        {
+            //POSITIVITY
+            //i > 0
+            if(parseFloat(form.interestRate.value) < 0) {
+                alert("The interest rate must be positive !");
+                form.interestRate.focus();
+                return false;
+            }
+            //amount > 0
+            if(parseFloat(form.amount.value) <= 0) {
+                alert("The amount must be strictly positive !");
+                form.amount.focus();
+                return false;
+            }
+            // client age
+            if(parseInt(form.clientAge.value) < 0) {
+                alert("The client age must be positive!");
+                form.clientAge.focus();
+                return false;
+            }
+            // n
+            if(parseInt(form.maturity.value) <= 0) {
+                alert("The maturity (n) must be strictly positive !");
+                form.maturity.focus();
+                return false;
+            }
+            // m
+            if(parseInt(form.numberOfPayements.value) <= 0) {
+                alert("The number of payement (m) must be strictly positive !");
+                form.numberOfPayements.focus();
+                return false;
+            }
+            //SPECIAL CONDITIONS
+            // client age
+            if(parseInt(form.clientAge.value) > 100) {
+                alert("The client age must be less than 100 !");
+                form.clientAge.focus();
+                return false;
+            }
+            // n >=m
+            if(parseInt(form.maturity.value) < parseInt(form.numberOfPayements.value)) {
+                alert("The number of payements (m) must be less or equal to the maturity !");
+                form.numberOfPayements.focus();
+                return false;
+            }
+            // validation was successful
+            return true;
+        }
 
-    //amount > 0
-    if(form.amount.value <= 0) {
-      alert("The amount must be strictly positive !");
-      form.amount.focus();
-      return false;
-    }
+    </script>
 
-    // client age 
-    if(form.clientAge.value < 0) {
-      alert("The client age must be positive!");
-      form.clientAge.focus();
-      return false;
-    }
-    // n
-    if(form.maturity.value <= 0) {
-      alert("The maturity (n) must be strictly positive !");
-      form.maturity.focus();
-      return false;
-    }
-    // m
-    if(form.numberOfPayements.value <= 0) {
-      alert("The number of payement (m) must be strictly positive !");
-      form.numberOfPayements.focus();
-      return false;
-    }
-
-    //SPECIAL CONDITIONS
-    // client age 
-    if(form.clientAge.value > 100) {
-      alert("The client age must be less than 100 !");
-      form.clientAge.focus();
-      return false;
-    }
-
-    // n >=m
-    if(form.maturity.value < form.numberOfPayements.value) {
-      alert("The number of payements (m) must be less or equal to the maturity !");
-      form.numberOfPayements.focus();
-      return false;
-    }
-
-
-    // validation was successful
-    return true;
-  }
-</script>
-    
 {% endblock %}
