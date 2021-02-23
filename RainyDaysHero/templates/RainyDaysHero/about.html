@@ -3,46 +3,59 @@
 
 {% block content %}
 
-<div class="container block-content">
-  <div class="row">
-    <div class="col-md-12 mx-auto">
+    <div class="container block-content">
+        <div class="row">
+            <div class="col-md-12 mx-auto">
 
-		<nav>
-		  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-		    <a class="nav-item nav-link text-dark active" id="nav-product-tab" data-toggle="tab" href="#nav-product" role="tab" aria-controls="nav-product" aria-selected="true">Services</a>
-		    <a class="nav-item nav-link text-dark " id="nav-userguide-tab" data-toggle="tab" href="#nav-userguide" role="tab" aria-controls="nav-userguide" aria-selected="false">User Guide</a>
-		    <a class="nav-item nav-link text-dark " id="nav-sources-tab" data-toggle="tab" href="#nav-sources" role="tab" aria-controls="nav-sources" aria-selected="false">Sources</a>
-		  </div>
-		</nav>
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link text-dark active" id="nav-product-tab" data-toggle="tab" href="#nav-product" role="tab" aria-controls="nav-product" aria-selected="true">Services</a>
+                        <a class="nav-item nav-link text-dark " id="nav-userguide-tab" data-toggle="tab" href="#nav-userguide" role="tab" aria-controls="nav-userguide" aria-selected="false">User Guide</a>
+                        <a class="nav-item nav-link text-dark " id="nav-sources-tab" data-toggle="tab" href="#nav-sources" role="tab" aria-controls="nav-sources" aria-selected="false">Sources</a>
+                    </div>
+                </nav>
 
-		<div class="tab-content" id="nav-tabContent">
+                <div class="tab-content" id="nav-tabContent">
 
-		  <div class="tab-pane fade show active" id="nav-product" role="tabpanel" aria-labelledby="nav-product-tab">
-		  	We offer two types of products : Rain and Life Insurance products. <br>
-		  	<a href="{% static 'RainyDaysHero/docs/PG_subject.pdf' %}" download>Project Graduation Subject</a>
-		  	<br>
+                    <div class="tab-pane fade show active" id="nav-product" role="tabpanel" aria-labelledby="nav-product-tab">
+                       <br>
+                        <p style="text-align: justify;">
+                            Our application main goal is to allow user to compute life insurance (Term Insurance,Pure Endowment) and rain insurance using actuarial formulas and IA (prediction). One of the goal is also to compare the two methods
+                            <br>
+                            Life insurance is a contract between the policy owner and the insurer, where the insurer agrees to pay a designated beneficiary a sum of money upon the occurrence of the insured individual's or individuals' death or other event, such as terminal illness or critical illness. In some insurance products the insurer pays the beneficiary if the insured individual is alive. In return, the policy owner agrees to pay a stipulated amount (at regular intervals or in lump sums).
+                            <br>
+                            A pure endowment is a life insurance contract designed to pay a lump sum after a specified term if the insured individual is still alive. For this product we will use the table TF00-02.
+                            <br>
+                            A Term insurance is a contract that pays a capital at the end of the year of the insured’s death, if it occurs before the end of the term period. For this product we will use the table TH00-02.
+                            <br>
+                            Rain insurance: A customer has daily fixed cost and earns less than his maximal turnover when it is raining. By the way, if the rainfall is higher than some critical rainfall, his turnover is 0. Our insurance product guarantees him a positive turnover during a whole year. What’s more, we will also provide a retrospective analysis showing how much a customer would have earned in the past years, with and without our insurance.
+                            <br>
+                        </p>
 
-		  	<a href="{% static 'RainyDaysHero/docs/RI_subject.pdf' %}" download>Rain Insurance Specs - Without IA </a>
-		  	<br>
+                        <a href="{% static 'RainyDaysHero/docs/PG_subject.pdf' %}" download>Project Graduation Subject</a>
+                        <br>
 
-		  	<a href="{% static 'RainyDaysHero/docs/TI_IA_subject.pdf' %}" download>Term Insurance Specs - IA </a>
-		  </div>
+                        <a href="{% static 'RainyDaysHero/docs/RI_subject.pdf' %}" download>Rain Insurance Specs - Without IA </a>
+                        <br>
 
-		  <div class="tab-pane fade" id="nav-userguide" role="tabpanel" aria-labelledby="nav-userguide-tab">
-		  	You can download our complete User Guide <a href="{% static 'RainyDaysHero/docs/user-guide.pdf' %}" download>here</a>.
-		  </div>
+                        <a href="{% static 'RainyDaysHero/docs/TI_IA_subject.pdf' %}" download>Term Insurance Specs - IA </a>
+                    </div>
 
-
-		  <div class="tab-pane fade" id="nav-sources" role="tabpanel" aria-labelledby="nav-sources-tab">
-		  	All the source code for the project can be found on <a href="https://github.com/ichbinsmith/rain-insurance-django"  target="_blank">github</a>.
-		  </div>
-
-		</div>
+                    <div class="tab-pane fade" id="nav-userguide" role="tabpanel" aria-labelledby="nav-userguide-tab">
+                        You can download our complete User Guide <a href="{% static 'RainyDaysHero/docs/user-guide.pdf' %}" download>here</a>.
+                    </div>
 
 
+                    <div class="tab-pane fade" id="nav-sources" role="tabpanel" aria-labelledby="nav-sources-tab">
+                        All the source code for the project can be found on <a href="https://github.com/ichbinsmith/rain-insurance-django"  target="_blank">github</a>.
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-    
+
 {% endblock %}

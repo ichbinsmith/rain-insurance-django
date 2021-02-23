@@ -110,7 +110,7 @@ class TermInsuranceBSForm(forms.Form):
     clientAge = forms.IntegerField(label='Age')
     clientAge.widget.attrs.update({'class': 'form-control', 'value':50})
 
-    numberOfPayements = forms.IntegerField(label='Number of annual payements')
+    numberOfPayements = forms.IntegerField(label='Number of annual payments')
     numberOfPayements.widget.attrs.update({'class': 'form-control', 'value':5})
 
     maturity = forms.IntegerField(label='Maturity')
