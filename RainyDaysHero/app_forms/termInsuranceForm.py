@@ -11,6 +11,9 @@ models = (
 )
 
 class TermInsuranceForm(forms.Form):
+
+    clientName = forms.CharField(label='Company Name',max_length=100)
+    clientName.widget.attrs.update({'class': 'form-control', 'value':'Didi Leroux'})
     #clientAge = forms.IntegerField(label='Age',max_length=3) --> No max length
     clientAge = forms.IntegerField(label='Age')
     clientAge.widget.attrs.update({'class': 'form-control', 'value':50})
@@ -29,6 +32,9 @@ class TermInsuranceForm(forms.Form):
 
     model = forms.ChoiceField(label = 'Model',choices = models)
     model.widget.attrs.update({'class': 'form-control'})
+
+    printPDF = forms.ChoiceField(label = 'Export As Pdf',choices = ( ("No", "No"),("Yes", "Yes")))
+    printPDF.widget.attrs.update({'class': 'form-control'})
 
 
 class TermInsuranceReserveForm(forms.Form):
@@ -67,7 +73,7 @@ class TermInsuranceReserveForm(forms.Form):
 class TermInsuranceStressForm(forms.Form):
     contractOrTotal = forms.ChoiceField(label = 'Contract/Total Reserve',choices = (("Total", "Total"),("Contract", "Contract") ))
     contractOrTotal.widget.attrs.update({'class': 'form-control','onchange':'stressTypeSwitch()'})
- 
+
     stressOn = forms.ChoiceField(label = 'Stress On',choices = ( ("Mortality Table", "Mortality Table"), ("Interest Rate", "Interest Rate")))
     stressOn.widget.attrs.update({'class': 'form-control'})
 

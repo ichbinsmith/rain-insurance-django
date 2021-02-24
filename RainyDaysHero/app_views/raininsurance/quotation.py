@@ -1,18 +1,12 @@
-from django.shortcuts import render
-from django.http import Http404
 from django.http import HttpResponse
 from django.template import loader
-from django.http import HttpResponseRedirect
 from django.http import FileResponse
-from django.shortcuts import render
 
-import io
 import os
 from random import choice
 from string import ascii_uppercase
 
 import after_response
-from django.templatetags.static import static
 
 import matplotlib
 matplotlib.use('Agg')
