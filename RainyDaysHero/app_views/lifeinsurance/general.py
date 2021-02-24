@@ -42,7 +42,7 @@ def portfolio(request):
                 Premiums.append(result[h][0])
                 Claims.append(result[h][3]) 
             recap=([i for i in range(1,42)],Reserves,Claims,Premiums)   
-            #recap = portfolioo.plot_portfolio_predicted(mortalityStress,interestRateStress,adaptedModel)
+           # recap = portfolioo.plot_portfolio_predicted(mortalityStress,interestRateStress,adaptedModel)
         else:
             result = portfolioo.Portfolio_true(mortalityStress, interestRateStress, adaptedModel)
             Premiums=list([0])
