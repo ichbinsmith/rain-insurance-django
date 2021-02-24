@@ -106,7 +106,7 @@ def reserves_predicted_model(x,n,i,a,m,model,stress_MT=0,stress_interest_rates=0
                 left=listcontract[0][term-1]
             right=a*(1/(1+i))*qx
             listcontract[0][term]=(left-right)/down
-            list_natural_premium1[0][term-1]=a*qx
+            list_natural_premium1[0][term-1]=a*qx*(1/(1+i))
         recurrence1=listcontract[0]   
     else:        
         list_annual_premium1=np.zeros((1,n+1))
@@ -118,15 +118,15 @@ def reserves_predicted_model(x,n,i,a,m,model,stress_MT=0,stress_interest_rates=0
         annual_premium= model.predict([[x,m,n,i,a]])
         for term in range(1,n+1):
             qx=stresstest.Qx(x+term-1,newTH)
-            down=1
+            down=1/(1+i+stress_i)*(1-qx)
             if (term<=m):
                 left=listcontract[0][term-1]+annual_premium
                 list_annual_premium1[0][term-1]=annual_premium                
             else:
                 left=listcontract[0][term-1]
-            right=a*qx
+            right=a*qx*(1/(1+i+stress_i))
             listcontract[0][term]=(left-right)/down
-            list_natural_premium1[0][term]=a*qx            
+            list_natural_premium1[0][term]=a*qx*(1/(1+i+stress_i))               
         recurrence1=listcontract[0]    
     return(recurrence1,list_annual_premium1[0],list_natural_premium1[0])    
         
@@ -135,9 +135,9 @@ def balance_sheet_predicted_model(x,n,i,a,m,model,stress_MT=0,stress_interest_ra
     if adapt==True:
         bs=reserves_predicted_model(x,n,i,a,m,model,stress_MT,stress_interest_rates, adapt)
         Premiums=bs[1]
-        Financial_income=(bs[0]+Premiums)*i
+        Financial_income=(bs[0]+Premiums)*(i+stress_interest_rates)
         Last_premium_reserves=bs[0]
-        Claims=bs[2]*(1+i)
+        Claims=bs[2]*(1+(i+stress_interest_rates))
         Premium_reserves=bs[0][1:len(bs[0])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
@@ -150,9 +150,9 @@ def balance_sheet_predicted_model(x,n,i,a,m,model,stress_MT=0,stress_interest_ra
     else:
         bs=reserves_predicted_model(x,n,i,a,m,model,stress_MT,stress_interest_rates, adapt)
         Premiums=bs[1]
-        Financial_income=(bs[0]+Premiums)*i
+        Financial_income=(bs[0]+Premiums)*(i+stress_interest_rates)
         Last_premium_reserves=bs[0]
-        Claims=bs[2]*(1+i)
+        Claims=bs[2]*(1+(i+stress_interest_rates))
         Premium_reserves=bs[0][1:len(bs[0])]
         Premium_reserves=Premium_reserves+[0]    
         Total_Asset=list()
