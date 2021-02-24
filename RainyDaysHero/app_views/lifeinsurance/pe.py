@@ -1,8 +1,11 @@
 from django.http import HttpResponse
+from django.http import FileResponse
 from django.template import loader
 import json
 
 import os
+from random import choice
+from string import ascii_uppercase
 
 ## forms
 from RainyDaysHero.app_forms.pureEndowmentForm import PureEndowmentForm,PureEndowmentReserveForm,PureEndowmentStressForm,PureEndowmentBSForm
@@ -16,6 +19,14 @@ from RainyDaysHero.ai_maths import pureEndowmentModels
 from RainyDaysHero.ai_maths import premiumComputation
 
 TH = [100000,99511,99473,99446,99424,99406,99390,99376,99363,99350,99338,99325,99312,99296,99276,99250,99213,99163,99097,99015,98921,98820,98716,98612,98509,98406,98303,98198,98091,97982,97870,97756,97639,97517,97388,97249,97100,96939,96765,96576,96369,96141,95887,95606,95295,94952,94575,94164,93720,93244,92736,92196,91621,91009,90358,89665,88929,88151,87329,86460,85538,84558,83514,82399,81206,79926,78552,77078,75501,73816,72019,70105,68070,65914,63637,61239,58718,56072,53303,50411,47390,44234,40946,37546,34072,30575,27104,23707,20435,17338,14464,11852,9526,7498,5769,4331,3166,2249,1549,1032,663,410,244,139,75,39,19,9,4,2,1]
+
+import after_response
+from fpdf import FPDF
+'''Remove a temp file after request'''
+@after_response.enable
+def removequotationfile(filename):
+    os.remove(filename)
+
 
 def PureEndowment(request):
     context = {}
@@ -34,7 +45,59 @@ def PureEndowment(request):
             premium = predictPEPremiumLive(x,n,m,i,a,mdl)
             context['price'] = premium
             context['actuarial_price'] = premiumComputation.PEAnnual(int(x),int(m),int(n),float(i)/100,float(a))
-            return HttpResponse(template.render(context, request))
+
+            if form['printPDF'].value()=='Yes':
+                pdf = FPDF(orientation='P', unit='mm', format='A4')
+                pdf.add_page()
+                pdf.rect(5.0, 5.0, 200.0, 287.0)
+                pdf.rect(8.0, 8.0, 194.0, 282.0)
+
+                # App pic
+                # pdf.image(static('RainyDaysHero/images/rdh.png'), 10, 8, 33)
+                dirname = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+                pdf.image(os.path.join(dirname, 'static/RainyDaysHero/images/rdh.png'), 10, 8, 33)
+                pdf.set_font('Arial', 'B', 15)
+
+                # Client Name
+                pdf.cell(140)
+                pdf.cell(0, 5, str(form['clientName'].value()), ln=1)
+
+                # Company name
+                pdf.ln(25)
+                pdf.cell(0, 5, 'Rainy Days Hero', ln=1)
+
+                # Informations
+                pdf.set_text_color(238, 58, 20)
+                pdf.ln(6)
+                pdf.cell(60)
+                pdf.cell(65, 10, 'Life Insurance quotation', 'B', ln=2)
+                pdf.set_text_color(0, 0, 0)
+                pdf.set_font('Arial', 'B', 10)
+                pdf.cell(65, 10, "Product: Pure Endowment", ln=2)
+                pdf.cell(65, 10, "Age: " + str(form['clientAge'].value()), ln=2)
+                pdf.cell(65, 10, "Maturity: " + str(form['maturity'].value()), ln=2)
+                pdf.cell(65, 10, "Number of payements: " + str(form['numberOfPayements'].value()), ln=2)
+                pdf.cell(65, 10, "Interest rate: " + form['interestRate'].value()+"%", ln=2)
+                pdf.cell(65, 10, "Amount: " + form['amount'].value(), ln=2)
+
+                pdf.set_text_color(39, 174, 96)
+                pdf.ln(25)
+                pdf.cell(60)
+                pdf.set_font('Arial', 'B', 15)
+                pdf.cell(65, 10, "Premium: " + premium + " " + chr(128), ln=2)
+
+                # save file and del after response
+
+                quotationPDFFile = ''.join(choice(ascii_uppercase) for i in range(100)) + '.pdf'
+                pdf.output(quotationPDFFile, 'F')
+                response = HttpResponse(pdf, content_type='application/pdf')
+                response['Content-Disposition'] = "attachment; filename=quotationPDFFile"
+                removequotationfile.after_response(quotationPDFFile)
+
+                return FileResponse(open(quotationPDFFile, "rb"), as_attachment=True, filename='quotation.pdf')
+            else:
+                return HttpResponse(template.render(context, request))
+
 
 
 def PureEndowmentAnalysis(request):
@@ -85,10 +148,10 @@ def PureEndowmentReserve(request):
                 context['c']=json.dumps(list(reserveResponse[1]))
             else:
                 reserveResponseIA=pureEndowmentModels.reserves_predicted_scale_knn(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
-                reserveResponseActuarial=pureEndowmentModels.reserves_true(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)               
+                reserveResponseActuarial=pureEndowmentModels.reserves_true(x,n,i,a,m,mortalityStress,interestRateStress,adaptedModel)
                 context['a']=json.dumps(list(reserveResponseIA[0]))
                 context['b']=json.dumps(list(reserveResponseIA[1]))
-                context['c']=json.dumps(list(reserveResponseActuarial[1]))            
+                context['c']=json.dumps(list(reserveResponseActuarial[1]))
         else:
             mortalityStress=float(form['mortalityStress'].value())/100
             interestRateStress=float(form['interestRateStress'].value())/100
